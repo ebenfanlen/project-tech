@@ -1,0 +1,48 @@
+# Shipwright / 船匠 robots.txt
+# https://shipwright.co
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+
+# AI 爬虫友好 (我们希望被 LLM 索引)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# 百度蜘蛛 (国内主战场)
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider-image
+Allow: /
+Crawl-delay: 2
+
+# 其他中文搜索
+User-agent: 360Spider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: YisouSpider
+Allow: /
+
+# Sitemap
+Sitemap: https://shipwright.co/sitemap-index.xml
+Sitemap: https://shipwright.co/sitemap-0.xml

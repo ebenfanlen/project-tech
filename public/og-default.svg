@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img">
+  <title>Shipwright 船匠 · 别堆人, 造船</title>
+
+  <!-- 背景 Canvas Linen -->
+  <rect width="1200" height="630" fill="#FDFCF9"/>
+
+  <!-- The Keel mark 大号 -->
+  <g transform="translate(80, 80)">
+    <rect x="39" y="0" width="4" height="36" fill="#2B5468"/>
+    <polygon points="24,42 58,42 82,108 0,108" fill="#2B5468"/>
+  </g>
+
+  <!-- Shipwright wordmark + 船匠 -->
+  <g transform="translate(190, 110)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="42" font-weight="600" fill="#1A1814">Shipwright</text>
+    <text x="0" y="30" font-family="Noto Sans SC, sans-serif" font-size="16" font-weight="500" fill="#635E53" letter-spacing="6">船  匠</text>
+  </g>
+
+  <!-- 大 tagline -->
+  <text x="80" y="340" font-family="Noto Sans SC, sans-serif" font-size="96" font-weight="700" fill="#1A1814" letter-spacing="4">别堆人，造船。</text>
+
+  <!-- English tagline -->
+  <text x="80" y="420" font-family="JetBrains Mono, monospace" font-size="52" font-weight="400" fill="#857F72">Don't hire. Ship.</text>
+
+  <!-- Sub -->
+  <text x="80" y="490" font-family="Noto Sans SC, sans-serif" font-size="26" font-weight="400" fill="#484438">
+    14 天交付跨境电商 AI 工作流 · 代码 100% 归你 · 透明定价
+  </text>
+
+  <!-- Signal strip at bottom -->
+  <rect x="0" y="620" width="1200" height="10" fill="#E86A2A"/>
+
+  <!-- URL -->
+  <text x="80" y="570" font-family="JetBrains Mono, monospace" font-size="20" font-weight="500" fill="#E86A2A">shipwright.co</text>
+</svg>

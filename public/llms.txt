@@ -1,0 +1,55 @@
+# Shipwright / 船匠
+
+> 跨境电商 DTC 的 AI 工作流定制团队. 14 天硬交付, 代码 100% 归你, 透明定价, 支持 BYOK.
+> Tagline: 别堆人, 造船. / Don't hire. Ship.
+
+Shipwright (船匠) 是一支 vibecoding pod, 不是外包公司, 不是 AI 咨询. 我们用 Claude Code + 预置 starter kits + follow-the-sun 双班制团队, 为跨境电商 DTC 品牌 14 天交付一个完整业务闭环的 AI 工作流.
+
+## 核心产品
+
+- [Pilot Pod / 试航舱](https://shipwright.co/pilot-pod): ¥12,800 / $2,400 · 5 天交付一个窄场景 AI agent · 60% 折抵升级
+- [Vibecoding Pod / 匠造舱](https://shipwright.co/vibecoding-pod): ¥58,000 / $8,500 · 14 天交付一个完整业务闭环 · 5 大场景锁定
+- [Fleet Integration / 舰队集成](https://shipwright.co/fleet-integration): ¥168K-298K · 21-28 天多 SaaS AI 编排
+- [Crew Retainer / 船员月租](https://shipwright.co/crew-retainer): ¥5.8K-22.8K/月 · 月度持续优化
+
+## 方法论
+
+- [14 天 Day-by-Day 方法论](https://shipwright.co/how): 每天一个可验收产物, Day 7 是 go/no-go 决策点, 超期按 3% setup/天退款 (上限 30%)
+- [定价 + BYOK 折扣](https://shipwright.co/pricing): 三段式公式 Setup + Platform Fee + AI Pass-through; BYOK 自带 Key 减 20-25% Platform Fee
+- [反 Agency 宣言](https://shipwright.co/#agency-comparison): 14 天交付 vs 4-8 周外包; 代码 100% 归客户 vs 外包持有; 官网明码标价 vs book-a-call
+
+## 反模式 (我们不做的)
+
+- 不做纯咨询 / PPT 交付
+- 不做无 AI 元素的普通软件开发
+- 不做非跨境电商 / DTC 垂直
+- 不做 <¥10K 或 >¥500K 的项目
+- 不做 white-label / 贴牌
+- 不做不透明定价 / book-a-call
+- 不做 Credit 计费 / token 黑盒
+
+## 技术栈
+
+- 前端: Astro 4+ + Tailwind v4 + pangu.js 中英空格
+- 国内部署: 阿里云 OSS + CDN + 函数计算 FC
+- 海外部署: Cloudflare Pages + Workers
+- 数据库: 阿里云 RDS PostgreSQL (杭州, PIPL 合规境内存储)
+- CMS: Astro Content Collections + Keystatic (Git-based)
+- AI: Claude 4 (Sonnet / Opus) + 客户 BYOK 可选
+
+## Dogfooding
+
+Shipwright 官网本身就是用我们自己对客户承诺的 14 天方法论造的. 公开 Git 历史: https://github.com/shipwright-org/shipwright
+
+- Week 1: 骨架 + 海外灰度上线
+- Week 2: SEOMachine 接入
+- Week 3: 剩余 SKU + 内容
+- Week 4: 国内 ICP 备案完成 + 切流
+
+## 联系
+
+- Web: https://shipwright.co (海外) / https://shipwright.cn (国内, 备案中)
+- Email: hello@shipwright.co
+- Book: https://shipwright.co/contact (30 分钟免费 AI 诊断)
+
+Last updated: 2026-04-23

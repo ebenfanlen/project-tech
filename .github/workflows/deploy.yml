@@ -1,0 +1,159 @@
+name: Deploy · 双分发 (CN 阿里云 + 海外 Cloudflare)
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false  # 部署不要取消, 防止 CDN 缓存不一致
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10"
+
+jobs:
+  build:
+    name: Build Astro static
+    runs-on: ubuntu-latest
+    outputs:
+      artifact: dist
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+        env:
+          # 环境变量占位 · 生产需在 GitHub Secrets 配置
+          SITE_URL: ${{ vars.SITE_URL || 'https://shipwright.co' }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  deploy-cloudflare:
+    name: Deploy to Cloudflare Pages (海外主 · shipwright.co)
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=shipwright --branch=main
+
+  deploy-aliyun:
+    name: Deploy to 阿里云 OSS + CDN (国内主 · shipwright.cn)
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    env:
+      OSS_BUCKET: ${{ vars.ALIYUN_OSS_BUCKET || 'shipwright-prod' }}
+      OSS_REGION: ${{ vars.ALIYUN_OSS_REGION || 'cn-hangzhou' }}
+      CDN_DOMAIN: ${{ vars.ALIYUN_CDN_DOMAIN || 'shipwright.cn' }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Setup aliyun-cli
+        uses: aliyun/setup-aliyun-cli-action@v1
+        with:
+          aliyun-cli-version: "3.0.261"
+
+      - name: Configure aliyun credentials
+        run: |
+          aliyun configure set \
+            --profile prod \
+            --mode AK \
+            --access-key-id ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
+            --access-key-secret ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
+            --region ${{ env.OSS_REGION }}
+
+      - name: Install ossutil
+        run: |
+          wget https://gosspublic.alicdn.com/ossutil/1.7.18/ossutil64 -O ossutil
+          chmod +x ossutil
+          ./ossutil config -e oss-${{ env.OSS_REGION }}.aliyuncs.com \
+            -i ${{ secrets.ALIYUN_ACCESS_KEY_ID }} \
+            -k ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }} \
+            -L CH
+
+      - name: Upload to OSS (sync, delete stale)
+        run: |
+          ./ossutil cp dist/ oss://${{ env.OSS_BUCKET }}/ \
+            --recursive \
+            --update \
+            --force \
+            --meta "Cache-Control:public,max-age=3600"
+
+      - name: Set long cache for hashed assets
+        run: |
+          ./ossutil set-meta oss://${{ env.OSS_BUCKET }}/_astro/ \
+            "Cache-Control:public,max-age=31536000,immutable" \
+            --recursive --force
+
+      - name: Refresh CDN
+        run: |
+          aliyun cdn RefreshObjectCaches \
+            --profile prod \
+            --ObjectPath "https://${{ env.CDN_DOMAIN }}/" \
+            --ObjectType Directory
+
+      - name: Ping 百度主动推送 API
+        if: vars.BAIDU_PUSH_TOKEN != ''
+        run: |
+          # 从 sitemap 提取 URL 推送给百度, 加速索引
+          grep -oE '<loc>[^<]+</loc>' dist/sitemap-0.xml | sed 's/<\/\?loc>//g' > urls.txt
+          curl -H 'Content-Type:text/plain' \
+            --data-binary @urls.txt \
+            "http://data.zz.baidu.com/urls?site=${{ env.CDN_DOMAIN }}&token=${{ secrets.BAIDU_PUSH_TOKEN }}"
+
+  post-deploy:
+    name: Post-deploy sanity checks
+    needs: [deploy-cloudflare, deploy-aliyun]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Smoke test shipwright.co
+        run: |
+          curl -fsS -o /dev/null -w "co HTTP %{http_code}\n" https://shipwright.co/
+          curl -fsS -o /dev/null -w "co/pricing HTTP %{http_code}\n" https://shipwright.co/pricing
+          curl -fsS -o /dev/null -w "co/how HTTP %{http_code}\n" https://shipwright.co/how
+
+      - name: Smoke test shipwright.cn (if available)
+        continue-on-error: true
+        run: |
+          curl -fsS -o /dev/null -w "cn HTTP %{http_code}\n" https://shipwright.cn/ || echo "cn 未就绪 (备案审核中)"
+
+      - name: Notify Slack / Feishu
+        if: always() && secrets.DEPLOY_WEBHOOK_URL != ''
+        run: |
+          STATUS="${{ job.status }}"
+          curl -X POST -H 'Content-Type:application/json' \
+            -d "{\"msg_type\":\"text\",\"content\":{\"text\":\"🚢 Shipwright deploy ${STATUS} · ${{ github.sha }}\"}}" \
+            ${{ secrets.DEPLOY_WEBHOOK_URL }}
