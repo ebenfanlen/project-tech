@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+import { scenes } from "../../data/scenes";
+---
+
+<BaseLayout
+  title="5 大场景 · Vibecoding Pod · Shipwright 船匠"
+  description="V-CS 客服 / V-SEO SEO / V-AD 广告 / V-CONTENT 内容 / V-OPS 运营. Vibecoding Pod 锁定的 5 个预置 starter kit, 每个 14 天可交付."
+  path="/scenes"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1100px] px-6 pb-10 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        5 Scenes · Pick one
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.25rem,5vw,3.5rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        14 天能交付的 · 只有这 5 个场景。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        Vibecoding Pod 为了兑现 14 天硬承诺, 把客户需求锁在 5 个预置 starter kit 里 ·
+        每个场景我们已经做过 3+ 次, 70% 模板化, 30% 为你定制。
+      </p>
+      <p class="font-mono text-xs" style="color:var(--fg-muted)">
+        不在 5 个里? 走 <a href="/fleet-integration" style="color:var(--color-signal-600)">Fleet Integration</a> (21-28 天) 做自定义编排
+      </p>
+    </section>
+
+    <!-- Scene grid -->
+    <section class="mx-auto max-w-[1100px] px-6 pb-20">
+      <div class="grid gap-4 md:grid-cols-2">
+        {scenes.map((s) => (
+          <a
+            href={`/scenes/${s.code}`}
+            class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-1"
+            style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+          >
+            <div class="mb-3 flex items-center justify-between">
+              <span
+                class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+                style="background:var(--color-primary-50);color:var(--color-primary-700)"
+              >
+                {s.code.toUpperCase()}
+              </span>
+              <span
+                class="rounded-full px-2 py-0.5 font-mono text-[10px]"
+                style={s.priority === "P0" ? "background:var(--color-signal-100);color:var(--color-signal-700)" : "background:var(--bg-muted);color:var(--fg-muted)"}
+              >
+                {s.priority}
+              </span>
+            </div>
+
+            <h2 class="mb-2 text-lg font-semibold" style="color:var(--fg-display)">
+              {s.title}
+            </h2>
+
+            <p class="mb-4 text-sm" style="color:var(--fg-default)">
+              {s.hook}
+            </p>
+
+            <div class="mt-auto grid gap-2 text-xs">
+              <div>
+                <span
+                  class="mr-1 font-mono uppercase tracking-[0.05em]"
+                  style="color:var(--fg-muted)"
+                >
+                  目标客户:
+                </span>
+                <span style="color:var(--fg-default)">{s.targetSignal}</span>
+              </div>
+              <div>
+                <span
+                  class="mr-1 font-mono uppercase tracking-[0.05em]"
+                  style="color:var(--color-success-700)"
+                >
+                  典型改善:
+                </span>
+                <span style="color:var(--fg-default)">
+                  {s.kpis[0].label}: {s.kpis[0].before} → <strong style="color:var(--color-signal-600)">{s.kpis[0].after}</strong>
+                </span>
+              </div>
+            </div>
+
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
+              style="color:var(--color-signal-600)"
+            >
+              看场景详情 →
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

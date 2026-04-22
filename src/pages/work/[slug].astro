@@ -1,0 +1,231 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const cases = await getCollection("cases", (c) => c.data.status === "published");
+  return cases.map((c) => ({
+    params: { slug: c.id.replace(/\.mdx$/, "") },
+    props: { caseStudy: c },
+  }));
+}
+
+const { caseStudy } = Astro.props;
+const { Content } = await render(caseStudy);
+const d = caseStudy.data;
+
+const skuSlug = `/${d.sku}`;
+const skuNameMap: Record<string, string> = {
+  "pilot-pod": "Pilot Pod 试航舱",
+  "vibecoding-pod": "Vibecoding Pod 匠造舱",
+  "fleet-integration": "Fleet Integration 舰队集成",
+  "crew-retainer": "Crew Retainer 船员月租",
+};
+---
+
+<BaseLayout
+  title={`${d.title} · Shipwright 船匠`}
+  description={`${d.clientHandle} · ${d.industry} · ${d.duration}交付 · ${d.kpis[0].label} ${d.kpis[0].before} → ${d.kpis[0].after}`}
+  path={`/work/${caseStudy.id.replace(/\.mdx$/, '')}`}
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[900px] px-6 pb-10 pt-16 sm:pt-24">
+      <nav class="mb-4 font-mono text-xs" style="color:var(--fg-muted)">
+        <a href="/work" style="color:var(--fg-muted)">← 案例墙</a>
+      </nav>
+
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Case Study · {d.duration}交付
+      </p>
+
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2rem,4.5vw,3rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        {d.title}
+      </h1>
+
+      <div class="mb-8 flex flex-wrap gap-4 text-sm" style="color:var(--fg-muted)">
+        <span>
+          <span class="font-mono text-xs uppercase tracking-[0.08em]">客户:</span>
+          <span class="ml-1" style="color:var(--fg-default)">{d.clientHandle}</span>
+        </span>
+        <span>
+          <span class="font-mono text-xs uppercase tracking-[0.08em]">行业:</span>
+          <span class="ml-1" style="color:var(--fg-default)">{d.industry}</span>
+        </span>
+        <span>
+          <span class="font-mono text-xs uppercase tracking-[0.08em]">SKU:</span>
+          <a
+            href={skuSlug}
+            class="ml-1 underline decoration-dotted underline-offset-2"
+            style="color:var(--color-signal-600)"
+          >
+            {skuNameMap[d.sku] ?? d.sku}
+          </a>
+        </span>
+      </div>
+
+      <!-- KPIs 大号展示 -->
+      <div
+        class="mb-10 grid gap-3 rounded-[var(--radius-lg)] border p-6 sm:grid-cols-2 lg:grid-cols-4"
+        style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+      >
+        {d.kpis.map((kpi) => (
+          <div>
+            <div
+              class="mb-2 font-mono text-[11px] uppercase tracking-[0.08em]"
+              style="color:var(--fg-muted)"
+            >
+              {kpi.label}
+            </div>
+            <div class="tabular-nums text-sm" style="color:var(--fg-muted)">
+              <span class="opacity-60">{kpi.before}</span>
+              <span class="mx-1" style="color:var(--color-signal-500)">→</span>
+            </div>
+            <div
+              class="tabular-nums font-bold"
+              style="font-size:1.5rem;color:var(--color-signal-600);line-height:1.1"
+            >
+              {kpi.after}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- MDX 正文 -->
+    <article class="mx-auto max-w-[760px] px-6 pb-16" style="color:var(--fg-default);line-height:1.75">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <!-- Quote -->
+      {d.quote && (
+        <blockquote
+          class="my-10 border-l-2 p-5 italic"
+          style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
+        >
+          <p class="mb-2 text-lg leading-relaxed">"{d.quote.text}"</p>
+          <footer
+            class="not-italic font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--fg-muted)"
+          >
+            — {d.quote.attribution}
+          </footer>
+        </blockquote>
+      )}
+    </article>
+
+    <!-- CTA 回 SKU 页 -->
+    <section
+      class="border-y py-12"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[760px] px-6 text-center">
+        <p class="mb-4 text-sm" style="color:var(--fg-muted)">
+          想了解这个场景的定价 + 详细交付清单
+        </p>
+        <a
+          href={skuSlug}
+          class="inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] px-5 text-sm font-semibold transition hover:brightness-110"
+          style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+        >
+          查看 {skuNameMap[d.sku]} →
+        </a>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+
+  <style>
+    .prose h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--fg-display);
+      margin: 2rem 0 1rem;
+      line-height: 1.25;
+    }
+    .prose h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--fg-heading);
+      margin: 1.5rem 0 0.75rem;
+    }
+    .prose p {
+      margin: 0.75rem 0;
+    }
+    .prose ul {
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      list-style: disc;
+    }
+    .prose ol {
+      margin: 0.75rem 0;
+      padding-left: 1.5rem;
+      list-style: decimal;
+    }
+    .prose li {
+      margin: 0.3rem 0;
+    }
+    .prose strong {
+      color: var(--fg-display);
+      font-weight: 600;
+    }
+    .prose code {
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      background: var(--bg-muted);
+      padding: 0.1em 0.4em;
+      border-radius: var(--radius-sm);
+      color: var(--color-signal-600);
+    }
+    .prose pre {
+      margin: 1rem 0;
+      padding: 1.25rem;
+      background: var(--color-cool-800);
+      color: var(--color-canvas-100);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+    .prose pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .prose table {
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.875em;
+      width: 100%;
+    }
+    .prose th, .prose td {
+      border: 1px solid var(--border-default);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    .prose th {
+      background: var(--bg-muted);
+      font-weight: 600;
+      color: var(--fg-display);
+    }
+    .prose a {
+      color: var(--link);
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+  </style>
+</BaseLayout>

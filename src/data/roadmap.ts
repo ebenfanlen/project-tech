@@ -121,7 +121,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["Case Grid (每卡: 行业 + 数字 + SKU)", "筛选 (SKU / 场景 / GMV 区间)", "Phase 1 至少 3 个真 case + 5 个匿名"],
     seoKw: "AI 案例 跨境电商",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/blog",
@@ -134,7 +134,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["Pillar + Supporting 混合列表", "4 个 Cluster 聚合", "RSS", "首批 12 月产出 12 pillar + 145 supporting"],
     seoKw: "跨境电商 AI",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/about",
@@ -173,7 +173,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["全渠道 AI 客服 (IG DM + Shopify Inbox + 邮件 + 小红书私信)", "5 语种实时回复 demo", "Human-in-the-loop 流程", "实测 KPI (响应时长 / 自动解决率)"],
     seoKw: "AI 客服 跨境 / 多语言客服 agent",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/scenes/v-seo",
@@ -186,7 +186,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["月产 50+ SKU listing 流水线", "多语言本地化 + Helium 10 关键词对齐", "人工审核流程"],
     seoKw: "SEO agent / AI SEO 内容",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/scenes/v-ad",
@@ -199,7 +199,7 @@ export const roadmap: PageSpec[] = [
     priority: "P1",
     sections: ["TikTok Shop + Meta Ads 素材批量", "投后数据回流分析", "ACoS / ROAS 实测"],
     seoKw: "AI 投放 / 广告优化 agent",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/scenes/v-content",
@@ -212,7 +212,7 @@ export const roadmap: PageSpec[] = [
     priority: "P1",
     sections: ["小红书 + TikTok 内容日历", "脚本批量生成 (4 类)", "KOC outreach 流程"],
     seoKw: "红人营销 agent / influencer AI",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/scenes/v-ops",
@@ -225,7 +225,7 @@ export const roadmap: PageSpec[] = [
     priority: "P1",
     sections: ["Shopify 订单异常分诊", "物流 / 库存预警", "退款 AI 决策"],
     seoKw: "电商自动化 / 运营 agent",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/products",
@@ -237,7 +237,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-21~27",
     priority: "P1",
     sections: ["4 SKU overview 卡片", "对比表", "决策树 (GMV/场景/预算)"],
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/scenes",
@@ -249,7 +249,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-21~27",
     priority: "P1",
     sections: ["5 大场景 overview", "客户画像筛选"],
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/playbooks",
@@ -262,7 +262,7 @@ export const roadmap: PageSpec[] = [
     priority: "P1",
     sections: ["Playbook 列表卡片", "分级 gate (email / email+company / email+wechat)", "自动化邮件 drip 3 封"],
     seoKw: "AI playbook / 跨境电商模板",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/changelog",
@@ -274,7 +274,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-21~06-03",
     priority: "P1",
     sections: ["按周列表", "每条含 commit 链接 / 截图 / 数据"],
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/legal/terms",

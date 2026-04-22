@@ -1,0 +1,165 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SkuShowcase from "../components/SkuShowcase.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import { skus } from "../data/skus";
+import { scenes } from "../data/scenes";
+
+const tree = [
+  {
+    title: "GMV < ¥500K · 想试一下",
+    sku: skus.find((s) => s.id === "pilot-pod"),
+    reason: "用 ¥12.8K / 5 天跑通一个窄场景, 证明 ROI 再升级",
+  },
+  {
+    title: "GMV ¥500K-$300K · 一个场景拖死了",
+    sku: skus.find((s) => s.id === "vibecoding-pod"),
+    reason: "14 天交付完整业务闭环, 5 个预置场景选一个",
+  },
+  {
+    title: "GMV $200K-$1M · 多 SaaS 胶水",
+    sku: skus.find((s) => s.id === "fleet-integration"),
+    reason: "21-28 天跨系统 AI 编排 · 主控 + 工具 Agent 架构",
+  },
+  {
+    title: "已交付 · 想继续维护",
+    sku: skus.find((s) => s.id === "crew-retainer"),
+    reason: "月度续费 · 省一个全职 AI 工程师 (至少 ¥35K/月)",
+  },
+];
+---
+
+<BaseLayout
+  title="产品矩阵 · Shipwright 船匠"
+  description="4 款 SKU 按 GMV 和场景复杂度覆盖跨境电商 DTC 全生命周期. Pilot Pod / Vibecoding Pod / Fleet Integration / Crew Retainer."
+  path="/products"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1100px] px-6 pb-10 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Product Matrix
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.25rem,5vw,3.5rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        按 GMV 和场景复杂度 · 选一款。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        4 款 SKU 覆盖跨境电商 DTC 从试点 → 单场景 → 多系统 → 持续运维的全生命周期。
+        不清楚选哪款？看下面的决策树 or <a href="/contact" style="color:var(--color-signal-600);font-weight:600">预约 30 分钟诊断</a>。
+      </p>
+    </section>
+
+    <!-- 决策树 -->
+    <section
+      class="border-y py-16"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          Decision tree
+        </p>
+        <h2
+          class="mb-8 font-semibold"
+          style="font-size:1.75rem;line-height:1.2;color:var(--fg-display)"
+        >
+          你处于哪个阶段
+        </h2>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          {tree.map((t) => t.sku && (
+            <a
+              href={t.sku.slug}
+              class="group flex items-start gap-4 rounded-[var(--radius-lg)] border p-5 transition hover:-translate-y-0.5"
+              style="background:var(--bg-card);border-color:var(--border-default)"
+            >
+              <div class="flex-1">
+                <p
+                  class="mb-1 font-mono text-xs uppercase tracking-[0.08em]"
+                  style="color:var(--color-signal-600)"
+                >
+                  {t.title}
+                </p>
+                <h3 class="mb-1 text-base font-semibold" style="color:var(--fg-display)">
+                  → {t.sku.nameZh} ({t.sku.priceCN})
+                </h3>
+                <p class="text-sm" style="color:var(--fg-muted)">
+                  {t.reason}
+                </p>
+              </div>
+              <span style="color:var(--color-signal-600)">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 SKU 完整卡片 -->
+    <SkuShowcase />
+
+    <!-- 5 大场景引导 -->
+    <section class="mx-auto max-w-[1100px] px-6 py-16">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Vibecoding Pod 支持的 5 大场景
+      </p>
+      <h2
+        class="mb-8 font-semibold"
+        style="font-size:1.5rem;line-height:1.2;color:var(--fg-display)"
+      >
+        选场景 · 不选技术
+      </h2>
+
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-5">
+        {scenes.map((s) => (
+          <a
+            href={`/scenes/${s.code}`}
+            class="group rounded-[var(--radius-md)] border p-4 text-center transition hover:-translate-y-0.5"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <div
+              class="mb-1 font-mono text-xs font-bold uppercase tracking-[0.08em]"
+              style="color:var(--color-primary-600)"
+            >
+              {s.code.toUpperCase()}
+            </div>
+            <div class="text-sm" style="color:var(--fg-display)">
+              {s.title.split(" · ")[1]?.split(" ")[0] ?? s.code}
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-6 text-center">
+        <a
+          href="/scenes"
+          class="inline-flex items-center gap-2 font-mono text-sm underline decoration-dotted underline-offset-4"
+          style="color:var(--fg-default)"
+        >
+          5 场景全览 →
+        </a>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

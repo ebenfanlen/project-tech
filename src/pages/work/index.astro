@@ -1,0 +1,175 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+import { getCollection } from "astro:content";
+
+const cases = await getCollection("cases", (c) => c.data.status === "published");
+cases.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const skuLabels: Record<string, string> = {
+  "pilot-pod": "Pilot Pod",
+  "vibecoding-pod": "Vibecoding Pod",
+  "fleet-integration": "Fleet Integration",
+  "crew-retainer": "Crew Retainer",
+};
+
+const sceneLabels: Record<string, string> = {
+  "v-cs": "V-CS 客服",
+  "v-seo": "V-SEO SEO",
+  "v-ad": "V-AD 广告",
+  "v-content": "V-CONTENT 内容",
+  "v-ops": "V-OPS 运营",
+};
+
+const gmvLabels: Record<string, string> = {
+  lt_500k: "< ¥500K",
+  "500k_2m": "¥500K-¥2M",
+  "2m_10m": "¥2M-¥10M",
+  "10m_100m": "¥10M-¥100M",
+  gt_100m: "¥100M+",
+};
+---
+
+<BaseLayout
+  title="案例墙 · Shipwright 船匠 · 真客户真数字"
+  description="Phase 1 脱敏案例墙 · 每个案例含 before/after 量化指标 + 续约信号 · 14 天 / 21 天真实交付数据"
+  path="/work"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1200px] px-6 pb-12 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Case Studies
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.5rem,6vw,4rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        真客户 · 真数字 · 可复现。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        {cases.length} 个 Phase 1 脱敏案例 · 每个含 before/after 量化指标 + 续约信号。
+        客户身份经同意后脱敏处理 · 数字均为真实值。
+      </p>
+
+      <!-- 过滤提示 -->
+      <p class="font-mono text-xs" style="color:var(--fg-muted)">
+        按 SKU / 场景筛选 (Phase 2 上线交互筛选器)
+      </p>
+    </section>
+
+    <!-- Case grid -->
+    <section class="mx-auto max-w-[1200px] px-6 pb-20">
+      <div class="grid gap-5 lg:grid-cols-3">
+        {cases.map((c) => {
+          const kpi1 = c.data.kpis[0];
+          return (
+            <a
+              href={`/work/${c.id.replace(/\.mdx$/, "")}`}
+              class="group flex flex-col overflow-hidden rounded-[var(--radius-lg)] border transition hover:-translate-y-1"
+              style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+            >
+              <!-- Hero number -->
+              <div
+                class="p-6"
+                style="background:var(--bg-muted)"
+              >
+                <div
+                  class="mb-2 font-mono text-[10px] uppercase tracking-[0.08em]"
+                  style="color:var(--color-signal-600)"
+                >
+                  {kpi1.label}
+                </div>
+                <div
+                  class="tabular-nums"
+                  style="font-size:1.25rem;color:var(--fg-muted)"
+                >
+                  <span class="opacity-60">{kpi1.before}</span>
+                  <span class="mx-2" style="color:var(--color-signal-500)">→</span>
+                </div>
+                <div
+                  class="tabular-nums font-bold"
+                  style="font-size:clamp(2rem,3.5vw,2.5rem);line-height:1.1;color:var(--color-signal-600)"
+                >
+                  {kpi1.after}
+                </div>
+              </div>
+
+              <div class="flex flex-1 flex-col p-5">
+                <!-- Tags -->
+                <div class="mb-3 flex flex-wrap gap-1.5 text-[11px]">
+                  <span
+                    class="rounded-full px-2 py-0.5 font-mono"
+                    style="background:var(--bg-muted);color:var(--fg-default)"
+                  >
+                    {skuLabels[c.data.sku] ?? c.data.sku}
+                  </span>
+                  <span
+                    class="rounded-full px-2 py-0.5 font-mono"
+                    style="background:var(--color-primary-50);color:var(--color-primary-700)"
+                  >
+                    {sceneLabels[c.data.scene] ?? c.data.scene}
+                  </span>
+                </div>
+
+                <h3 class="mb-1 text-base font-semibold" style="color:var(--fg-display)">
+                  {c.data.clientHandle}
+                </h3>
+                <p class="mb-3 text-sm" style="color:var(--fg-muted)">
+                  {c.data.industry} · {gmvLabels[c.data.gmvBand] ?? c.data.gmvBand}
+                </p>
+
+                <p
+                  class="mb-4 text-sm"
+                  style="color:var(--fg-default)"
+                >
+                  {c.data.title}
+                </p>
+
+                <div class="mt-auto flex items-center justify-between text-xs">
+                  <span
+                    class="font-mono"
+                    style="color:var(--fg-muted)"
+                  >
+                    {c.data.duration}
+                  </span>
+                  <span
+                    class="font-semibold"
+                    style="color:var(--color-signal-600)"
+                  >
+                    阅读完整案例 →
+                  </span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      {cases.length < 5 && (
+        <div
+          class="mt-10 rounded-[var(--radius-md)] border-l-2 p-4 text-sm"
+          style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
+        >
+          <strong style="color:var(--fg-display)">Phase 1 案例陆续更新中.</strong>
+          每完成一个 Vibecoding Pod / Fleet Integration 客户交付, 会脱敏后加到这里.
+          目前展示的 3 个是我们正式上线后的首批项目.
+        </div>
+      )}
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

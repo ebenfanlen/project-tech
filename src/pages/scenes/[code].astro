@@ -1,0 +1,210 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+import { scenes } from "../../data/scenes";
+
+export function getStaticPaths() {
+  return scenes.map((s) => ({
+    params: { code: s.code },
+    props: { scene: s },
+  }));
+}
+
+const { scene } = Astro.props;
+---
+
+<BaseLayout
+  title={`${scene.title} · Vibecoding Pod 场景 · Shipwright 船匠`}
+  description={`${scene.hook} · 目标客户: ${scene.targetSignal} · Vibecoding Pod (¥58K / 14 天) 预置 starter kit`}
+  path={`/scenes/${scene.code}`}
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1100px] px-6 pb-10 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        {scene.priority} Scene · {scene.titleEn}
+      </p>
+      <h1
+        class="mb-3 font-semibold"
+        style="font-size:clamp(2rem,5vw,3rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        {scene.title}
+      </h1>
+      <p
+        class="mb-6 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        {scene.hook}
+      </p>
+      <p class="mb-8 font-mono text-xs" style="color:var(--fg-muted)">
+        目标客户信号: {scene.targetSignal}
+      </p>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={`/contact?sku=vibecoding-pod&scene=${scene.code}`}
+          class="inline-flex h-11 items-center rounded-[var(--radius-md)] px-5 text-sm font-semibold transition hover:brightness-110"
+          style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+        >
+          用这个场景开 Vibecoding Pod →
+        </a>
+        <a
+          href="/vibecoding-pod"
+          class="inline-flex h-11 items-center rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+          style="border-color:var(--border-strong);color:var(--fg-default)"
+        >
+          查看 Vibecoding Pod (¥58K / 14 天)
+        </a>
+      </div>
+    </section>
+
+    <!-- Problem -->
+    <section class="mx-auto max-w-[900px] px-6 py-12">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+      >
+        典型客户场景
+      </p>
+      <h2
+        class="mb-4 font-semibold"
+        style="font-size:1.75rem;line-height:1.2;color:var(--fg-display)"
+      >
+        我们接到的是这样的痛点
+      </h2>
+      <p style="font-size:var(--text-body-lg);color:var(--fg-default);line-height:1.7">
+        {scene.problem}
+      </p>
+    </section>
+
+    <!-- Architecture: Agents + Integrations -->
+    <section
+      class="border-y py-16"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          Starter kit · 70% 模板化
+        </p>
+        <h2
+          class="mb-8 font-semibold"
+          style="font-size:1.75rem;line-height:1.2;color:var(--fg-display)"
+        >
+          这个场景的预置资产
+        </h2>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <h3 class="mb-4 font-semibold" style="color:var(--fg-display)">
+              Agent 分工
+            </h3>
+            <ul class="space-y-3">
+              {scene.agents.map((a, i) => (
+                <li class="flex items-start gap-3 text-sm" style="color:var(--fg-default)">
+                  <span
+                    class="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-bold"
+                    style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+                  >
+                    {i + 1}
+                  </span>
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <h3 class="mb-4 font-semibold" style="color:var(--fg-display)">
+              需要的 API 集成
+            </h3>
+            <ul class="space-y-2">
+              {scene.integrations.map((int) => (
+                <li class="flex items-start gap-2 font-mono text-xs" style="color:var(--fg-default)">
+                  <span style="color:var(--color-primary-500)">→</span>
+                  <span>{int}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p class="mt-4 border-t pt-4 text-xs" style="border-color:var(--border-default);color:var(--fg-muted)">
+              <strong style="color:var(--fg-display)">典型客户 stack:</strong><br />
+              <span class="font-mono">{scene.sampleStack}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KPIs -->
+    <section class="mx-auto max-w-[1100px] px-6 py-16">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Real numbers · 真实交付数据
+      </p>
+      <h2
+        class="mb-8 font-semibold"
+        style="font-size:1.75rem;line-height:1.2;color:var(--fg-display)"
+      >
+        这个场景的 Before / After
+      </h2>
+
+      <div class="grid gap-4 md:grid-cols-3">
+        {scene.kpis.map((kpi) => (
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+          >
+            <div
+              class="mb-3 font-mono text-[11px] uppercase tracking-[0.08em]"
+              style="color:var(--fg-muted)"
+            >
+              {kpi.label}
+            </div>
+            <div class="tabular-nums text-base" style="color:var(--fg-muted)">
+              <span class="opacity-60">{kpi.before}</span>
+              <span class="mx-2" style="color:var(--color-signal-500)">→</span>
+            </div>
+            <div
+              class="tabular-nums font-bold"
+              style="font-size:2rem;line-height:1.1;color:var(--color-signal-600)"
+            >
+              {kpi.after}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {scene.caseSlug && (
+        <a
+          href={`/work/${scene.caseSlug}`}
+          class="mt-8 inline-flex items-center gap-2 font-mono text-sm underline decoration-dotted underline-offset-4"
+          style="color:var(--fg-default)"
+        >
+          阅读这个场景的完整 case study →
+        </a>
+      )}
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

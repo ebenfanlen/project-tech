@@ -1,0 +1,241 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", (p) => p.data.status === "published");
+  return posts.map((p) => {
+    // 剥离 locale 目录前缀 (zh-CN/, zh-TW/, en/) · Phase 1 默认简中使用根 /blog/{slug}
+    // Phase 2 加 i18n 路由时, locale 路径由 /zh-tw/ /en/ 子目录承担
+    const slug = p.id.replace(/^zh-CN\//, "").replace(/\.mdx$/, "");
+    return {
+      params: { slug },
+      props: { post: p },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const d = post.data;
+
+const clusterLabels: Record<string, string> = {
+  "pillar-cross-border-ai": "跨境 AI 完整指南",
+  "pillar-shopify-custom": "Shopify 自动化定制",
+  "pillar-tiktok-shop": "TikTok Shop + 跨境",
+  "pillar-claude-code-method": "Claude Code 方法论",
+  "supporting": "Supporting",
+};
+
+const readingTime = Math.ceil((await render(post)).Content.toString().length / 600) || 15;
+---
+
+<BaseLayout
+  title={`${d.title} · 船匠手记`}
+  description={d.description}
+  path={`/blog/${post.id.replace(/^zh-CN\//, "").replace(/\.mdx$/, '')}`}
+>
+  <NavBar />
+
+  <main class="mx-auto max-w-[1200px] px-6 py-16 sm:py-24">
+    <div class="grid gap-10 lg:grid-cols-[200px_1fr]">
+      <!-- TOC (sticky on desktop) -->
+      <aside class="hidden lg:block">
+        <div class="sticky top-24">
+          <p
+            class="mb-4 font-mono text-[10px] uppercase tracking-[0.08em]"
+            style="color:var(--fg-muted)"
+          >
+            Table of contents
+          </p>
+          <nav class="space-y-1 text-sm">
+            {headings.filter((h) => h.depth <= 3).map((h) => (
+              <a
+                href={`#${h.slug}`}
+                class="block truncate transition hover:opacity-80"
+                style={`color:var(--fg-muted);padding-left:${(h.depth - 2) * 12}px`}
+              >
+                {h.text}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Article -->
+      <article>
+        <nav class="mb-4 font-mono text-xs" style="color:var(--fg-muted)">
+          <a href="/blog" style="color:var(--fg-muted)">← 船匠手记</a>
+        </nav>
+
+        <div class="mb-6 flex flex-wrap items-center gap-3">
+          <span
+            class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+            style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+          >
+            {d.cluster.startsWith("pillar") ? "Pillar" : "Supporting"}
+          </span>
+          <span
+            class="font-mono text-xs"
+            style="color:var(--fg-muted)"
+          >
+            {clusterLabels[d.cluster]}
+          </span>
+        </div>
+
+        <h1
+          class="mb-4 font-semibold"
+          style="font-size:clamp(2rem,4.5vw,3rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+        >
+          {d.title}
+        </h1>
+
+        <p
+          class="mb-8 max-w-3xl"
+          style="font-size:var(--text-body-lg);color:var(--fg-default)"
+        >
+          {d.description}
+        </p>
+
+        <div
+          class="mb-10 flex flex-wrap items-center gap-4 border-b pb-6 text-sm"
+          style="border-color:var(--border-default);color:var(--fg-muted)"
+        >
+          <span style="color:var(--fg-default)">{d.author}</span>
+          <span>·</span>
+          <span>{new Date(d.pubDate).toLocaleDateString("zh-CN")}</span>
+          <span>·</span>
+          <span>约 {readingTime} 分钟阅读</span>
+        </div>
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        <!-- Keywords -->
+        {d.keywords.length > 0 && (
+          <div
+            class="mt-10 border-t pt-6"
+            style="border-color:var(--border-default)"
+          >
+            <p class="mb-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+              关键词
+            </p>
+            <div class="flex flex-wrap gap-2">
+              {d.keywords.map((k) => (
+                <span
+                  class="rounded-full px-3 py-1 font-mono text-xs"
+                  style="background:var(--bg-muted);color:var(--fg-default)"
+                >
+                  {k}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
+    </div>
+  </main>
+
+  <SiteFooter />
+
+  <style>
+    .prose h2 {
+      font-size: 1.625rem;
+      font-weight: 600;
+      color: var(--fg-display);
+      margin: 2.5rem 0 1rem;
+      line-height: 1.25;
+      scroll-margin-top: 5rem;
+    }
+    .prose h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--fg-heading);
+      margin: 1.75rem 0 0.75rem;
+      scroll-margin-top: 5rem;
+    }
+    .prose p {
+      margin: 1rem 0;
+      color: var(--fg-default);
+      line-height: 1.8;
+    }
+    .prose ul {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+      list-style: disc;
+    }
+    .prose ol {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+      list-style: decimal;
+    }
+    .prose li {
+      margin: 0.5rem 0;
+      color: var(--fg-default);
+      line-height: 1.75;
+    }
+    .prose strong {
+      color: var(--fg-display);
+      font-weight: 600;
+    }
+    .prose code {
+      font-family: var(--font-mono);
+      font-size: 0.875em;
+      background: var(--bg-muted);
+      padding: 0.1em 0.4em;
+      border-radius: var(--radius-sm);
+      color: var(--color-signal-600);
+    }
+    .prose pre {
+      margin: 1.25rem 0;
+      padding: 1.25rem;
+      background: var(--color-cool-800);
+      color: var(--color-canvas-100);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      line-height: 1.6;
+    }
+    .prose pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .prose table {
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9375em;
+      width: 100%;
+    }
+    .prose th, .prose td {
+      border: 1px solid var(--border-default);
+      padding: 0.625rem 0.875rem;
+      text-align: left;
+    }
+    .prose th {
+      background: var(--bg-muted);
+      font-weight: 600;
+      color: var(--fg-display);
+    }
+    .prose a {
+      color: var(--link);
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+    }
+    .prose blockquote {
+      margin: 1.5rem 0;
+      padding: 1rem 1.25rem;
+      border-left: 3px solid var(--color-signal-500);
+      background: var(--bg-muted);
+      font-style: italic;
+    }
+    .prose hr {
+      margin: 2.5rem 0;
+      border: 0;
+      border-top: 1px dashed var(--border-default);
+    }
+  </style>
+</BaseLayout>

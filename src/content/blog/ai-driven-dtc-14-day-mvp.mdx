@@ -1,0 +1,189 @@
+---
+title: "AI 驱动跨境电商 DTC 的 14 天 MVP 方法论"
+description: "14 天交付一个能跑起来的 AI 工作流, 不是黑盒外包也不是 PPT 咨询。Shipwright 用 Claude Code + follow-the-sun + starter kits 兑现 14 天承诺的工程方法论完整拆解。"
+pubDate: 2026-04-23
+locale: zh-CN
+cluster: pillar-claude-code-method
+keywords:
+  - 跨境电商 AI 自动化
+  - 14 天交付
+  - Vibecoding
+  - Claude Code
+  - DTC AI workflow
+  - AI agent 跨境电商
+author: Shipwright Team
+status: published
+---
+
+## TL;DR
+
+14 天交付一个跨境电商 AI 工作流不是营销话术, 是三件工程事实的乘积:
+
+1. **Follow-the-sun 双班制** · 北京早班 + 深圳/东南亚晚班 = 每天 16 小时推进 → 14 天 ≈ 传统团队 28 天
+2. **Claude Code ×3 生产率** · 内部 benchmark 显示 AI + 工程师的产出约等于 3 个传统工程师
+3. **5 大场景 Starter Kits · 70% 模板化** · 每单 Day 1 不是从零起步, 而是从 "70% 成品 + 30% 定制" 起步
+
+加上硬退款条款（超期按 3% setup/天退款, 上限 30%）+ Day 7 Mid-sprint Demo（客户可无理由终止退 70%）, 这个承诺从营销词变成合同条款。
+
+本文拆解 14 天里每一天的可验收产物、为什么行业普遍 4-8 周做不到、以及你起手要准备的 3 件事。
+
+---
+
+## 1. 为什么传统 Agency 做同样的事要 4-8 周
+
+我们做过独立站, 知道痛点。典型流程:
+
+- **Week 1-2**: 需求梳理 + 合同来回 + 启动 kick-off（中间还夹一轮律师 review）
+- **Week 3-4**: 技术方案 + PRD 评审 + 估工期（估完一看, 再加 2 周）
+- **Week 5-6**: 开发（人肉写代码 + 开会 + 等客户反馈）
+- **Week 7-8**: UAT + 上线（总会有 1 周在修不该出的 bug）
+
+**瓶颈不是技术难度**, 是三件事:
+
+1. **时区物理**: 美西团队 8h 工作制, 客户 async 响应的每一轮都要等 24h
+2. **人肉写代码**: 传统外包一个中高级工程师写 Shopify / Meta API 集成代码, 平均 3-5 天 per 集成
+3. **场景每单从零开始**: 因为团队没有预置资产, 每单都要重新设计 Agent 架构
+
+14 天要兑现, 就必须把这三件事分别解决。
+
+---
+
+## 2. 第一件事: Follow-the-sun 物理加倍
+
+Shipwright 的团队布置:
+
+- **北京早班**（9:00-18:00 UTC+8）: PM + Tech Lead + 1 AI Engineer
+- **深圳/东南亚晚班**（18:00-次日 2:00 UTC+8）: 2 AI Engineer + 1 Integration Engineer
+- **客户（美西）**: 下午 18:00 PT 发问题, 中国早班 9:00 CST 已在处理
+
+一天推进 16 小时 · 14 天 × 16h ≈ 美西团队 28 天 × 8h。
+
+关键不在总工时, 在**客户同步延迟**。美西客户 async 响应在传统 flow 里要 24h, 在 follow-the-sun 里变成 "睡一觉醒来有答复", 这个体感改变了一切。
+
+---
+
+## 3. 第二件事: Claude Code ×3 生产率
+
+内部 benchmark（跑了 10 个内部小项目）: 一个全栈工程师 + Claude Code, 产出约等于 3 个未用 Claude Code 的工程师。
+
+不是魔法。三件事决定了 ×3:
+
+1. **模板化代码**（Shopify Admin API / Meta Graph API / Amazon SP-API）不需要每次查 docs — Claude 直接从 CLAUDE.md 里的 starter kit 生成
+2. **跨文件重构**一次做完 — 传统团队跨文件改名 / 改类型签名要找所有引用, Claude 可以一次性替换并验证
+3. **Code review 在写代码时做**而不是之后 — 工程师和 Claude 协作时天然就是"写一段 review 一段"
+
+典型 SKU-02 项目代码量 3K-8K 行（3-5 个 agent + 2-3 个集成 + 数据看板）, 用 Claude Code 辅助 **5-7 天出首版可用**。
+
+---
+
+## 4. 第三件事: 5 大场景 Starter Kits · 70% 模板化
+
+Shipwright 把跨境电商 DTC 的 AI 需求拆成 5 大场景, 每个场景维护一套预置资产:
+
+| 场景 | 预置内容 |
+|---|---|
+| **V-CS** 客服 | Meta Graph API / Shopify Inbox API / 小红书开放平台集成 · HITL 工作流 · 多语言切换 · 50+ 标准问答模板 |
+| **V-SEO** Listing | Amazon SP-API / Shopify Admin API · Helium 10 关键词库对齐 · 合规检查（禁用词表）· 多语言（英日德西阿 5 语种）|
+| **V-AD** 广告 | Meta Ads / TikTok Ads API · 素材批量生成模板 · ROAS 预测模型 · 投后数据回流 |
+| **V-CONTENT** 内容 | 小红书 / TikTok 内容日历模板 · 脚本 4 类（功能/KOC/场景化/痛点）· 封面 + 标签 + SEO 关键词 |
+| **V-OPS** 运营 | Shopify / Amazon / 旺店通 ERP 对接 · 订单异常分诊 · 库存预警 · 退款 AI 决策 |
+
+每一单的 Day 1 不是"从零设计架构", 而是"把 70% 模板 + 30% 客户定制拼起来"。这 30% 才是真正的工程投入。
+
+**Starter kits 是 Shipwright 的核心内部资产, 不开源**（精简 demo 版 SKU-01 / SKU-04 会以 dogfooding 方式公开在 GitHub）。
+
+---
+
+## 5. 14 天 Day-by-Day 拆解
+
+这是 SKU-02 Vibecoding Pod 的标准 14 天时间线（不同场景细节略有差异, 但节点和可验收产物固定）:
+
+**Day 1 · Discovery Kickoff**
+- 产物: Kickoff 会议纪要 + 业务流程图 + 技术 stack 清单
+- 客户参与: 2h 会议
+
+**Day 2 · 需求细化 · PRD v1 签字**
+- 产物: PRD v1（场景定义 + 验收标准 + 异常路径）
+- 客户参与: 1h 评审 + **签字（scope 锁定, 后续变更入 Retainer 排期）**
+
+**Day 3 · 技术方案 + Prompt 草稿**
+- 产物: 架构图 + Agent 分工 + Prompt v1 + API 权限清单
+- 客户参与: 30min 确认
+
+**Day 4 · 开发启动**
+- 产物: Repo 初始化 + CI/CD + 首个 Agent 骨架
+
+**Day 5 · 核心 Agent**
+- 产物: 主 Agent staging happy path 跑通
+
+**Day 6 · 集成**
+- 产物: 2+ 外部 API 集成 + 单测
+
+**Day 7 · Mid-sprint Demo · 🚨 go/no-go**
+- 产物: 客户看到真实数据跑通 demo（sandbox 或脱敏）
+- 客户参与: 1h demo · **可无理由终止 · 退 70% setup**
+
+**Day 8 · Human-in-the-loop**
+- 产物: 人工接管触发逻辑 + 转人工工单模板
+
+**Day 9 · 多语言 + 边界**
+- 产物: 多语言测试 + 10+ 边界 case 通过
+
+**Day 10 · 数据看板**
+- 产物: 看板 v1 部署 staging
+
+**Day 11 · UAT 启动**
+- 产物: 客户在 staging 跑 48h 真实业务
+- 客户参与: 每日 15min stand-up
+
+**Day 12 · UAT Bug 修复**
+- 产物: Bug 清单全 close 或 defer（客户签字）
+
+**Day 13 · 生产部署 + 培训**
+- 产物: 生产上线 + 2h 培训录屏 + 操作手册 PDF
+
+**Day 14 · Handoff · 🚢 SHIP**
+- 产物: 代码仓库交付客户 org + 运维手册 + 60 天保修合同 + 账单
+
+---
+
+## 6. 退款条款: 把承诺变合同
+
+14 天承诺如果没有赔付机制, 就是营销话术。Shipwright 写进合同的条款:
+
+| 情形 | 赔付 |
+|---|---|
+| **Day 7 Demo 不满意** | 客户无理由终止 · 退 **70% setup** |
+| **Day 14 超期 1 天** | 退 **3% setup** |
+| **超期上限** | 退 **30% setup**（即超期 10 天 = 退满） |
+| **超期 > 10 天仍未交付** | 客户单方终止 · 退 70% setup + 当前进度代码交付 |
+
+这些条款在[服务条款](/legal/terms) § 2 里明文写着。
+
+---
+
+## 7. 你起手要准备的 3 件事
+
+签约 Vibecoding Pod 之前, 你需要提前准备:
+
+1. **场景锁定** · 5 大场景（V-CS / V-SEO / V-AD / V-CONTENT / V-OPS）选一个, 不贪多。如果还不确定, 先走 [Pilot Pod 5 天 ¥12,800](/pilot-pod) 试一下
+2. **API 权限列表** · 你现有系统（Shopify / Meta / Amazon / 小红书 / ERP）的 admin 权限, Day 1-3 需要开给我们
+3. **业务方对接人** · 一个能 2h 内响应问题的业务负责人, Day 7 Demo 和 Day 11 UAT 必须他参与
+
+---
+
+## 8. 下一步
+
+- 看 [14 天方法论完整页](/how) — Day by Day 可视化时间线
+- 看 [Pilot Pod 5 天试错](/pilot-pod) — ¥12,800 先跑一个窄场景
+- [预约 30 分钟免费诊断](/contact) — 告诉你哪个场景最值得先做
+
+---
+
+**本文出自 Shipwright 船匠的 pillar cluster "AI Agent + Claude Code 方法论"**.
+这个 cluster 正在扩展更多深度内容:
+- Claude Code + MCP 协议在跨境电商的实战用法（即将发布）
+- AI Agent vs RPA vs 传统 SaaS 在跨境电商的对比（即将发布）
+- 一个 14 天项目上线后的监控与迭代 SOP（即将发布）
+
+想提前拿到这个 cluster 的完整 playbook PDF? [订阅船匠手记](/#newsletter)（每两周一封 · 14 天交付过程中的真实决策和踩坑）。

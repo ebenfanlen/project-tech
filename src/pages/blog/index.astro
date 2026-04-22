@@ -1,0 +1,205 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("blog", (p) => p.data.status === "published");
+posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const clusterLabels: Record<string, { label: string; color: string }> = {
+  "pillar-cross-border-ai": { label: "跨境 AI 完整指南", color: "var(--color-signal-600)" },
+  "pillar-shopify-custom": { label: "Shopify 自动化定制", color: "var(--color-primary-600)" },
+  "pillar-tiktok-shop": { label: "TikTok Shop + 跨境", color: "var(--color-info-500)" },
+  "pillar-claude-code-method": { label: "Claude Code 方法论", color: "var(--color-success-700)" },
+  "supporting": { label: "Supporting", color: "var(--fg-muted)" },
+};
+
+const pillarPosts = posts.filter((p) => p.data.cluster.startsWith("pillar"));
+const supportingPosts = posts.filter((p) => p.data.cluster === "supporting");
+---
+
+<BaseLayout
+  title="船匠手记 · Blog · Shipwright"
+  description="14 天交付过程中的真实决策、踩坑、数字. 跨境电商 AI 自动化的工程 playbook."
+  path="/blog"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[900px] px-6 pb-10 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        船匠手记 · Blog
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.25rem,5vw,3.25rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        14 天交付过程中的真实决策、踩坑、数字。
+      </h1>
+      <p
+        class="mb-4 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        4 个 pillar cluster: 跨境 AI 完整指南 · Shopify 自动化定制 · TikTok Shop + 跨境 · Claude Code 方法论。
+        每月 1 pillar + 每周 3 supporting, 12 月累计 ~160 篇中文内容。
+      </p>
+      <p class="font-mono text-xs" style="color:var(--fg-muted)">
+        现有 {posts.length} 篇 · RSS · 百家号同步
+      </p>
+    </section>
+
+    <!-- Pillar Posts -->
+    {pillarPosts.length > 0 && (
+      <section class="mx-auto max-w-[1100px] px-6 py-12">
+        <p
+          class="mb-6 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+        >
+          Pillar articles
+        </p>
+
+        <div class="grid gap-5 lg:grid-cols-2">
+          {pillarPosts.map((p) => {
+            const cluster = clusterLabels[p.data.cluster];
+            return (
+              <a
+                href={`/blog/${p.id.replace(/^zh-CN\//, "").replace(/\.mdx$/, "")}`}
+                class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-1"
+                style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+              >
+                <div class="mb-3 flex items-center justify-between">
+                  <span
+                    class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+                    style={`background:${cluster?.color}15;color:${cluster?.color}`}
+                  >
+                    {cluster?.label ?? p.data.cluster}
+                  </span>
+                  <span
+                    class="font-mono text-xs"
+                    style="color:var(--fg-muted)"
+                  >
+                    {new Date(p.data.pubDate).toLocaleDateString("zh-CN")}
+                  </span>
+                </div>
+
+                <h2
+                  class="mb-3 font-semibold"
+                  style="font-size:1.375rem;line-height:1.25;color:var(--fg-display)"
+                >
+                  {p.data.title}
+                </h2>
+
+                <p class="mb-4 flex-1 text-sm" style="color:var(--fg-default)">
+                  {p.data.description}
+                </p>
+
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex flex-wrap gap-1.5">
+                    {p.data.keywords.slice(0, 3).map((k) => (
+                      <span
+                        class="rounded-full px-2 py-0.5 font-mono text-[10px]"
+                        style="background:var(--bg-muted);color:var(--fg-muted)"
+                      >
+                        {k}
+                      </span>
+                    ))}
+                  </div>
+                  <span
+                    class="text-sm font-semibold"
+                    style="color:var(--color-signal-600)"
+                  >
+                    读全文 →
+                  </span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- Supporting (如果有) -->
+    {supportingPosts.length > 0 && (
+      <section class="mx-auto max-w-[1100px] px-6 py-12">
+        <p
+          class="mb-6 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+        >
+          Supporting posts
+        </p>
+        <ul class="space-y-3">
+          {supportingPosts.map((p) => (
+            <li>
+              <a
+                href={`/blog/${p.id.replace(/^zh-CN\//, "").replace(/\.mdx$/, "")}`}
+                class="flex items-center gap-4 rounded-[var(--radius-md)] border p-4 transition hover:-translate-y-0.5 supporting-hover"
+                style="background:var(--bg-card);border-color:var(--border-default)"
+              >
+                <span class="flex-1 font-medium" style="color:var(--fg-display)">
+                  {p.data.title}
+                </span>
+                <span
+                  class="font-mono text-xs"
+                  style="color:var(--fg-muted)"
+                >
+                  {new Date(p.data.pubDate).toLocaleDateString("zh-CN")}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {posts.length === 0 && (
+      <section class="mx-auto max-w-[900px] px-6 py-16 text-center">
+        <p style="color:var(--fg-muted)">
+          首批内容正在产出中. SEOMachine 本地化 fork 接入后, 每周 3 篇 supporting + 每月 1 pillar.
+        </p>
+      </section>
+    )}
+
+    <!-- 4 Cluster 介绍 -->
+    <section
+      class="border-y py-16"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-6 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          4 Pillar Clusters
+        </p>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          {Object.entries(clusterLabels)
+            .filter(([k]) => k.startsWith("pillar"))
+            .map(([key, { label, color }]) => (
+              <div
+                class="rounded-[var(--radius-lg)] border-l-4 p-5"
+                style={`background:var(--bg-card);border-color:${color}`}
+              >
+                <h3 class="mb-1 text-base font-semibold" style="color:var(--fg-display)">
+                  {label}
+                </h3>
+                <p class="text-sm" style="color:var(--fg-muted)">
+                  1 pillar 长文 + 6 supporting 子主题 · 12 月完整覆盖
+                </p>
+              </div>
+            ))}
+        </div>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

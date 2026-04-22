@@ -1,0 +1,97 @@
+---
+title: "跨系统切换时间从 4 小时降到 40 分钟 · VoltCraft Fleet"
+clientHandle: "某广州跨境 3C 配件品牌 · W"
+industry: "3C · Shopify + Amazon US/EU/JP + TikTok Shop + 小红书"
+gmvBand: "10m_100m"
+sku: "fleet-integration"
+scene: "v-ops"
+pubDate: 2026-04-05
+duration: "25 天"
+kpis:
+  - label: "日均跨系统切换时间"
+    before: "4h"
+    after: "40min"
+  - label: "库存断货事件"
+    before: "月 6 次"
+    after: "月 1 次"
+  - label: "周报生成时间"
+    before: "2 天"
+    after: "自动"
+  - label: "退款异常处理响应"
+    before: "24h"
+    after: "2h"
+quote:
+  text: "自然语言问 AI 跨系统查数据, 这个体验一旦用上就回不去了。"
+  attribution: "某 3C 品牌运营总监 · W"
+status: published
+---
+
+## Problem · 6 个 SaaS 数据孤岛
+
+月 GMV $280K 的跨境 3C 品牌, 运营矩阵:
+- Shopify (独立站)
+- Amazon SP-API (US / EU / JP 三站)
+- TikTok Shop US
+- Klaviyo (EDM)
+- Gorgias (客服工单)
+- 旺店通 ERP (国内仓储 + 物流)
+
+运营总监每天 **4 小时**在 8 个 tab 之间手动切换: "昨天美国站退款 Top 5 原因是什么？" 这种问题要查 3 个系统, 导数据、合并 Excel, 通常 2 小时起。
+
+痛点: 不是工具不够, 是**工具之间的胶水太多**。招了数据分析师但天天在导 CSV, 核心决策延迟。
+
+## Solution · 主控 Agent + 工具 Agent 跨系统编排
+
+Fleet Integration 21-28 天（实际 25 天）, 架构:
+
+```
+飞书 @消息 (自然语言入口)
+      │
+      ▼
+┌────────────────────┐
+│  主控 Agent        │  Claude 4 + RAG · 跨系统决策 + 任务分发
+│  (Shipwright 自研  │
+│  orchestration 层) │
+└────────┬───────────┘
+         │
+    ┌────┴────┬────┬────┬────┬────┬────┐
+    ▼         ▼    ▼    ▼    ▼    ▼    ▼
+  工具 A    B    C    D    E    F    G
+    │       │    │    │    │    │    │
+  Shopify Amazon TikTok Klaviyo Gorgias 旺店通 Meta
+  Admin   SP-API Shop   EDM     工单    ERP    Ads
+
+    └──────────────┬──────────────┘
+                   ▼
+          中央数据层 (Supabase)
+                   │
+                   ▼
+     2 个自定义看板 + 飞书异常预警机器人
+```
+
+**核心功能**:
+
+1. **自然语言跨系统查询**: "查一下昨天美国站退款 Top 5 原因" → 主控 Agent 自动调 Amazon + Gorgias, 合并生成答案
+2. **异常预警机器人**: 订单延迟 / 库存 < 7 天 / 差评 / 广告 ROAS 暴跌 → 飞书实时推送
+3. **自动周报**: 每周一 9:00 自动生成运营周报 (Markdown) 推送管理层飞书
+4. **退款智能分诊**: Gorgias 工单进来 → 主控判断类型 → 自动路由给对应处理 Agent
+
+## Results · 60 天数据
+
+运营总监日均跨系统切换时间从 **4h 降到 40min** (-83%)。这部分时间被释放出来做业务分析和客户拜访。
+
+库存断货事件从 **月 6 次降到 1 次**: 提前 7 天预警 + 自动下补货单到旺店通 ERP。
+
+周报生成从 **2 天变自动**: 每周一 9:00 飞书推送 + 管理层评论直接转成下周 action item。
+
+更关键的变化: 运营总监反馈**决策速度**明显提升 — 以前问一个跨系统问题要 2h 查数据, 现在飞书 @一下 AI 30 秒出答案。
+
+## Renewal · 高阶 Retainer 续约
+
+第 6 个月时, 续签 Fleet 的 **高阶 Retainer（¥9,800/月）**:
+- 持续接入新渠道（2027 计划开 Shopee + Lazada）
+- Claude 模型升级 + 成本优化（预估 -22% AI cost）
+- 增加 2 个新指标看板（LTV / 复购漏斗）
+- 季度 post-mortem 会
+
+**客户总结**: "Fleet Integration 把我们从'6 个 SaaS 用户'变成了'一个 AI 决策中枢用户'。这不是工具替代, 是体验范式切换。"

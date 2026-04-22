@@ -1,0 +1,150 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+
+// Phase 1 首批 playbooks (PDF 还没做, 先展示 metadata, gate 邮箱留资)
+const playbooks = [
+  {
+    slug: "v-cs-14-day-checklist",
+    title: "V-CS 14 天实施 Checklist",
+    description: "从 Day 1 Discovery 到 Day 14 Ship 的完整客服场景 checklist. 含 API 权限清单、Prompt 模板起点、HITL 阈值配置。",
+    gate: "email",
+    format: "PDF · 18 页",
+    scene: "v-cs",
+    status: "ready",
+  },
+  {
+    slug: "fleet-integration-rfp",
+    title: "Fleet Integration RFP 模板",
+    description: "给法务 + 运营的 21 天多系统编排 RFP 模板. 含 SLA 条款、数据出境合规、6 个月 platform fee 绑定条款。",
+    gate: "email_company",
+    format: "DOCX · 12 页",
+    scene: "v-ops",
+    status: "ready",
+  },
+  {
+    slug: "byok-setup-guide",
+    title: "BYOK (自带 Key) 安全托管指南",
+    description: "Anthropic / OpenAI API Key 经 Cloudflare Workers Secrets 安全托管的具体步骤. 含 Key rotation SOP + 超额预警脚本。",
+    gate: "email",
+    format: "Notion · 15 sections",
+    scene: "v-cs",
+    status: "draft",
+  },
+  {
+    slug: "pilot-pod-contract-sample",
+    title: "Pilot Pod 合同样本",
+    description: "14 天硬承诺条款 + 退款细则 + 代码所有权 + BYOK 条款的中英文合同模板样本（供法务 review）。",
+    gate: "email_wechat",
+    format: "DOCX · 8 页",
+    scene: "v-cs",
+    status: "ready",
+  },
+];
+
+const gateLabel: Record<string, { text: string; color: string }> = {
+  email: { text: "留邮箱下载", color: "var(--color-success-700)" },
+  email_company: { text: "留邮箱 + 公司", color: "var(--color-warning-700)" },
+  email_wechat: { text: "留邮箱 + 微信", color: "var(--color-signal-700)" },
+};
+---
+
+<BaseLayout
+  title="Playbooks · 免费下载 · Shipwright 船匠"
+  description="Shipwright 自用的跨境电商 AI playbook · V-CS 14 天 checklist / Fleet RFP 模板 / BYOK 配置指南 / Pilot Pod 合同样本 · 邮箱留资下载"
+  path="/playbooks"
+>
+  <NavBar />
+
+  <main>
+    <section class="mx-auto max-w-[1100px] px-6 pb-10 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Playbooks · 免费下载
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.25rem,5vw,3.5rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        我们自己用的 playbook · 原样给你。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        这些不是营销资料, 是 Shipwright 内部项目 SOP + 合同模板 + 配置手册.
+        为做成 lead magnet 设了<strong style="color:var(--fg-display)">邮箱 gate</strong>, 不放电话不问公司大小.
+      </p>
+    </section>
+
+    <section class="mx-auto max-w-[1100px] px-6 pb-20">
+      <div class="grid gap-4 md:grid-cols-2">
+        {playbooks.map((pb) => {
+          const gate = gateLabel[pb.gate];
+          return (
+            <div
+              class="rounded-[var(--radius-lg)] border p-6"
+              style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+            >
+              <div class="mb-3 flex items-center justify-between gap-3">
+                <span
+                  class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+                  style={`background:${gate.color}15;color:${gate.color}`}
+                >
+                  {gate.text}
+                </span>
+                <span
+                  class="font-mono text-[10px] uppercase tracking-[0.08em]"
+                  style={pb.status === "ready" ? "color:var(--color-success-700)" : "color:var(--color-warning-700)"}
+                >
+                  {pb.status === "ready" ? "已备好" : "草稿中"}
+                </span>
+              </div>
+
+              <h2 class="mb-2 text-lg font-semibold" style="color:var(--fg-display)">
+                {pb.title}
+              </h2>
+              <p class="mb-4 text-sm" style="color:var(--fg-default)">
+                {pb.description}
+              </p>
+
+              <p
+                class="mb-4 font-mono text-xs"
+                style="color:var(--fg-muted)"
+              >
+                {pb.format}
+              </p>
+
+              <a
+                href={`/contact?playbook=${pb.slug}`}
+                class="inline-flex h-9 w-full items-center justify-center rounded-[var(--radius-md)] text-sm font-semibold transition hover:brightness-110"
+                style={pb.status === "ready"
+                  ? "background:var(--color-signal-500);color:var(--color-canvas-50)"
+                  : "background:var(--bg-muted);color:var(--fg-muted);cursor:not-allowed"}
+              >
+                {pb.status === "ready" ? "下载 PDF →" : "尚未发布"}
+              </a>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        class="mt-8 rounded-[var(--radius-md)] border-l-2 p-4 text-sm"
+        style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
+      >
+        <strong style="color:var(--fg-display)">Phase 1 说明:</strong>
+        Playbooks 下载链路接的是 <code style="font-family:var(--font-mono);color:var(--color-signal-600)">/contact?playbook=&lt;slug&gt;</code>,
+        留资后 24h 内手动发送 · Week 2 接入自动 drip 邮件流水线 (3 封: D0 资源 / D3 相关案例 / D7 预约诊断).
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

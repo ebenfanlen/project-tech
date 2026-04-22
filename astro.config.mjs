@@ -2,11 +2,13 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
+import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://shipwright.co",
   integrations: [
+    mdx(),
     sitemap({
       // 三语 hreflang 准备 (Phase 2 启用翻译后加上 customPages)
       i18n: {
