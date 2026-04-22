@@ -69,7 +69,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["5 天 ¥12.8K 定价 Hero", "适合什么客户画像", "3 个窄场景选择 (IG DM / Amazon listing / 评论监控)", "交付内容清单", "60% 折抵到 SKU-02 升级钩子"],
     seoKw: "AI 试点 / AI POC 跨境",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/vibecoding-pod",
@@ -160,7 +160,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["留资表单 (7 字段最小集)", "Calendly-like 预约组件", "多渠道联系方式 (邮箱 / 微信 / 飞书)", "非工作时间友好提示"],
     seoKw: "AI 诊断预约",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/scenes/v-cs",

@@ -1,0 +1,269 @@
+---
+// 留资表单 Island · Phase 1 localStorage mock · Day 10+ 接真 /api/lead
+// 7 字段最小集 (UX Architect §6.2)
+---
+
+<form
+  id="lead-form"
+  class="space-y-5"
+  data-form-state="idle"
+>
+  <!-- 姓名 -->
+  <div>
+    <label for="lf-name" class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      姓名 / 称呼 <span style="color:var(--color-signal-600)">*</span>
+    </label>
+    <input
+      id="lf-name"
+      name="name"
+      type="text"
+      required
+      placeholder="王总 / 李先生 / 我就叫 XX"
+      class="h-10 w-full rounded-[var(--radius-sm)] border px-3 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display)"
+    />
+  </div>
+
+  <!-- 联系方式 (手机 or 微信 二选一) -->
+  <div>
+    <label class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      联系方式 <span style="color:var(--color-signal-600)">*</span>
+    </label>
+    <div class="mb-2 flex gap-2 text-xs">
+      <label class="inline-flex items-center gap-1.5 cursor-pointer">
+        <input type="radio" name="contact_type" value="mobile" checked data-contact-type />
+        <span style="color:var(--fg-default)">手机号</span>
+      </label>
+      <label class="inline-flex items-center gap-1.5 cursor-pointer">
+        <input type="radio" name="contact_type" value="wechat" data-contact-type />
+        <span style="color:var(--fg-default)">微信号</span>
+      </label>
+      <label class="inline-flex items-center gap-1.5 cursor-pointer">
+        <input type="radio" name="contact_type" value="email" data-contact-type />
+        <span style="color:var(--fg-default)">邮箱</span>
+      </label>
+    </div>
+    <input
+      id="lf-contact"
+      name="contact_value"
+      type="text"
+      required
+      placeholder="138 1234 5678"
+      data-contact-value
+      class="h-10 w-full rounded-[var(--radius-sm)] border px-3 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display)"
+    />
+  </div>
+
+  <!-- 公司名 (选填) -->
+  <div>
+    <label for="lf-company" class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      公司名
+      <span class="font-mono text-[11px]" style="color:var(--fg-muted)">· 选填, 填了能更快对接</span>
+    </label>
+    <input
+      id="lf-company"
+      name="company"
+      type="text"
+      placeholder="某 DTC 品牌 / 跨境电商"
+      class="h-10 w-full rounded-[var(--radius-sm)] border px-3 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display)"
+    />
+  </div>
+
+  <!-- 年 GMV 区间 -->
+  <div>
+    <label for="lf-gmv" class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      年 GMV 区间 <span style="color:var(--color-signal-600)">*</span>
+    </label>
+    <select
+      id="lf-gmv"
+      name="gmv_band"
+      required
+      class="h-10 w-full rounded-[var(--radius-sm)] border px-3 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display)"
+    >
+      <option value="">请选择...</option>
+      <option value="lt_500k">&lt; 500 万</option>
+      <option value="500k_2m">500 万 - 2000 万</option>
+      <option value="2m_10m">2000 万 - 1 亿</option>
+      <option value="gt_10m">1 亿+</option>
+    </select>
+  </div>
+
+  <!-- 想解决的场景 -->
+  <div>
+    <label for="lf-scene" class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      想解决的场景 <span style="color:var(--color-signal-600)">*</span>
+    </label>
+    <select
+      id="lf-scene"
+      name="scenario"
+      required
+      class="h-10 w-full rounded-[var(--radius-sm)] border px-3 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display)"
+    >
+      <option value="">请选择...</option>
+      <option value="v-cs">客服 (IG DM / 邮件 / 小红书私信)</option>
+      <option value="v-seo">Listing / SEO 内容生成</option>
+      <option value="v-ad">广告投放优化 (Meta / TikTok)</option>
+      <option value="v-content">内容 / 红人营销</option>
+      <option value="v-ops">运营自动化 (订单 / 库存 / 物流)</option>
+      <option value="other">还没想好 / 其他</option>
+    </select>
+  </div>
+
+  <!-- 怎么找到我们 (选填) -->
+  <div>
+    <label for="lf-source" class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      怎么找到我们的
+      <span class="font-mono text-[11px]" style="color:var(--fg-muted)">· 选填</span>
+    </label>
+    <select
+      id="lf-source"
+      name="utm_source"
+      class="h-10 w-full rounded-[var(--radius-sm)] border px-3 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display)"
+    >
+      <option value="">请选择...</option>
+      <option value="baidu">百度搜索</option>
+      <option value="xiaohongshu">小红书</option>
+      <option value="wechat">微信公众号</option>
+      <option value="referral">朋友推荐</option>
+      <option value="linkedin">LinkedIn</option>
+      <option value="github">GitHub</option>
+      <option value="other">其他</option>
+    </select>
+  </div>
+
+  <!-- 备注 (选填) -->
+  <div>
+    <label for="lf-notes" class="mb-1.5 block text-sm font-medium" style="color:var(--fg-default)">
+      备注
+      <span class="font-mono text-[11px]" style="color:var(--fg-muted)">· 选填, 100 字内</span>
+    </label>
+    <textarea
+      id="lf-notes"
+      name="notes"
+      maxlength="100"
+      rows="3"
+      placeholder="你现在的痛点 / 预算范围 / 紧迫程度..."
+      class="w-full rounded-[var(--radius-sm)] border px-3 py-2 text-sm transition focus:outline-none"
+      style="background:var(--bg-card);border-color:var(--border-strong);color:var(--fg-display);resize:vertical"
+    ></textarea>
+  </div>
+
+  <!-- PIPL 授权 -->
+  <div>
+    <label class="flex items-start gap-2 text-xs cursor-pointer" style="color:var(--fg-muted)">
+      <input type="checkbox" required class="mt-0.5" />
+      <span>
+        我同意按照
+        <a href="/legal/privacy" style="color:var(--color-signal-600)">《隐私政策》</a>
+        处理我的联系方式 · 仅用于 Shipwright 对接, 24 个月后自动归档。
+      </span>
+    </label>
+  </div>
+
+  <!-- Submit -->
+  <button
+    type="submit"
+    data-submit
+    class="inline-flex h-12 w-full items-center justify-center rounded-[var(--radius-md)] px-6 text-sm font-semibold transition hover:brightness-110 disabled:opacity-60"
+    style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+  >
+    <span data-submit-label>预约 30 分钟诊断 →</span>
+  </button>
+
+  <!-- 状态提示 -->
+  <div
+    data-form-message
+    class="hidden rounded-[var(--radius-md)] border p-4 text-sm"
+    role="status"
+  ></div>
+</form>
+
+<script is:inline>
+  (() => {
+    const form = document.getElementById("lead-form");
+    if (!form) return;
+
+    const contactRadios = form.querySelectorAll('[data-contact-type]');
+    const contactInput = form.querySelector('[data-contact-value]');
+    const submitBtn = form.querySelector('[data-submit]');
+    const submitLabel = form.querySelector('[data-submit-label]');
+    const msg = form.querySelector('[data-form-message]');
+
+    // 联系方式类型切换 · placeholder 跟随
+    const placeholders = {
+      mobile: "138 1234 5678",
+      wechat: "微信号 / 手机微信",
+      email: "you@brand.com",
+    };
+    contactRadios.forEach((r) =>
+      r.addEventListener("change", (e) => {
+        contactInput.placeholder = placeholders[e.target.value] || "";
+        contactInput.type = e.target.value === "email" ? "email" : "text";
+      })
+    );
+
+    // Pre-fill from URL ?sku=pilot-pod
+    const urlParams = new URLSearchParams(window.location.search);
+    const skuFromUrl = urlParams.get('sku');
+    if (skuFromUrl) {
+      const notesField = form.querySelector('[name="notes"]');
+      if (notesField && !notesField.value) {
+        notesField.value = `想了解 ${skuFromUrl}`;
+      }
+    }
+
+    // Submit → localStorage mock
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitLabel.textContent = "提交中...";
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.sourcePage = window.location.pathname;
+      data.createdAt = new Date().toISOString();
+      data.id = crypto.randomUUID();
+
+      // Phase 1 mock: 存到 localStorage
+      const existing = JSON.parse(localStorage.getItem("shipwright-leads") || "[]");
+      existing.push(data);
+      localStorage.setItem("shipwright-leads", JSON.stringify(existing));
+
+      // Phase 2 真后端 (Day 10+): fetch('/api/lead', { method: 'POST', body: JSON.stringify(data) })
+      // 同时触发飞书机器人 webhook · 2h 内回复
+
+      await new Promise((r) => setTimeout(r, 500));
+
+      msg.classList.remove("hidden");
+      msg.style.background = "var(--color-success-50)";
+      msg.style.borderColor = "var(--color-success-500)";
+      msg.style.color = "var(--color-success-700)";
+      msg.innerHTML = `
+        <strong>✓ 收到了 · ${data.name}</strong><br>
+        <span style="font-size:12px">工作时间 2h 内回复你的 ${data.contact_type === 'mobile' ? '手机' : data.contact_type === 'wechat' ? '微信' : '邮箱'} · 非工作时间次日回复.</span><br>
+        <span style="font-size:11px;font-family:var(--font-mono);opacity:0.75">
+          Phase 1 Mock: lead 已存 localStorage ("shipwright-leads") · Day 10+ 接入真 /api/lead + RDS + 飞书机器人.
+        </span>
+      `;
+
+      submitLabel.textContent = "已提交 ✓";
+      form.dataset.formState = "submitted";
+    });
+
+    // Input focus ring
+    form.querySelectorAll("input, select, textarea").forEach((el) => {
+      el.addEventListener("focus", () => {
+        el.style.borderColor = "var(--color-primary-500)";
+        el.style.boxShadow = "0 0 0 3px rgba(54,105,127,0.12)";
+      });
+      el.addEventListener("blur", () => {
+        el.style.borderColor = "var(--border-strong)";
+        el.style.boxShadow = "";
+      });
+    });
+  })();
+</script>
