@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import ChatWidget from "../components/ChatWidget.astro";
 
 export interface Props {
   title: string;
@@ -81,6 +82,9 @@ const canonical = `${siteUrl}${path}`;
   </head>
   <body>
     <slot />
+
+    <!-- Chat Widget (全站, /contact 自动不弹主动 tip) -->
+    <ChatWidget />
 
     <!-- pangu 中英自动空格 (客户端增强) -->
     <script>

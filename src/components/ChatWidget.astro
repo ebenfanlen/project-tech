@@ -1,0 +1,336 @@
+---
+// Chat Widget · 右下 FAB + 400×560 浮窗
+// Phase 1 localStorage mock (消息 + lead 同步) · Day 11 接真 WSS + FC + 飞书机器人
+// 行为策略 (UX Architect §6.1): 首次不主动弹 · 45s/70% 滚动提示 · /pricing 30s 主动弹 · /contact 不弹
+---
+
+<div id="chat-widget" data-chat-state="closed">
+  <!-- FAB -->
+  <button
+    type="button"
+    id="chat-fab"
+    class="fixed bottom-6 right-6 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full transition hover:scale-105"
+    style="background:var(--color-primary-600);color:var(--color-canvas-50);box-shadow:var(--shadow-lg)"
+    aria-label="打开船匠助手对话"
+  >
+    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    <span
+      id="chat-badge"
+      class="hidden absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-mono text-[10px] font-bold"
+      style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+    >1</span>
+  </button>
+
+  <!-- Proactive tooltip (45s / 70% scroll) -->
+  <div
+    id="chat-tip"
+    class="hidden fixed bottom-24 right-6 z-50 max-w-xs rounded-[var(--radius-md)] border p-3 pr-8 text-sm transition"
+    style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-md);color:var(--fg-display)"
+    role="status"
+  >
+    <span data-tip-text>有问题聊一下？</span>
+    <button
+      type="button"
+      id="chat-tip-close"
+      class="absolute right-2 top-2 inline-flex h-5 w-5 items-center justify-center opacity-50 hover:opacity-100"
+      aria-label="关闭提示"
+      style="color:var(--fg-muted)"
+    >×</button>
+  </div>
+
+  <!-- Panel -->
+  <div
+    id="chat-panel"
+    class="hidden fixed bottom-24 right-6 z-50 w-[calc(100vw-3rem)] max-w-md flex-col overflow-hidden rounded-[var(--radius-lg)] border"
+    style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-xl);height:560px;max-height:calc(100vh - 8rem)"
+  >
+    <!-- Header -->
+    <header
+      class="flex items-center justify-between gap-3 border-b px-5 py-4"
+      style="background:var(--color-primary-700);color:var(--color-canvas-50);border-color:var(--color-primary-800)"
+    >
+      <div class="flex items-center gap-3">
+        <!-- The Keel mini mark -->
+        <span class="relative block" style="width:14px;height:20px">
+          <span
+            class="absolute left-1/2 top-0 block -translate-x-1/2"
+            style="width:1px;height:7px;background:currentColor;animation:var(--animate-mast-breath)"
+          ></span>
+          <span
+            class="absolute bottom-0 left-0 block"
+            style="width:14px;height:11px;background:currentColor;clip-path:polygon(20% 0,80% 0,100% 100%,0% 100%)"
+          ></span>
+        </span>
+        <div>
+          <div class="text-sm font-semibold">船匠助手</div>
+          <div class="font-mono text-[10px]" style="color:rgba(253,252,249,0.6)">
+            <span data-online-dot class="inline-block h-1.5 w-1.5 rounded-full" style="background:var(--color-success-500);vertical-align:middle"></span>
+            <span data-online-text>工作时间内 · 2h 响应</span>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        id="chat-close"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-[var(--radius-sm)] transition hover:bg-[var(--color-primary-800)]"
+        aria-label="关闭对话"
+      >×</button>
+    </header>
+
+    <!-- Messages -->
+    <div
+      id="chat-messages"
+      class="flex-1 overflow-y-auto px-4 py-4"
+      style="background:var(--bg-page)"
+    >
+      <!-- 系统欢迎消息 -->
+      <div class="mb-4 flex max-w-[85%] flex-col gap-1">
+        <div
+          class="rounded-[var(--radius-md)] rounded-bl-sm px-4 py-2.5 text-sm"
+          style="background:var(--bg-card);color:var(--fg-default);border:1px solid var(--border-default)"
+        >
+          你好 · 我是船匠助手 🚢<br />
+          告诉我你的业务场景 (跨境电商 DTC), 我帮你判断:
+          <ul class="mt-2 list-disc pl-4 text-[13px]" style="color:var(--fg-muted)">
+            <li>哪个 SKU 最值得先买</li>
+            <li>用 ChatGPT Team + Zapier 自助就够不</li>
+            <li>要不要预约 30 分钟真人诊断</li>
+          </ul>
+        </div>
+        <span class="mt-1 font-mono text-[10px]" style="color:var(--fg-muted)">船匠 · 刚刚</span>
+      </div>
+
+      <!-- Quick prompts -->
+      <div class="mb-6 flex flex-wrap gap-2">
+        {['月 GMV 100 万, 客服拖死', '独立站 listing 跟不上', '投手想 AI 自动投', 'Retainer 怎么买'].map((q) => (
+          <button
+            type="button"
+            class="rounded-full border px-3 py-1 text-xs transition hover:-translate-y-0.5"
+            style="background:var(--bg-card);border-color:var(--border-default);color:var(--fg-default)"
+            data-quick-prompt={q}
+          >
+            {q}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Input -->
+    <form
+      id="chat-input-form"
+      class="flex items-end gap-2 border-t p-3"
+      style="background:var(--bg-card);border-color:var(--border-default)"
+    >
+      <textarea
+        id="chat-input"
+        rows="1"
+        placeholder="问我任何关于跨境电商 AI 的事..."
+        class="flex-1 resize-none rounded-[var(--radius-sm)] border px-3 py-2 text-sm focus:outline-none"
+        style="border-color:var(--border-strong);background:var(--bg-page);color:var(--fg-display);max-height:120px"
+      ></textarea>
+      <button
+        type="submit"
+        class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--radius-sm)] transition hover:brightness-110"
+        style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+        aria-label="发送"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+
+    <!-- Fallback to /contact hint -->
+    <div
+      class="border-t px-4 py-2 text-[11px]"
+      style="background:var(--bg-muted);border-color:var(--border-default);color:var(--fg-muted)"
+    >
+      偏好异步沟通？
+      <a href="/contact" style="color:var(--color-signal-600);font-weight:600">留资表单 (2h 内回复) →</a>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(() => {
+  const fab = document.getElementById("chat-fab");
+  const panel = document.getElementById("chat-panel");
+  const closeBtn = document.getElementById("chat-close");
+  const tip = document.getElementById("chat-tip");
+  const tipClose = document.getElementById("chat-tip-close");
+  const tipText = tip?.querySelector("[data-tip-text]");
+  const form = document.getElementById("chat-input-form");
+  const input = document.getElementById("chat-input");
+  const messages = document.getElementById("chat-messages");
+  const onlineDot = document.querySelector("[data-online-dot]");
+  const onlineText = document.querySelector("[data-online-text]");
+  const badge = document.getElementById("chat-badge");
+  if (!fab || !panel) return;
+
+  const STORAGE_KEY = "shipwright-chat-session";
+  const now = new Date();
+  const cst = new Date(now.getTime() + (8 * 60 + now.getTimezoneOffset()) * 60000);
+  const hour = cst.getHours(), day = cst.getDay();
+  const isWorking = day >= 1 && day <= 5 && hour >= 9 && hour < 22;
+
+  // 工作状态 indicator
+  if (!isWorking && onlineDot) {
+    onlineDot.style.background = "var(--color-warning-500)";
+    onlineText.textContent = day === 0 || day === 6 ? "周末 · 周一回" : "非工作时间 · 次日回";
+  }
+
+  // Open / close
+  const openPanel = () => {
+    panel.classList.remove("hidden");
+    panel.style.display = "flex";
+    fab.style.display = "none";
+    tip.classList.add("hidden");
+    if (badge) badge.classList.add("hidden");
+    // 从 localStorage 恢复历史消息
+    restoreMessages();
+    // 焦点到输入框
+    setTimeout(() => input?.focus(), 100);
+    document.documentElement.dataset.chatState = "open";
+  };
+  const closePanel = () => {
+    panel.classList.add("hidden");
+    panel.style.display = "none";
+    fab.style.display = "inline-flex";
+    document.documentElement.dataset.chatState = "closed";
+  };
+  fab.addEventListener("click", openPanel);
+  closeBtn?.addEventListener("click", closePanel);
+
+  // 行为: 45s 或 70% 滚动 → tooltip
+  let tipShown = false;
+  const showTip = (text) => {
+    if (tipShown || document.documentElement.dataset.chatState === "open") return;
+    if (sessionStorage.getItem("tip-dismissed")) return;
+    tipShown = true;
+    tipText.textContent = text;
+    tip.classList.remove("hidden");
+    setTimeout(() => tip.classList.add("hidden"), 8000);
+  };
+
+  // 45 秒
+  if (document.documentElement.dataset.chatState !== "open") {
+    setTimeout(() => showTip("有问题聊一下？"), 45000);
+  }
+
+  // 70% 滚动
+  let scrollTipFired = false;
+  window.addEventListener("scroll", () => {
+    if (scrollTipFired) return;
+    const ratio = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+    if (ratio > 0.7) {
+      scrollTipFired = true;
+      showTip("看了这么多了 · 问我个具体问题？");
+    }
+  }, { passive: true });
+
+  // /pricing 30s 主动弹
+  if (location.pathname === "/pricing") {
+    setTimeout(() => showTip("需要我帮你算一下你的场景用哪个 SKU 吗？"), 30000);
+  }
+  // /contact 不弹 (表单已存在)
+  if (location.pathname === "/contact") {
+    scrollTipFired = true; tipShown = true;
+  }
+
+  tipClose?.addEventListener("click", () => {
+    tip.classList.add("hidden");
+    sessionStorage.setItem("tip-dismissed", "1");
+  });
+
+  // 消息发送
+  const appendMessage = (role, content, save = true) => {
+    const wrap = document.createElement("div");
+    const isUser = role === "visitor";
+    wrap.className = "mb-4 flex max-w-[85%] flex-col gap-1";
+    wrap.style.cssText = isUser ? "margin-left:auto;align-items:flex-end" : "";
+
+    const bubble = document.createElement("div");
+    bubble.className = "rounded-[var(--radius-md)] px-4 py-2.5 text-sm";
+    if (isUser) {
+      bubble.style.cssText = "background:var(--color-primary-600);color:var(--color-canvas-50);border-top-right-radius:var(--radius-sm)";
+    } else {
+      bubble.style.cssText = "background:var(--bg-card);color:var(--fg-default);border:1px solid var(--border-default);border-bottom-left-radius:var(--radius-sm)";
+    }
+    bubble.textContent = content;
+    wrap.appendChild(bubble);
+
+    const time = document.createElement("span");
+    time.className = "mt-1 font-mono text-[10px]";
+    time.style.color = "var(--fg-muted)";
+    const label = role === "visitor" ? "你" : role === "ai" ? "船匠 AI" : "船匠团队";
+    time.textContent = `${label} · 刚刚`;
+    wrap.appendChild(time);
+
+    messages.appendChild(wrap);
+    messages.scrollTop = messages.scrollHeight;
+
+    if (save) {
+      const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      history.push({ role, content, timestamp: Date.now() });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    }
+  };
+
+  const restoreMessages = () => {
+    if (messages.dataset.restored === "1") return;
+    messages.dataset.restored = "1";
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    history.forEach((m) => appendMessage(m.role, m.content, false));
+  };
+
+  // Mock AI 回复
+  const mockAIReply = (userMsg) => {
+    const m = userMsg.toLowerCase();
+    if (m.includes("客服") || m.includes("dm")) return "听起来是 V-CS 场景 · Vibecoding Pod (¥58K / 14 天) 就能搞定 IG DM + Shopify Inbox + 邮件 + 小红书 4 个渠道 · 5 语种同时回复 · 自动解决率 60%+. 想看案例可以访问 /work/lumesque-v-cs.";
+    if (m.includes("listing") || m.includes("seo")) return "V-SEO 场景 · 我们有 NordicNest 案例 (杭州家居品牌 · 月产 listing 80 → 240 条). Vibecoding Pod ¥58K / 14 天交付. 接入 Helium 10 关键词库 + 合规检查. 看 /scenes/v-seo 详情.";
+    if (m.includes("广告") || m.includes("投")) return "V-AD 场景 · 我们做 Meta + Google + TikTok Shop 广告素材批量 + ROAS 滚动预测. 目标客户信号: 月投放 $10K+ . 详情 /scenes/v-ad.";
+    if (m.includes("retainer") || m.includes("月租")) return "Crew Retainer 三档: 轻量 ¥5.8K / 标准 ¥11.8K / 深度 ¥22.8K 月. 对标自招 AI 工程师 (至少 ¥35K/月). 预付 12 月 -12%. 详情 /crew-retainer.";
+    if (m.includes("多少") || m.includes("价格") || m.includes("钱")) return "4 SKU 明码标价: Pilot Pod ¥12,800 / 5 天 · Vibecoding Pod ¥58K / 14 天 (主推) · Fleet Integration ¥168K-298K / 21-28 天 · Crew Retainer ¥5.8K+/月. 全部在 /pricing 能看到.";
+    if (m.includes("14 天") || m.includes("时间")) return "14 天是硬承诺 + 超期按 3% setup/天退款 (上限 30%). Day 7 Mid-sprint Demo 可无理由终止退 70%. 详细 /how.";
+    return "我还在做 mock 回复 · Phase 1 真 AI 回复 Day 11 上线 (WSS + Claude Haiku). 现在可以 [预约 30 分钟真人诊断](/contact) · 或查看 [4 个 SKU 定价](/pricing) · [14 天方法论](/how).";
+  };
+
+  const sendMessage = (text) => {
+    if (!text.trim()) return;
+    appendMessage("visitor", text);
+    input.value = "";
+    input.style.height = "auto";
+    // 模拟 AI 回复延迟
+    setTimeout(() => {
+      appendMessage("ai", mockAIReply(text));
+    }, 600);
+  };
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    sendMessage(input.value);
+  });
+
+  // Quick prompts
+  document.querySelectorAll("[data-quick-prompt]").forEach((btn) => {
+    btn.addEventListener("click", () => sendMessage(btn.dataset.quickPrompt));
+  });
+
+  // Auto-grow textarea
+  input?.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 120) + "px";
+  });
+
+  // Enter 发送 · Shift+Enter 换行
+  input?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(input.value);
+    }
+  });
+})();
+</script>
