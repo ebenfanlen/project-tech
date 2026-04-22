@@ -1,0 +1,73 @@
+---
+// Dark Mode 三态切换器：light / dark / system
+// 点击循环切换，localStorage 保存用户偏好
+---
+
+<div class="relative inline-flex" data-theme-toggle>
+  <button
+    type="button"
+    class="inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border text-sm transition hover:opacity-80"
+    style="border-color:var(--border-strong);color:var(--fg-default)"
+    aria-label="切换主题"
+    data-theme-btn
+  >
+    <!-- 三个图标按 mode 显示 -->
+    <svg data-mode-icon="light" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"></path>
+    </svg>
+    <svg data-mode-icon="dark" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <svg data-mode-icon="system" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+      <path d="M8 21h8M12 17v4"></path>
+    </svg>
+  </button>
+
+  <span
+    class="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.08em] opacity-0 transition-opacity"
+    style="color:var(--fg-muted)"
+    data-theme-label
+    aria-hidden="true"
+  >
+    system
+  </span>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.documentElement;
+    const el = document.querySelector("[data-theme-toggle]");
+    if (!el) return;
+    const btn = el.querySelector("[data-theme-btn]");
+    const label = el.querySelector("[data-theme-label]");
+    const icons = el.querySelectorAll("[data-mode-icon]");
+    const cycle = ["light", "dark", "system"];
+
+    const apply = (mode) => {
+      const system = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const effective = mode === "system" ? (system ? "dark" : "light") : mode;
+      root.dataset.theme = effective;
+      root.dataset.themeMode = mode;
+      localStorage.setItem("theme-mode", mode);
+      icons.forEach((i) => i.classList.toggle("hidden", i.dataset.modeIcon !== mode));
+      if (label) label.textContent = mode;
+    };
+
+    // 初始化
+    apply(root.dataset.themeMode || "system");
+
+    btn?.addEventListener("click", () => {
+      const cur = root.dataset.themeMode || "system";
+      const next = cycle[(cycle.indexOf(cur) + 1) % cycle.length];
+      apply(next);
+      // 短暂显示 label
+      if (label) {
+        label.style.opacity = "1";
+        clearTimeout(label._t);
+        label._t = setTimeout(() => (label.style.opacity = "0"), 1500);
+      }
+    });
+  })();
+</script>

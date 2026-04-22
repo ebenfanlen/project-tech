@@ -1,5 +1,6 @@
 ---
 import Logo from "./Logo.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 
 const navItems = [
   { href: "/products", label: "产品" },
@@ -31,16 +32,9 @@ const navItems = [
     </ul>
 
     <div class="flex items-center gap-3">
-      <button
-        type="button"
-        id="theme-toggle"
-        class="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border text-sm transition hover:opacity-80"
-        style="border-color:var(--border-strong);color:var(--fg-default)"
-        aria-label="切换深色模式"
-      >
-        <span data-theme-icon="light">☀︎</span>
-        <span data-theme-icon="dark" class="hidden">☾</span>
-      </button>
+      <div class="hidden md:block">
+        <ThemeToggle />
+      </div>
       <a
         href="/contact"
         class="inline-flex h-9 items-center rounded-[var(--radius-md)] px-4 text-sm font-semibold text-[var(--color-canvas-50)] transition hover:brightness-110"
@@ -51,20 +45,3 @@ const navItems = [
     </div>
   </nav>
 </header>
-
-<script is:inline>
-  const btn = document.getElementById("theme-toggle");
-  const sync = () => {
-    const dark = document.documentElement.dataset.theme === "dark";
-    document.querySelectorAll("[data-theme-icon]").forEach((el) => {
-      el.classList.toggle("hidden", el.dataset.themeIcon !== (dark ? "dark" : "light"));
-    });
-  };
-  sync();
-  btn?.addEventListener("click", () => {
-    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem("theme", next);
-    sync();
-  });
-</script>

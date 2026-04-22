@@ -6,6 +6,7 @@ export interface Props {
   description?: string;
   lang?: "zh-CN" | "zh-TW" | "en";
   path?: string;
+  ogImage?: string;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
   description = "Shipwright / 船匠 — 跨境电商 DTC 的 AI 工作流定制团队。14 天交付，代码 100% 归你。",
   lang = "zh-CN",
   path = "/",
+  ogImage = "/og-default.png",
 } = Astro.props;
 
 const siteUrl = "https://shipwright.co";
@@ -36,32 +38,55 @@ const canonical = `${siteUrl}${path}`;
     <link rel="alternate" hreflang="en" href={`${siteUrl}/en${path}`} />
     <link rel="alternate" hreflang="x-default" href={`${siteUrl}${path}`} />
 
-    <!-- Favicon (Day 2-3 换成 The Keel mark) -->
+    <!-- 百度 专属 meta -->
+    <meta name="applicable-device" content="pc,mobile" />
+    <meta name="MobileOptimized" content="width" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Theme color（支持深浅切换时 UA 同步） -->
+    <!-- Theme color（跟随浅/深） -->
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FDFCF9" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E2230" />
 
-    <!-- OG 基础（Day 4-5 完善） -->
+    <!-- OG / 社交 -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content={lang === "zh-CN" ? "zh_CN" : lang === "zh-TW" ? "zh_TW" : "en_US"} />
+    <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+    <meta
+      property="og:locale"
+      content={lang === "zh-CN" ? "zh_CN" : lang === "zh-TW" ? "zh_TW" : "en_US"}
+    />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- 初始化 theme（防 FOUC，inline 脚本） -->
+    <!-- 初始化 theme（防 FOUC，inline + 三态） -->
     <script is:inline>
       (() => {
-        const saved = localStorage.getItem("theme");
+        const saved = localStorage.getItem("theme-mode") || "system";
         const system = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const theme = saved || (system ? "dark" : "light");
-        document.documentElement.dataset.theme = theme;
+        const effective = saved === "system" ? (system ? "dark" : "light") : saved;
+        document.documentElement.dataset.theme = effective;
+        document.documentElement.dataset.themeMode = saved;
+
+        // 监听系统切换（仅 mode=system 时响应）
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+          if (document.documentElement.dataset.themeMode === "system") {
+            document.documentElement.dataset.theme = e.matches ? "dark" : "light";
+          }
+        });
       })();
     </script>
   </head>
   <body>
     <slot />
+
+    <!-- pangu 中英自动空格 (客户端增强) -->
+    <script>
+      import pangu from "pangu";
+      // 页面加载后自动空格，并监听 DOM 变化（Island 等）
+      pangu.autoSpacingPage();
+    </script>
   </body>
 </html>

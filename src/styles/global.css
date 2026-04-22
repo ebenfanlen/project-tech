@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/noto-sans-sc";
+@import "@fontsource-variable/noto-sans-tc";
+
+/* NOTE: 生产阶段如切换 HarmonyOS Sans SC/TC, 把 Noto Sans 替换为自托管华为字体
+   (需创始人从 developer.harmonyos.com 下载 woff2 放 public/fonts/).
+   Noto Sans SC 作开源等价 — 同 Adobe-Google 思源系, 视觉接近 HarmonyOS. */
 
 @theme {
   /* === Primary · Deep Harbor 深海蓝 === */
@@ -79,7 +85,8 @@
   --color-info-700: #1E4C80;
 
   /* === 字体 === */
-  --font-sans: "Inter Variable", "HarmonyOS Sans SC", "HarmonyOS Sans TC",
+  --font-sans: "Inter Variable", "Noto Sans SC Variable", "Noto Sans TC Variable",
+               "HarmonyOS Sans SC", "HarmonyOS Sans TC",
                -apple-system, BlinkMacSystemFont, "PingFang SC",
                "Microsoft YaHei", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular,
