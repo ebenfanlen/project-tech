@@ -1,0 +1,175 @@
+---
+import Logo from "./Logo.astro";
+
+const year = new Date().getFullYear();
+
+const footerCols = [
+  {
+    title: "产品",
+    links: [
+      { label: "Pilot Pod · 试航舱", href: "/pilot-pod" },
+      { label: "Vibecoding Pod · 匠造舱", href: "/vibecoding-pod" },
+      { label: "Fleet Integration · 舰队集成", href: "/fleet-integration" },
+      { label: "Crew Retainer · 船员月租", href: "/crew-retainer" },
+      { label: "所有场景 →", href: "/scenes" },
+    ],
+  },
+  {
+    title: "公司",
+    links: [
+      { label: "关于我们", href: "/about" },
+      { label: "案例", href: "/work" },
+      { label: "14 天方法论", href: "/how" },
+      { label: "联系我们", href: "/contact" },
+      { label: "6 周路线图", href: "/roadmap" },
+    ],
+  },
+  {
+    title: "资源",
+    links: [
+      { label: "博客 · 船匠手记", href: "/blog" },
+      { label: "Playbooks", href: "/playbooks" },
+      { label: "Changelog", href: "/changelog" },
+      { label: "RSS", href: "/rss.xml" },
+      { label: "Sitemap", href: "/sitemap-index.xml" },
+    ],
+  },
+  {
+    title: "法律",
+    links: [
+      { label: "服务条款", href: "/legal/terms" },
+      { label: "隐私政策", href: "/legal/privacy" },
+      { label: "SLA", href: "/legal/sla" },
+      { label: "ICP 备案", href: "/legal/icp" },
+    ],
+  },
+];
+
+const socials = [
+  { label: "小红书", handle: "@船匠 Shipwright", href: "#" },
+  { label: "微信公众号", handle: "船匠造船厂", href: "#" },
+  { label: "LinkedIn", handle: "Shipwright", href: "#" },
+  { label: "GitHub", handle: "shipwright-org", href: "#" },
+];
+---
+
+<footer
+  class="border-t"
+  style="background:var(--color-primary-900);color:var(--color-canvas-100);border-color:var(--color-primary-800)"
+>
+  <div class="mx-auto max-w-[1200px] px-6 py-14">
+    <!-- Top: Brand + Newsletter -->
+    <div class="mb-10 grid gap-8 border-b pb-10 lg:grid-cols-[1fr_auto]" style="border-color:#17303D">
+      <div>
+        <div style="color:#F2EDE0">
+          <Logo size={36} />
+        </div>
+        <p class="mt-4 max-w-md text-sm" style="color:#C3B99A">
+          别堆人，造船。<br />
+          14 天交付你的跨境电商 AI 工作流 · 代码 100% 归你 · BYOK 透明定价。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-4 text-xs">
+          <span style="color:#7A7258">📧 hello@shipwright.co</span>
+          <span style="color:#7A7258">·</span>
+          <span style="color:#7A7258">📍 上海 · 纽约 · 深圳</span>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="w-full max-w-sm">
+        <p
+          class="mb-2 font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:#8AAAB8"
+        >
+          订阅船匠手记
+        </p>
+        <p class="mb-4 text-sm" style="color:#C3B99A">
+          每两周一封 · 14 天交付过程中的真实决策、踩坑、数字。
+        </p>
+        <form
+          class="flex gap-2"
+          data-newsletter-form
+          onsubmit="event.preventDefault(); this.dataset.submitted='1'; this.querySelector('[data-msg]').textContent='✓ 先记到 localStorage · 真后端 D10+ 接入'"
+        >
+          <input
+            type="email"
+            required
+            placeholder="you@brand.com"
+            class="h-10 flex-1 rounded-[var(--radius-sm)] border px-3 text-sm"
+            style="background:#17303D;border-color:#2D4A5B;color:#F2EDE0"
+          />
+          <button
+            type="submit"
+            class="inline-flex h-10 items-center rounded-[var(--radius-sm)] px-4 text-sm font-semibold"
+            style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+          >
+            订阅
+          </button>
+        </form>
+        <p class="mt-2 font-mono text-[11px]" data-msg style="color:#8AAAB8"></p>
+      </div>
+    </div>
+
+    <!-- 4 columns -->
+    <div class="mb-10 grid grid-cols-2 gap-8 md:grid-cols-4">
+      {footerCols.map((col) => (
+        <div>
+          <h3
+            class="mb-4 font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:#8AAAB8"
+          >
+            {col.title}
+          </h3>
+          <ul class="space-y-2 text-sm">
+            {col.links.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="transition hover:opacity-80"
+                  style="color:#E6E1D4"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Socials -->
+    <div
+      class="mb-8 flex flex-wrap gap-6 border-t pt-8"
+      style="border-color:#17303D"
+    >
+      <p
+        class="font-mono text-xs uppercase tracking-[0.08em]"
+        style="color:#8AAAB8"
+      >
+        关注我们 →
+      </p>
+      {socials.map((s) => (
+        <a
+          href={s.href}
+          class="group flex items-center gap-1.5 text-xs transition hover:opacity-80"
+          style="color:#C3B99A"
+        >
+          <span>{s.label}</span>
+          <span class="font-mono" style="color:#7A7258">·</span>
+          <span class="font-mono" style="color:#7A7258">{s.handle}</span>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bottom -->
+    <div
+      class="flex flex-col gap-2 text-xs sm:flex-row sm:items-center sm:justify-between"
+      style="color:#7A7258"
+    >
+      <span>© {year} Shipwright 船匠 · All rights reserved</span>
+      <span class="font-mono">
+        沪 ICP 备 备案申请中 · 沪公网安备 审核中 · 别堆人，造船。
+      </span>
+    </div>
+  </div>
+</footer>

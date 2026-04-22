@@ -30,7 +30,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["Nav", "Hero", "14 天 Live Timer", "客户信任墙", "反 Agency 宣言", "4 SKU 横排", "方法论预览", "案例精选", "FAQ", "Footer"],
     seoKw: "跨境电商 AI 自动化",
-    status: "in-progress",
+    status: "live",
   },
   {
     slug: "/pricing",

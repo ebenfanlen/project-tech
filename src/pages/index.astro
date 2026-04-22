@@ -2,17 +2,25 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NavBar from "../components/NavBar.astro";
 import LiveTimer from "../components/LiveTimer.astro";
+import TrustedLogos from "../components/TrustedLogos.astro";
+import AgencyComparison from "../components/AgencyComparison.astro";
+import SkuShowcase from "../components/SkuShowcase.astro";
+import MethodologyPreview from "../components/MethodologyPreview.astro";
+import CaseHighlights from "../components/CaseHighlights.astro";
+import FAQ from "../components/FAQ.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 ---
 
 <BaseLayout
   title="Shipwright 船匠 · 14 天交付你的跨境电商 AI 工作流"
-  description="别堆人，造船。跨境电商 DTC 的 AI 工作流定制团队。14 天硬交付，代码 100% 归你，透明定价，BYOK。"
+  description="别堆人，造船。跨境电商 DTC 的 AI 工作流定制团队。14 天硬交付 · 代码 100% 归你 · 透明定价 · BYOK。"
   path="/"
 >
   <NavBar />
 
-  <!-- Hero -->
-  <section class="mx-auto max-w-[1200px] px-6 pb-20 pt-16 sm:pt-24">
+  <!-- Section 2: Hero -->
+  <section class="mx-auto max-w-[1200px] px-6 pb-16 pt-16 sm:pt-24">
     <p
       class="mb-8 inline-flex items-center gap-2 font-mono uppercase"
       style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
@@ -24,99 +32,112 @@ import LiveTimer from "../components/LiveTimer.astro";
       For DTC Operators
     </p>
 
-    <h1
-      class="mb-6 font-semibold"
-      style="font-size:clamp(2.75rem,7vw,4.5rem);line-height:var(--text-display-xl--line-height);letter-spacing:0.04em;color:var(--fg-display)"
-    >
-      别堆人<span style="font-weight:400">，</span>造船<span style="font-weight:400">。</span>
-    </h1>
-
-    <p
-      class="mb-8 font-mono tracking-tight"
-      style="font-size:clamp(1.75rem,4.5vw,3.5rem);line-height:var(--text-display-lg--line-height);color:var(--fg-muted)"
-    >
-      Don't hire. Ship.
-    </p>
-
-    <p
-      class="mb-10 max-w-2xl"
-      style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default)"
-    >
-      14 天交付一个可量产的 AI 工作流 · 代码 100% 归你 · 透明定价 · 支持 BYOK。
-      我们是 vibecoding pod，不是外包。
-    </p>
-
-    <!-- 双画像 CTA -->
-    <div class="grid max-w-2xl gap-4 sm:grid-cols-2" role="group" aria-label="主要行动入口">
-      <a
-        href="/pilot-pod"
-        class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5"
-        style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-signal-500);box-shadow:var(--shadow-sm)"
-      >
-        <span
-          class="mb-2 font-mono uppercase"
-          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+    <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-start">
+      <div>
+        <h1
+          class="mb-6 font-semibold"
+          style="font-size:clamp(2.75rem,7vw,4.5rem);line-height:var(--text-display-xl--line-height);letter-spacing:0.04em;color:var(--fg-display)"
         >
-          电商老板 · 5 天试航
-        </span>
-        <span class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
-          Pilot Pod ¥12,800
-        </span>
-        <span class="text-sm" style="color:var(--fg-default)">
-          一个窄场景跑通 · 5 天出 ROI · 60% 抵扣升级
-        </span>
-        <span
-          class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
-          style="color:var(--color-signal-600)"
-        >
-          Pilot Pod 14 天 →
-        </span>
-      </a>
+          别堆人<span style="font-weight:400">，</span>造船<span style="font-weight:400">。</span>
+        </h1>
 
-      <a
-        href="/how"
-        class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5"
-        style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-primary-500);box-shadow:var(--shadow-sm)"
-      >
-        <span
-          class="mb-2 font-mono uppercase"
-          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+        <p
+          class="mb-8 font-mono tracking-tight"
+          style="font-size:clamp(1.75rem,4.5vw,3.5rem);line-height:var(--text-display-lg--line-height);color:var(--fg-muted)"
         >
-          技术 Lead · 先看方法
-        </span>
-        <span class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
-          Vibecoding + BYOK
-        </span>
-        <span class="text-sm" style="color:var(--fg-default)">
-          14 天 Day-by-Day 方法论 · 代码 100% 交付 · 反 vendor lock
-        </span>
-        <span
-          class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
-          style="color:var(--link)"
+          Don't hire. Ship.
+        </p>
+
+        <p
+          class="mb-10 max-w-xl"
+          style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default)"
         >
-          14 天方法论 →
-        </span>
-      </a>
-    </div>
-  </section>
+          14 天交付一个可量产的 AI 工作流 · 代码 100% 归你 · 透明定价 · 支持 BYOK。
+          我们是 vibecoding pod，不是外包。
+        </p>
 
-  <!-- 14 天 Live Timer (Geek 证据) -->
-  <section class="mx-auto max-w-[1200px] px-6 pb-24">
-    <LiveTimer />
-  </section>
+        <!-- 双画像 CTA -->
+        <div class="grid max-w-xl gap-4 sm:grid-cols-2" role="group" aria-label="主要行动入口">
+          <a
+            href="/pilot-pod"
+            class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5"
+            style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-signal-500);box-shadow:var(--shadow-sm)"
+          >
+            <span
+              class="mb-2 font-mono uppercase"
+              style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+            >
+              电商老板 · 5 天试航
+            </span>
+            <span class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
+              Pilot Pod ¥12,800
+            </span>
+            <span class="text-sm" style="color:var(--fg-default)">
+              一个窄场景跑通 · 5 天出 ROI · 60% 抵扣升级
+            </span>
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
+              style="color:var(--color-signal-600)"
+            >
+              Pilot Pod 14 天 →
+            </span>
+          </a>
 
-  <!-- 基础 Footer 占位（Day 3-4 完善） -->
-  <footer
-    class="border-t"
-    style="background:var(--color-primary-900);color:var(--color-canvas-100);border-color:var(--color-primary-800)"
-  >
-    <div class="mx-auto max-w-[1200px] px-6 py-10 text-sm">
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <span>© 2026 Shipwright 船匠</span>
-        <span style="color:var(--color-cool-400)">
-          沪 ICP 备 备案申请中 · 别堆人，造船。
-        </span>
+          <a
+            href="/how"
+            class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5"
+            style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-primary-500);box-shadow:var(--shadow-sm)"
+          >
+            <span
+              class="mb-2 font-mono uppercase"
+              style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+            >
+              技术 Lead · 先看方法
+            </span>
+            <span class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
+              Vibecoding + BYOK
+            </span>
+            <span class="text-sm" style="color:var(--fg-default)">
+              14 天 Day-by-Day · 代码 100% 交付 · 反 vendor lock
+            </span>
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
+              style="color:var(--link)"
+            >
+              14 天方法论 →
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 14 天 Live Timer (右侧，desktop) -->
+      <div class="lg:sticky lg:top-24">
+        <LiveTimer />
       </div>
     </div>
-  </footer>
+  </section>
+
+  <!-- Section 4: 客户信任墙 -->
+  <TrustedLogos />
+
+  <!-- Section 5: 不像 Agency 宣言 -->
+  <AgencyComparison />
+
+  <!-- Section 6: 4 SKU 横排 -->
+  <SkuShowcase />
+
+  <!-- Section 7: 14 天方法论预览 -->
+  <MethodologyPreview />
+
+  <!-- Section 8: 案例精选 -->
+  <CaseHighlights />
+
+  <!-- Section 9: FAQ -->
+  <FAQ />
+
+  <!-- Section 10: Final CTA -->
+  <FinalCTA />
+
+  <!-- Footer -->
+  <SiteFooter />
 </BaseLayout>

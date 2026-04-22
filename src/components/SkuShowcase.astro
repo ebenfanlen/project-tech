@@ -1,0 +1,123 @@
+---
+import { skus } from "../data/skus";
+---
+
+<section class="mx-auto max-w-[1200px] px-6 py-20">
+  <div class="mb-12 max-w-3xl">
+    <p
+      class="mb-3 font-mono uppercase"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+    >
+      4 SKU · pick one and ship
+    </p>
+    <h2
+      class="mb-4 font-semibold"
+      style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+    >
+      从试航到舰队 · 按你目前的 GMV 选一款
+    </h2>
+    <p style="font-size:var(--text-body-lg);color:var(--fg-default)">
+      4 款 SKU 覆盖跨境电商 DTC 从试点到多系统集成到持续运维的全生命周期。
+      明码标价，人民币 / 美元双报价，BYOK 可选。
+    </p>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    {skus.map((sku) => {
+      const isRecommended = sku.recommended;
+      const accentColor = sku.accentColor === "signal" ? "var(--color-signal-500)" : "var(--color-primary-500)";
+      return (
+        <a
+          href={sku.slug}
+          class="group relative flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-1"
+          style={
+            isRecommended
+              ? `background:var(--bg-card);border-color:${accentColor};border-width:2px;box-shadow:var(--shadow-lg)`
+              : `background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)`
+          }
+        >
+          {isRecommended && (
+            <span
+              class="absolute -top-3 left-6 rounded-[var(--radius-sm)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-canvas-50)]"
+              style={`background:${accentColor}`}
+            >
+              主推
+            </span>
+          )}
+
+          <span
+            class="mb-2 font-mono text-[11px] uppercase tracking-[0.08em]"
+            style={`color:${accentColor}`}
+          >
+            {sku.nameEn}
+          </span>
+
+          <h3 class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
+            {sku.nameZh}
+          </h3>
+          <p class="mb-4 text-sm" style="color:var(--fg-muted)">{sku.subtitle}</p>
+
+          <div
+            class="mb-2 tabular-nums"
+            style={`font-size:1.5rem;font-weight:700;color:var(--fg-display)`}
+          >
+            {sku.priceCN}
+          </div>
+          <div class="mb-4 flex items-center gap-2 text-xs" style="color:var(--fg-muted)">
+            <span class="font-mono">{sku.priceUS}</span>
+            <span>·</span>
+            <span>{sku.duration}</span>
+            {sku.byokDiscount && (
+              <>
+                <span>·</span>
+                <span
+                  class="rounded-full px-2 py-0.5 font-mono font-semibold"
+                  style="background:var(--color-signal-100);color:var(--color-signal-700)"
+                >
+                  {sku.byokDiscount}
+                </span>
+              </>
+            )}
+          </div>
+
+          <ul class="mb-6 flex-1 space-y-1.5 text-sm">
+            {sku.features.slice(0, 4).map((f) => (
+              <li class="flex items-start gap-2" style="color:var(--fg-default)">
+                <svg
+                  class="mt-1 h-3 w-3 shrink-0"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke={accentColor}
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span>{f.text}</span>
+              </li>
+            ))}
+          </ul>
+
+          <span
+            class="inline-flex items-center gap-1 text-sm font-semibold transition group-hover:translate-x-0.5"
+            style={`color:${accentColor}`}
+          >
+            {sku.cta}
+          </span>
+        </a>
+      );
+    })}
+  </div>
+
+  <div class="mt-10 text-center">
+    <a
+      href="/pricing"
+      class="inline-flex items-center gap-2 font-mono text-sm underline decoration-dotted underline-offset-4"
+      style="color:var(--fg-default)"
+    >
+      查看完整定价对比 + BYOK 折扣计算 →
+    </a>
+  </div>
+</section>

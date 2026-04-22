@@ -1,0 +1,105 @@
+---
+// 反 CC Strategic / 反传统外包 三列对比
+const cols = [
+  {
+    title: "传统 Agency",
+    subtitle: "外包公司 / 定制开发",
+    variant: "muted",
+    rows: [
+      { label: "交付时间", value: "4-8 周起步，常延到 3 个月+" },
+      { label: "定价", value: "按人月 ¥30K-¥80K，黑盒计算" },
+      { label: "代码所有权", value: "公司持有，换人换坑" },
+      { label: "续费", value: "按月计费永远不结束" },
+      { label: "报价方式", value: "Book a call → 7 步 form → 等报价" },
+    ],
+  },
+  {
+    title: "AI 咨询公司",
+    subtitle: "MBB 数字化 / 大厂 IT",
+    variant: "muted",
+    rows: [
+      { label: "交付时间", value: "3-6 个月 PPT + 2 个月落地" },
+      { label: "定价", value: "¥500K+ 起步，按季度计费" },
+      { label: "代码所有权", value: "'解决方案'归咨询公司" },
+      { label: "续费", value: "持续咨询费 + 实施费" },
+      { label: "报价方式", value: "闭门提案 + 法务谈判" },
+    ],
+  },
+  {
+    title: "Shipwright 船匠",
+    subtitle: "vibecoding pod · 别堆人，造船",
+    variant: "highlight",
+    rows: [
+      { label: "交付时间", value: "14 天硬承诺 · 超期按 3%/天退款" },
+      { label: "定价", value: "¥12.8K 起 · 官网明码标价" },
+      { label: "代码所有权", value: "100% 交付给你 · 反 vendor lock" },
+      { label: "续费", value: "Retainer 可选 · 3 月起订 · 随时取消" },
+      { label: "报价方式", value: "官网 30 秒看完 → 直接预约诊断" },
+    ],
+  },
+];
+---
+
+<section class="mx-auto max-w-[1200px] px-6 py-20">
+  <div class="mb-12 max-w-3xl">
+    <p
+      class="mb-3 font-mono uppercase"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+    >
+      Why we exist
+    </p>
+    <h2
+      class="mb-4 font-semibold"
+      style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+    >
+      我们不像 Agency · 也不像咨询公司
+    </h2>
+    <p style="font-size:var(--text-body-lg);color:var(--fg-default)">
+      跨境电商老板需要的是「14 天后看到一个真跑起来的 AI 员工」，
+      不是一份 120 页的 PPT，也不是一个永远跨季度的外包项目。
+    </p>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    {cols.map((col) => (
+      <div
+        class="rounded-[var(--radius-lg)] border p-6"
+        style={
+          col.variant === "highlight"
+            ? "background:var(--bg-card);border-color:var(--color-signal-500);border-width:2px;box-shadow:var(--shadow-md)"
+            : "background:var(--bg-card);border-color:var(--border-default)"
+        }
+      >
+        <h3
+          class="mb-1 text-xl font-semibold"
+          style={col.variant === "highlight" ? "color:var(--fg-display)" : "color:var(--fg-heading)"}
+        >
+          {col.title}
+        </h3>
+        <p
+          class="mb-6 font-mono text-xs uppercase tracking-[0.08em]"
+          style={col.variant === "highlight" ? "color:var(--color-signal-600)" : "color:var(--fg-muted)"}
+        >
+          {col.subtitle}
+        </p>
+        <dl class="space-y-4 text-sm">
+          {col.rows.map((row) => (
+            <div class="grid grid-cols-[auto_1fr] gap-3">
+              <dt
+                class="font-mono text-[11px] uppercase tracking-[0.08em]"
+                style="color:var(--fg-muted);min-width:4.5rem"
+              >
+                {row.label}
+              </dt>
+              <dd
+                style={col.variant === "highlight" ? "color:var(--fg-display);font-weight:500" : "color:var(--fg-default)"}
+              >
+                {row.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    ))}
+  </div>
+</section>

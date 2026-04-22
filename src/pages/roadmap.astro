@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import { roadmap, type PageSpec } from "../data/roadmap";
 
 // 按 Week 分组
@@ -150,17 +151,5 @@ const inProgressPages = roadmap.filter((p) => p.status === "in-progress").length
     ))}
   </main>
 
-  <footer
-    class="border-t"
-    style="background:var(--color-primary-900);color:var(--color-canvas-100);border-color:var(--color-primary-800)"
-  >
-    <div class="mx-auto max-w-[1200px] px-6 py-10 text-sm">
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <span>© 2026 Shipwright 船匠</span>
-        <span style="color:var(--color-cool-400)">
-          沪 ICP 备 备案申请中 · 别堆人，造船。
-        </span>
-      </div>
-    </div>
-  </footer>
+  <SiteFooter />
 </BaseLayout>

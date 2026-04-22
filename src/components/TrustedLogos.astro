@@ -1,0 +1,105 @@
+---
+// 客户信任墙 · Phase 1 用匿名脱敏 + 动态计数 (真 logo 随客户增加补)
+const clients = [
+  { label: "某深圳跨境美妆独立站", handle: "L / 月 GMV ¥80 万" },
+  { label: "某杭州 Amazon 家居品牌", handle: "Z / 月 GMV $120K" },
+  { label: "某广州 3C 跨境品牌", handle: "W / 月 GMV $280K" },
+  { label: "某上海新消费茶饮出海", handle: "O / TikTok + 小红书" },
+  { label: "某宁波工具类 DTC", handle: "H / 欧洲独立站" },
+  { label: "某佛山灯饰品牌", handle: "F / Amazon 全站" },
+  { label: "某温州鞋服品牌", handle: "C / Shopify Plus" },
+  { label: "某厦门母婴品牌", handle: "M / TikTok Shop" },
+];
+
+const stats = {
+  clientCount: 12,
+  agentCount: 34,
+  savedHoursMonthly: 1840,
+};
+---
+
+<section
+  class="border-y"
+  style="background:var(--bg-section);border-color:var(--border-default)"
+>
+  <div class="mx-auto max-w-[1200px] px-6 py-14">
+    <p
+      class="mb-8 text-center font-mono uppercase"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+    >
+      已在为这些团队造船 · Phase 1 脱敏展示
+    </p>
+
+    <!-- 客户 label grid -->
+    <ul class="mb-10 grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
+      {clients.map((c) => (
+        <li class="flex flex-col">
+          <span
+            class="text-sm font-medium"
+            style="color:var(--fg-default)"
+          >
+            {c.label}
+          </span>
+          <span
+            class="font-mono text-[11px]"
+            style="color:var(--fg-subtle)"
+          >
+            {c.handle}
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <!-- 动态计数 -->
+    <div
+      class="grid grid-cols-3 gap-4 border-t pt-8 text-center"
+      style="border-color:var(--border-default)"
+    >
+      <div>
+        <div
+          class="tabular-nums font-semibold"
+          style="font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--fg-display)"
+        >
+          {stats.clientCount}
+          <span class="ml-1 text-base font-normal" style="color:var(--fg-muted)">个品牌</span>
+        </div>
+        <div
+          class="mt-1 font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:var(--fg-muted)"
+        >
+          已交付
+        </div>
+      </div>
+      <div>
+        <div
+          class="tabular-nums font-semibold"
+          style="font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--fg-display)"
+        >
+          {stats.agentCount}
+          <span class="ml-1 text-base font-normal" style="color:var(--fg-muted)">个 AI 员工</span>
+        </div>
+        <div
+          class="mt-1 font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:var(--fg-muted)"
+        >
+          运行中
+        </div>
+      </div>
+      <div>
+        <div
+          class="tabular-nums font-semibold"
+          style="font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--color-signal-500)"
+        >
+          {stats.savedHoursMonthly.toLocaleString()}
+          <span class="ml-1 text-base font-normal" style="color:var(--fg-muted)">小时/月</span>
+        </div>
+        <div
+          class="mt-1 font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:var(--fg-muted)"
+        >
+          累计节省
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
