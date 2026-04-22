@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+  lang?: "zh-CN" | "zh-TW" | "en";
+  path?: string;
+}
+
+const {
+  title,
+  description = "Shipwright / 船匠 — 跨境电商 DTC 的 AI 工作流定制团队。14 天交付，代码 100% 归你。",
+  lang = "zh-CN",
+  path = "/",
+} = Astro.props;
+
+const siteUrl = "https://shipwright.co";
+const canonical = `${siteUrl}${path}`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- 三语 hreflang（Phase 1 预留标签，Phase 2 内容补齐） -->
+    <link rel="alternate" hreflang="zh-CN" href={`${siteUrl}${path}`} />
+    <link rel="alternate" hreflang="zh-TW" href={`${siteUrl}/zh-tw${path}`} />
+    <link rel="alternate" hreflang="en" href={`${siteUrl}/en${path}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteUrl}${path}`} />
+
+    <!-- Favicon (Day 2-3 换成 The Keel mark) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Theme color（支持深浅切换时 UA 同步） -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FDFCF9" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E2230" />
+
+    <!-- OG 基础（Day 4-5 完善） -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === "zh-CN" ? "zh_CN" : lang === "zh-TW" ? "zh_TW" : "en_US"} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- 初始化 theme（防 FOUC，inline 脚本） -->
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem("theme");
+        const system = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme = saved || (system ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,9 +1,29 @@
-# Brainstorming Visual Companion (content + state, regenerated per session)
-.superpowers/
+# Astro
+dist/
+.astro/
 
-# OS
-.DS_Store
-Thumbs.db
+# Dependencies
+node_modules/
+.pnp.*
+
+# Build
+build/
+.next/
+.turbo/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Env (never commit)
+.env
+.env.local
+.env.*.local
+.env.production
 
 # Editor
 .vscode/
@@ -11,28 +31,24 @@ Thumbs.db
 *.swp
 *.swo
 
-# Env
-.env
-.env.local
-.env.*.local
+# OS
+.DS_Store
+Thumbs.db
 
-# Node
-node_modules/
-dist/
-build/
-.next/
-out/
-.turbo/
-coverage/
-
-# Python
+# Python (for seomachine-cn fork)
 __pycache__/
 *.pyc
 .venv/
 venv/
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Coverage
+coverage/
+
+# Brainstorming Visual Companion (content + state, regenerated per session)
+.superpowers/
+
+# Playwright MCP snapshots (per-session, not code)
+.playwright-mcp/
+
+# Keystatic local state (auth tokens live here)
+.keystatic/

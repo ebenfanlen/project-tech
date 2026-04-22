@@ -1,0 +1,70 @@
+---
+import Logo from "./Logo.astro";
+
+const navItems = [
+  { href: "/products", label: "产品" },
+  { href: "/how", label: "方法论" },
+  { href: "/work", label: "案例" },
+  { href: "/blog", label: "博客" },
+  { href: "/pricing", label: "定价" },
+  { href: "/about", label: "关于" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 border-b backdrop-blur-md"
+  style="background:var(--nav-bg);border-color:var(--border-default)"
+>
+  <nav class="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-6 px-6">
+    <a href="/" class="shrink-0" aria-label="回到首页">
+      <Logo size={32} />
+    </a>
+
+    <ul class="hidden items-center gap-7 text-sm font-medium md:flex" style="color:var(--fg-default)">
+      {navItems.map((item) => (
+        <li>
+          <a href={item.href} class="transition hover:opacity-70">
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <button
+        type="button"
+        id="theme-toggle"
+        class="hidden md:inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-md)] border text-sm transition hover:opacity-80"
+        style="border-color:var(--border-strong);color:var(--fg-default)"
+        aria-label="切换深色模式"
+      >
+        <span data-theme-icon="light">☀︎</span>
+        <span data-theme-icon="dark" class="hidden">☾</span>
+      </button>
+      <a
+        href="/contact"
+        class="inline-flex h-9 items-center rounded-[var(--radius-md)] px-4 text-sm font-semibold text-[var(--color-canvas-50)] transition hover:brightness-110"
+        style="background:var(--color-signal-500);box-shadow:var(--shadow-sm)"
+      >
+        开始 14 天 →
+      </a>
+    </div>
+  </nav>
+</header>
+
+<script is:inline>
+  const btn = document.getElementById("theme-toggle");
+  const sync = () => {
+    const dark = document.documentElement.dataset.theme === "dark";
+    document.querySelectorAll("[data-theme-icon]").forEach((el) => {
+      el.classList.toggle("hidden", el.dataset.themeIcon !== (dark ? "dark" : "light"));
+    });
+  };
+  sync();
+  btn?.addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("theme", next);
+    sync();
+  });
+</script>

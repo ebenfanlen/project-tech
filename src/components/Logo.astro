@@ -1,0 +1,57 @@
+---
+// The Keel · Concept B Logo
+// 梯形船体 + 顶部桅杆（CLI 光标 2s 呼吸闪烁）
+// 完整 lockup: mark + "Shipwright" wordmark + "船匠" 中文副标
+export interface Props {
+  variant?: "full" | "mark" | "wordmark";
+  size?: number;
+  breathing?: boolean;
+  class?: string;
+}
+
+const {
+  variant = "full",
+  size = 40,
+  breathing = true,
+  class: className = "",
+} = Astro.props;
+
+const markHeight = size;
+const markWidth = Math.round(size * (38 / 56));
+---
+
+<span class:list={["inline-flex items-center gap-3", className]} aria-label="Shipwright 船匠">
+  {variant !== "wordmark" && (
+    <span
+      class="relative block shrink-0"
+      style={`width:${markWidth}px;height:${markHeight}px`}
+      aria-hidden="true"
+    >
+      {/* 桅杆 / CLI 光标 */}
+      <span
+        class:list={[
+          "absolute left-1/2 top-0 block -translate-x-1/2",
+          breathing && "[animation:var(--animate-mast-breath)]",
+        ]}
+        style={`width:2px;height:${Math.round(markHeight * 0.36)}px;background:currentColor`}
+      ></span>
+      {/* 龙骨船体（等腰梯形） */}
+      <span
+        class="absolute bottom-0 left-0 block w-full"
+        style={`height:${Math.round(markHeight * 0.55)}px;background:currentColor;clip-path:polygon(20% 0,80% 0,100% 100%,0% 100%)`}
+      ></span>
+    </span>
+  )}
+
+  {variant !== "mark" && (
+    <span class="flex flex-col leading-none">
+      <span class="text-[1.125em] font-semibold tracking-tight">Shipwright</span>
+      <span
+        class="mt-1 text-[0.55em] font-medium tracking-[0.3em]"
+        style="color:var(--color-warm-500)"
+      >
+        船&nbsp;&nbsp;匠
+      </span>
+    </span>
+  )}
+</span>

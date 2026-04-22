@@ -1,0 +1,24 @@
+{
+  "name": "shipwright",
+  "description": "Shipwright / 船匠 — Cross-border DTC AI agency. 别堆人，造船。",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.1.8",
+    "tailwindcss": "^4.2.4"
+  }
+}
