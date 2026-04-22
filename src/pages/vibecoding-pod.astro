@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import SkuDetailPage from "../components/SkuDetailPage.astro";
+import { skus } from "../data/skus";
+
+const sku = skus.find((s) => s.id === "vibecoding-pod")!;
+const upsellFrom = skus.find((s) => s.id === "pilot-pod");
+const upsellTo = skus.find((s) => s.id === "fleet-integration");
+
+const scenarios = [
+  {
+    tag: "V-CS",
+    title: "全渠道 AI 客服中枢",
+    typical: "3 客服轮班 IG+Inbox+邮件+小红书, 响应 14h, 差评率 4.2%",
+    result: "自动解决率 63% · 响应 11min · 差评率 2.8% (Lumesque 案例)",
+  },
+  {
+    tag: "V-SEO",
+    title: "Listing 批量生成 + 多语言",
+    typical: "月上新 80 SKU 断档 · 3 兼职写手跟不上",
+    result: "产能 3x (80→240 条/月) · 人工通过率 87% (NordicNest 案例)",
+  },
+  {
+    tag: "V-AD",
+    title: "TikTok + Meta 广告素材 + 投后回流",
+    typical: "投手人肉剪素材 · ROAS 决策靠感觉",
+    result: "素材产能 5x · ROAS 预测 3 日滚动更新 · ACoS -35%",
+  },
+  {
+    tag: "V-CONTENT",
+    title: "小红书 / TikTok 内容日历 + 脚本",
+    typical: "周更 10 条顶天 · 运营 6h/天写脚本",
+    result: "周更 50 条 · 小红书粉丝 3.2K → 18K · TikTok 破百万视频 2 条",
+  },
+  {
+    tag: "V-OPS",
+    title: "订单 / 物流 / 退款 AI 分诊",
+    typical: "异常需 3 系统手查 · 周报 2 天起",
+    result: "异常 5 分钟飞书推送 · 周报自动生成 · 断货事件月 6→1 次",
+  },
+];
+
+const idealFor = [
+  "月 GMV $30K-$300K, 在 Shopify/Amazon/TikTok Shop 至少 2 渠道同时运营",
+  "有自己的运营 / 客服 / 投放团队 (10-50 人), 但老板承认招人堆不动了",
+  "预算 $5K-$15K 级别, 可以做一次性投入换长期杠杆",
+  "希望代码 100% 归你, 将来自己能维护或替换",
+  "在一个窄场景 (客服 / listing / 投放 / 内容 / 运营) 里有明确痛点",
+];
+
+const notForYouIf = [
+  "还没具体想清楚哪个场景 → 先走 Pilot Pod 试 5 天",
+  "需要同时打通 8+ SaaS 跨系统编排 → 走 Fleet Integration",
+  "只想做一次性的 PPT / 数字化战略咨询 → 我们不做",
+  "预算 <¥10K → 建议 ChatGPT Team + Zapier 自助",
+  "不是跨境电商 / DTC 垂直 → 我们只做这个",
+];
+---
+
+<BaseLayout
+  title="Vibecoding Pod / 匠造舱 ¥58,000 · 14 天交付 · Shipwright"
+  description="14 天硬承诺 · 一个完整业务闭环的 AI workflow · 代码 100% 归你 · 5 大场景锁定 (V-CS / V-SEO / V-AD / V-CONTENT / V-OPS) · BYOK -20%."
+  path="/vibecoding-pod"
+>
+  <NavBar />
+  <SkuDetailPage
+    sku={sku}
+    scenarios={scenarios}
+    upsellFrom={upsellFrom}
+    upsellTo={upsellTo}
+    idealFor={idealFor}
+    notForYouIf={notForYouIf}
+  />
+  <FinalCTA />
+  <SiteFooter />
+</BaseLayout>

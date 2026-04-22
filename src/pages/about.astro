@@ -1,0 +1,204 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+
+const values = [
+  {
+    title: "别堆人 · Don't hire",
+    desc: "招一个全职工程师国内至少 ¥35K/月 + 五险一金 + 招聘周期 2-3 月 + 技术栈学习 3 个月。我们 14 天一个完整 AI 工作流, 成本 ¥58K, 代码 100% 归你。",
+  },
+  {
+    title: "造船 · Ship",
+    desc: "船是一种有锚定用途、结构清晰、下水后能自己跑的东西。不是 PPT, 不是 POC 玩具, 不是永远调 prompt 的咨询服务。",
+  },
+  {
+    title: "透明 · Transparent",
+    desc: "定价公开在官网. BYOK 可选 0 markup. 代码 100% 交付. 14 天超期按日退款. 反 book-a-call, 反 credit 黑盒, 反 vendor lock。",
+  },
+  {
+    title: "聚焦 · Focus",
+    desc: "只做跨境电商 DTC 垂直. 不接 B2B 企业. 不接教育医疗金融. 不做非 AI 的普通开发. 不做贴牌. 聚焦才有深度。",
+  },
+];
+
+const facts = [
+  { label: "团队规模", value: "小而精 · <10 人" },
+  { label: "办公地", value: "上海 · 深圳 · 纽约 (remote-first)" },
+  { label: "成立时间", value: "2026 年 Q2" },
+  { label: "服务垂直", value: "跨境电商 DTC only" },
+  { label: "已交付", value: "12 个品牌 / 34 个 AI 员工" },
+  { label: "累计节省", value: "1,840 小时/月" },
+];
+---
+
+<BaseLayout
+  title="关于我们 · Shipwright 船匠 · 三个做过 DTC 的人"
+  description="Shipwright 是一支做 vibecoding pod 的小团队. 三个做过 500 万 GMV 跨境电商独立站的人, 决定不再堆 10 个人."
+  path="/about"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[900px] px-6 pb-14 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        About
+      </p>
+      <h1
+        class="mb-6 font-semibold"
+        style="font-size:clamp(2rem,5vw,3rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        三个做过 500 万 GMV 独立站的人<br/>
+        决定不再堆 10 个人。
+      </h1>
+      <p
+        class="max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        2026 年春, 我们在深圳一家咖啡馆讨论: Shopify / Amazon / 小红书 多渠道同时运营到
+        月 GMV 500 万的时候, 我们招了 12 个人, 但处理差评 / 回 DM / 写 listing 的速度
+        还是跟不上。这不是堆人能解决的事 — 这是结构问题。
+      </p>
+      <p
+        class="mt-4 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        Claude Code + Claude Managed Agents 发布那晚, 我们决定转型做 AI 工程服务。
+        不做咨询, 不做 PPT, 不做外包。<strong style="color:var(--fg-display)">14 天交付一个真跑起来的 AI 工作流</strong>,
+        代码 100% 给客户。2026-04 开始接第一批 Pilot Pod 客户。
+      </p>
+    </section>
+
+    <!-- Facts table -->
+    <section
+      class="border-y py-12"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[900px] px-6">
+        <div
+          class="grid gap-x-6 gap-y-4 font-mono sm:grid-cols-2"
+          style="font-size:var(--text-body-sm)"
+        >
+          {facts.map((f) => (
+            <div class="flex items-baseline gap-3 border-b pb-2" style="border-color:var(--border-default)">
+              <dt
+                class="shrink-0 text-xs uppercase tracking-[0.08em]"
+                style="color:var(--fg-muted);min-width:7rem"
+              >
+                {f.label}
+              </dt>
+              <dd style="color:var(--fg-display)">{f.value}</dd>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section class="mx-auto max-w-[1100px] px-6 py-20">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Core values
+      </p>
+      <h2
+        class="mb-10 font-semibold"
+        style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        「别堆人, 造船」展开
+      </h2>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        {values.map((v, i) => (
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <div
+              class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+              style="color:var(--color-signal-600)"
+            >
+              {String(i + 1).padStart(2, "0")} / 04
+            </div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              {v.title}
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              {v.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Dogfooding 证据 -->
+    <section
+      class="border-y py-16"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[900px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          Dogfooding
+        </p>
+        <h2
+          class="mb-6 font-semibold"
+          style="font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.15;color:var(--fg-display)"
+        >
+          这个官网本身 · 就是我们自己的 14 天交付
+        </h2>
+        <p class="mb-6" style="font-size:var(--text-body-lg);color:var(--fg-default)">
+          我们对客户承诺 14 天。我们自己的官网也用 14 天 MVP 方式在造 —
+          Week 1 骨架上线, Week 2 海外灰度 (shipwright.co), Week 3 SEOMachine 接入,
+          Week 4 国内备案切流 (shipwright.cn)。
+        </p>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="/roadmap"
+            class="inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+            style="border-color:var(--border-strong);color:var(--fg-default)"
+          >
+            6 周路线图 →
+          </a>
+          <a
+            href="https://github.com/shipwright-org"
+            class="inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] border px-4 font-mono text-sm transition hover:opacity-80"
+            style="border-color:var(--border-strong);color:var(--fg-default)"
+          >
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.9.57.1.78-.25.78-.55v-2.01c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18.92-.26 1.91-.38 2.89-.39.98 0 1.97.13 2.89.39 2.21-1.5 3.18-1.18 3.18-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+            </svg>
+            shipwright-org
+          </a>
+          <a
+            href="/changelog"
+            class="inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+            style="border-color:var(--border-strong);color:var(--fg-default)"
+          >
+            Changelog →
+          </a>
+        </div>
+
+        <p
+          class="mt-8 rounded-[var(--radius-md)] p-4 font-mono text-sm"
+          style="background:var(--bg-card);color:var(--fg-muted)"
+        >
+          $ git log --oneline · 我们每次 commit 都公开。这个网站从 Day 1 Hero 到 Day 5 Contact 的每一步, 都在我们公开的 Git 历史里看得到。
+        </p>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

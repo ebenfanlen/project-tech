@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import SkuDetailPage from "../components/SkuDetailPage.astro";
+import { skus } from "../data/skus";
+
+const sku = skus.find((s) => s.id === "fleet-integration")!;
+const upsellFrom = skus.find((s) => s.id === "vibecoding-pod");
+const upsellTo = skus.find((s) => s.id === "crew-retainer");
+
+const idealFor = [
+  "月 GMV $200K-$1M, 卡在中型天花板的卖家",
+  "用了 8+ 个 SaaS (Shopify / Klaviyo / Gorgias / ERP / 飞书 / Notion / ...)",
+  "有全职数据 / 运营总监, 能配合需求梳理 4 小时+",
+  "痛点是系统之间的胶水工作每天 4 小时以上",
+  "预算 $15K-$40K 级别 · Platform Fee 强绑定 6 个月起",
+];
+
+const notForYouIf = [
+  "场景只有 1-2 个 → 走 Vibecoding Pod (¥58K / 14 天) 就够了",
+  "没有全职运营总监能配合对齐需求 → 走 Vibecoding 更合适",
+  "GMV <$200K → 系统复杂度撑不起这个投入",
+  "希望 14 天硬交付 → Fleet 是 21-28 天, 复杂度超出 14 天能力",
+  "不愿签 6 月起 Platform 订阅 → 走 Vibecoding 按月取消版",
+];
+---
+
+<BaseLayout
+  title="Fleet Integration / 舰队集成 ¥168K-298K · 多 SaaS AI 编排 · Shipwright"
+  description="21-28 天把多场景 agent 接入现有 ERP/OMS/Shopify/Klaviyo/Gorgias 多系统. 主控 Agent + 工具 Agent 架构. 自然语言跨系统决策. BYOK -25%."
+  path="/fleet-integration"
+>
+  <NavBar />
+  <SkuDetailPage
+    sku={sku}
+    upsellFrom={upsellFrom}
+    upsellTo={upsellTo}
+    idealFor={idealFor}
+    notForYouIf={notForYouIf}
+  />
+
+  <!-- Fleet 专属: 架构图 section -->
+  <section class="mx-auto max-w-[1100px] px-6 py-16">
+    <p
+      class="mb-3 font-mono uppercase"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+    >
+      Architecture
+    </p>
+    <h2
+      class="mb-8 font-semibold"
+      style="font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.15;color:var(--fg-display)"
+    >
+      主控 Agent + 工具 Agent 编排架构
+    </h2>
+
+    <div
+      class="rounded-[var(--radius-lg)] border p-6 font-mono text-sm overflow-x-auto"
+      style="background:var(--color-cool-800);color:var(--color-canvas-100);border-color:var(--color-cool-700)"
+    >
+<pre style="font-family:var(--font-mono);line-height:1.6;color:var(--color-canvas-100)"><span style="color:var(--color-cool-400)"># Fleet Integration 典型架构 (Shipwright 自研 orchestration)</span>
+
+<span style="color:var(--color-signal-400)">飞书 / 企微 @消息</span>      <span style="color:var(--color-cool-500)">(自然语言入口)</span>
+      │
+      ▼
+┌──────────────────────────────────────┐
+│ <span style="color:var(--color-signal-400)">主控 Agent</span>  <span style="color:var(--color-cool-500)">(Claude 4 + RAG)</span>     │
+│ 跨系统决策 + 意图识别 + 任务分发          │
+└─────────────┬────────────────────────┘
+              │
+       ┌──────┼──────┬──────┬──────┬──────┐
+       ▼      ▼      ▼      ▼      ▼      ▼
+    ┌─────┐┌─────┐┌─────┐┌─────┐┌─────┐┌─────┐
+    │工具 ││工具 ││工具 ││工具 ││工具 ││工具 │
+    │A    ││B    ││C    ││D    ││E    ││F    │
+    └──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬──┘└──┬──┘
+       │      │      │      │      │      │
+       ▼      ▼      ▼      ▼      ▼      ▼
+    Shopify Amazon  TikTok Klaviyo Gorgias 旺店通
+    Admin   SP-API  Shop   EDM     工单    ERP
+       │      │      │      │      │      │
+       └──────┴──────┴──────┴──────┴──────┘
+              │
+              ▼
+    <span style="color:var(--color-signal-400)">中央数据层</span> <span style="color:var(--color-cool-500)">(Supabase / 客户自有 DB / Airtable)</span>
+              │
+              ▼
+    <span style="color:var(--color-signal-400)">数据看板 + 异常预警机器人</span>
+       (运营日报 / 周报 / 库存预警 / 差评 / ROAS)
+</pre>
+    </div>
+
+    <p class="mt-6 text-sm" style="color:var(--fg-muted)">
+      具体架构按客户实际 SaaS stack 定制 · Day 1-3 Discovery 阶段梳理清楚所有系统接口 · 法务 review 数据出境合规。
+    </p>
+  </section>
+
+  <FinalCTA />
+  <SiteFooter />
+</BaseLayout>

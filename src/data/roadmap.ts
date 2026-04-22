@@ -82,7 +82,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["14 天硬承诺 Hero", "5 大场景锁死 (V-CS/V-SEO/V-AD/V-CONTENT/V-OPS)", "每场景 starter kit 介绍", "Platform fee + AI pass-through + BYOK 公式", "反悔条款"],
     seoKw: "vibecoding / AI 工作流定制",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/fleet-integration",
@@ -95,7 +95,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["多系统集成场景", "主控 Agent + 6-10 工具 Agent 架构图", "中央数据层选型", "Retainer 强绑定 6 月起"],
     seoKw: "AI agent 企业集成",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/crew-retainer",
@@ -108,7 +108,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["三档 (轻量 20h / 标准 40h / 深度 80h)", "包含项清单", "预付折扣", "7×12 中文 IM 响应"],
     seoKw: "AI 代运营 / agent 运维",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/work",
@@ -147,7 +147,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["创始团队实名 + 照片 (反 CC Strategic 的强化)", "价值观 (别堆人，造船 展开解读)", "GitHub 公开仓库链接 (dogfooding 证据)", "办公地 (上海 · 纽约 · 深圳)"],
     seoKw: "shipwright 团队",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/contact",
@@ -286,7 +286,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-14~20",
     priority: "P0",
     sections: ["14 天超期退款条款", "代码所有权", "BYOK 条款", "争议解决"],
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/legal/privacy",
@@ -298,7 +298,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-14~20",
     priority: "P0",
     sections: ["数据收集范围", "PIPL 授权说明", "删除接口", "24 月自动归档"],
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/legal/icp",
@@ -310,7 +310,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-14~20",
     priority: "P0",
     sections: ["备案主体", "备案号", "公安备案号", "变更记录"],
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/legal/sla",
@@ -322,7 +322,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-21~06-03",
     priority: "P1",
     sections: ["可用性承诺", "响应时间", "升级路径", "赔付条款"],
-    status: "planned",
+    status: "live",
   },
 ];
 

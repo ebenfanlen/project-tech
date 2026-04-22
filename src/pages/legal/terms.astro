@@ -1,0 +1,167 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import LegalLayout from "../../components/LegalLayout.astro";
+---
+
+<BaseLayout
+  title="服务条款 · Shipwright 船匠"
+  description="Shipwright 服务条款 · 14 天交付承诺 · 代码所有权 · BYOK · 退款条款"
+  path="/legal/terms"
+>
+  <NavBar />
+
+  <LegalLayout
+    title="服务条款"
+    effectiveDate="2026-04-22"
+    lastUpdated="2026-04-22"
+  >
+    <p>
+      本服务条款（"<strong>条款</strong>"）是您（"<strong>客户</strong>"）与上海船匠科技有限公司及其关联实体（"<strong>Shipwright</strong>"、"<strong>我们</strong>"）之间就 Shipwright 提供的 AI 工作流定制开发服务达成的协议。
+    </p>
+
+    <h2>1. 服务范围</h2>
+    <p>
+      Shipwright 提供以下四款产品（统称"<strong>服务</strong>"）:
+    </p>
+    <ul>
+      <li><strong>Pilot Pod / 试航舱</strong> · 5 个工作日交付一个窄场景 AI agent</li>
+      <li><strong>Vibecoding Pod / 匠造舱</strong> · 14 个自然日交付一个完整业务闭环 AI 工作流</li>
+      <li><strong>Fleet Integration / 舰队集成</strong> · 21-28 自然日交付多 SaaS AI 编排</li>
+      <li><strong>Crew Retainer / 船员月租</strong> · 月度持续优化与代维护</li>
+    </ul>
+    <p>
+      各产品具体交付内容、定价、周期见官网 <code>/pricing</code> 页面, 及签约时附件《服务订单》。
+    </p>
+
+    <h2>2. 14 天硬交付承诺（Vibecoding Pod 适用）</h2>
+
+    <h3>2.1 交付定义</h3>
+    <p>
+      Vibecoding Pod 交付期为签约后 <strong>14 个自然日</strong>。
+      交付完成指: (a) 代码已推送至客户指定 Git 仓库; (b) 生产环境已部署; (c) 客户已完成培训并签字确认交付清单。
+    </p>
+
+    <h3>2.2 Day 7 Mid-sprint Demo</h3>
+    <p>
+      签约后第 7 天我们向客户展示一个基于真实/脱敏数据的 MVP demo。客户可基于 demo 做 <strong>go/no-go 决策</strong>:
+    </p>
+    <ul>
+      <li><strong>go</strong>: 继续推进至 Day 14 交付</li>
+      <li><strong>no-go (无理由终止)</strong>: 客户可无需说明原因终止本服务, Shipwright 退还 <strong>70% setup fee</strong>, 已投入工时按合同费率折算</li>
+    </ul>
+
+    <h3>2.3 超期退款</h3>
+    <p>
+      若 Shipwright 原因导致 Day 14 未达到 §2.1 交付定义:
+    </p>
+    <ul>
+      <li>按 <strong>3% setup fee / 天</strong> 退款 (四舍五入到自然日)</li>
+      <li>退款上限 <strong>30% setup fee</strong> (即超期满 10 天即退满上限)</li>
+      <li>超期超过 10 天仍未交付, 客户有权<strong>单方面终止合同</strong>, Shipwright 退还 setup 的 70% 并交付当前进度代码</li>
+    </ul>
+
+    <h3>2.4 暂停计时（客户方原因）</h3>
+    <p>
+      以下情形下 14 天倒计时暂停, 需双方书面签字确认:
+    </p>
+    <ul>
+      <li>客户未在 48h 内提供必要的 API 访问权限或测试数据</li>
+      <li>客户在 UAT 阶段未按约定时间响应（&gt; 24h 无回复）</li>
+      <li>客户提出 PRD 范围外的新需求（将入 Crew Retainer 排期, 不挤占 14 天）</li>
+      <li>不可抗力事件（地震 / 断网 / 电力中断 / 官方管制）</li>
+    </ul>
+
+    <h2>3. 代码所有权</h2>
+
+    <h3>3.1 客户 100% 持有</h3>
+    <p>
+      交付完成后, 客户 <strong>100%</strong> 拥有下列资产的永久、全球、不可撤销的版权与使用权:
+    </p>
+    <ul>
+      <li>所有 Agent 源代码、Prompt、配置文件</li>
+      <li>部署脚本与基础设施代码 (IaC)</li>
+      <li>数据看板源码 (前端 + 后端)</li>
+      <li>运维手册、SOP 文档、培训录屏</li>
+    </ul>
+
+    <h3>3.2 Shipwright 例外保留权利</h3>
+    <p>
+      Shipwright 保留下列项目的使用权:
+    </p>
+    <ul>
+      <li>5 大场景 starter kits 的<strong>通用架构模板</strong>（未包含任何客户业务逻辑）, 用于其他客户项目复用</li>
+      <li>脱敏后的<strong>性能 benchmark 数据</strong>, 用于 Shipwright 自身的产品迭代与公开披露（去标识化后）</li>
+    </ul>
+
+    <h3>3.3 反 vendor lock</h3>
+    <p>
+      Shipwright 不保留任何 backdoor / 不锁 API / 不收续期许可费。客户可随时选择自行维护或转由第三方维护, Shipwright 不得以技术手段阻碍。
+    </p>
+
+    <h2>4. BYOK（Bring Your Own Key）条款</h2>
+    <p>
+      客户可选择 BYOK 模式, 提供自有的 Anthropic / OpenAI / Google 等 AI 服务 API Key。本条款下:
+    </p>
+    <ul>
+      <li>Shipwright 将 API Key 存储于 Cloudflare Workers Secrets, <strong>不落入 Shipwright 数据库</strong></li>
+      <li>Shipwright 对 API Key 的滥用不承担责任（请客户自行监控用量与账单）</li>
+      <li>AI 调用费用由客户直接支付给模型厂商, Shipwright <strong>0 markup</strong></li>
+      <li>Platform Fee 相应减免（Vibecoding Pod -20%, Fleet Integration -25%）</li>
+    </ul>
+
+    <h2>5. 费用与付款</h2>
+
+    <h3>5.1 收费结构（三段式）</h3>
+    <p>
+      总费用 = <strong>Setup Fee</strong>（一次性）+ <strong>Platform Fee</strong>（月度）+ <strong>AI Cost Pass-through</strong>（按量）
+    </p>
+
+    <h3>5.2 付款节奏</h3>
+    <ul>
+      <li><strong>国内客户</strong>: 50% 启动 + 50% 交付验收后 (对公转账或 6% 增值税专票)</li>
+      <li><strong>海外客户</strong>: 40% 启动 + 40% Day 10 + 20% Day 14 (Stripe / Wise / 对公电汇)</li>
+    </ul>
+
+    <h3>5.3 逾期</h3>
+    <p>
+      客户逾期付款超过 7 天, Shipwright 有权暂停服务直至付清; 逾期超过 30 天, 有权终止合同并追索已发生费用。
+    </p>
+
+    <h2>6. 服务不承诺事项</h2>
+
+    <p>Shipwright <strong>明确不做</strong>以下事项（即使客户额外付费）:</p>
+    <ul>
+      <li>纯咨询 / PPT 交付（不含可运行代码）</li>
+      <li>无 AI 元素的普通软件开发（纯建站、纯 App、纯 UI/UX）</li>
+      <li>非跨境电商 / DTC 垂直的项目</li>
+      <li>&lt; ¥10,000 或 &gt; ¥500,000 的单一项目（Phase 1 范围）</li>
+      <li>White-label / 贴牌</li>
+      <li>不透明定价 / credit 黑盒计费</li>
+    </ul>
+
+    <h2>7. 保密</h2>
+    <p>
+      双方对对方的商业秘密、客户数据、未公开技术信息负有保密义务, 期限为合同生效起 <strong>5 年</strong>。Shipwright 对客户业务数据仅在项目周期内处理, 项目结束后 <strong>30 天</strong>内销毁我方备份。
+    </p>
+
+    <h2>8. 责任限制</h2>
+    <p>
+      在法律允许的最大范围内, Shipwright 对本服务的累计赔偿责任不超过客户已支付的 <strong>setup fee 总额</strong>。Shipwright 不对间接损失、利润损失、数据丢失承担责任（客户自行备份数据）。
+    </p>
+
+    <h2>9. 适用法律与争议解决</h2>
+    <ul>
+      <li><strong>国内客户</strong>: 适用中华人民共和国法律, 争议提交<strong>上海仲裁委员会</strong></li>
+      <li><strong>海外客户</strong>: 适用香港特别行政区法律, 争议提交<strong>香港国际仲裁中心</strong>(HKIAC)</li>
+    </ul>
+
+    <h2>10. 条款变更</h2>
+    <p>
+      Shipwright 保留修改本条款的权利。重大变更将提前 30 天通过邮件通知已签约客户, 客户可选择接受或终止合同（终止则按进度结算）。本条款的最新版本始终在 <code>/legal/terms</code> 公开。
+    </p>
+  </LegalLayout>
+
+  <SiteFooter />
+</BaseLayout>

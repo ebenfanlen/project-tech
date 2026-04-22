@@ -1,0 +1,235 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import { skus } from "../data/skus";
+
+const sku = skus.find((s) => s.id === "crew-retainer")!;
+
+const tiers = [
+  { name: "Crew-S 轻量", priceCN: "¥5,800/月", priceUS: "$880/月", hours: 20, overage: "¥380/h 或 $58/h" },
+  { name: "Crew-M 标准", priceCN: "¥11,800/月", priceUS: "$1,780/月", hours: 40, overage: "¥340/h 或 $52/h", popular: true },
+  { name: "Crew-L 深度", priceCN: "¥22,800/月", priceUS: "$3,480/月", hours: 80, overage: "¥310/h 或 $48/h" },
+];
+
+const included = [
+  { category: "运维", items: ["bug 修复", "错误监控告警", "日志归档", "月度健康报告"] },
+  { category: "优化", items: ["Prompt 优化 (A/B test)", "模型版本切换 (如 Claude 3.5 → 4.x)", "成本优化 (prompt caching / batching)", "响应时长优化"] },
+  { category: "扩展", items: ["新场景小改 (<40h)", "新渠道接入 (TikTok Shop US / 小红书)", "新语种 Prompt", "看板新增指标"] },
+  { category: "协作", items: ["7×12 中文 IM 响应 4h (飞书 / 企微 / 钉钉)", "月度 1h business review", "季度 1h roadmap 对齐", "优先排期 (插队普通客户)"] },
+];
+---
+
+<BaseLayout
+  title="Crew Retainer / 船员月租 ¥5.8K-22.8K/月 · 月度 AI 运维 · Shipwright"
+  description="交付后持续优化 + SLA + 代维护 · 三档 (20h / 40h / 80h) · 预付 12 月 -12% + 锁价 · 7×12 中文 IM 4h 响应 · 反全职 AI 工程师 ¥35K+/月."
+  path="/crew-retainer"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1100px] px-6 pb-12 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-primary-500)"
+      >
+        Crew Retainer · 船员月租
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.25rem,6vw,3.75rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        船造完了, 船员留下继续开。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        Vibecoding Pod / Fleet Integration 交付后, 持续优化 + SLA + 代维护 · 按月订阅,
+        <strong style="color:var(--fg-display)">省一个全职 AI 工程师</strong> (国内至少 ¥35K/月 + 五险一金)。
+      </p>
+    </section>
+
+    <!-- 三档价格 -->
+    <section class="mx-auto max-w-[1100px] px-6 pb-16">
+      <div class="grid gap-4 md:grid-cols-3">
+        {tiers.map((t) => (
+          <div
+            class="relative flex flex-col rounded-[var(--radius-lg)] border p-6"
+            style={
+              t.popular
+                ? "background:var(--bg-card);border-color:var(--color-primary-500);border-width:2px;box-shadow:var(--shadow-lg)"
+                : "background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+            }
+          >
+            {t.popular && (
+              <span
+                class="absolute -top-3 left-6 rounded-[var(--radius-sm)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-canvas-50)]"
+                style="background:var(--color-primary-500)"
+              >
+                最受欢迎
+              </span>
+            )}
+            <h3 class="mb-1 text-lg font-semibold" style="color:var(--fg-display)">
+              {t.name}
+            </h3>
+            <div
+              class="my-4 tabular-nums font-bold"
+              style="font-size:2rem;color:var(--fg-display)"
+            >
+              {t.priceCN}
+            </div>
+            <div class="mb-4 font-mono text-xs" style="color:var(--fg-muted)">
+              {t.priceUS} · 包含 {t.hours} 小时 · 超时 {t.overage}
+            </div>
+            <a
+              href={`/contact?sku=crew-${t.name.split(' ')[0].toLowerCase()}`}
+              class="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] px-4 text-sm font-semibold transition hover:brightness-110"
+              style={
+                t.popular
+                  ? "background:var(--color-primary-500);color:var(--color-canvas-50)"
+                  : "border:1px solid var(--border-strong);color:var(--color-primary-500);background:transparent"
+              }
+            >
+              选这档
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <div
+        class="mt-6 rounded-[var(--radius-md)] border-l-2 p-4 text-sm"
+        style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
+      >
+        <strong style="color:var(--fg-display)">预付折扣 + 锁价:</strong> 3 个月起订 · 预付 3 月 -5% · 预付 12 月 -12% + 锁定价格 1 年 · 月付可随时取消 (下月生效)
+      </div>
+    </section>
+
+    <!-- 包含项 4 类 -->
+    <section
+      class="border-y py-16"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-primary-500)"
+        >
+          What's included
+        </p>
+        <h2
+          class="mb-10 font-semibold"
+          style="font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.15;color:var(--fg-display)"
+        >
+          包含项 4 类
+        </h2>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          {included.map((cat) => (
+            <div
+              class="rounded-[var(--radius-lg)] border p-6"
+              style="background:var(--bg-card);border-color:var(--border-default)"
+            >
+              <h3
+                class="mb-4 font-mono text-sm uppercase tracking-[0.08em]"
+                style="color:var(--color-signal-600)"
+              >
+                {cat.category}
+              </h3>
+              <ul class="space-y-2">
+                {cat.items.map((item) => (
+                  <li class="flex items-start gap-2 text-sm" style="color:var(--fg-default)">
+                    <svg
+                      class="mt-1 h-3 w-3 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="var(--color-primary-500)"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 对标自招工程师 -->
+    <section class="mx-auto max-w-[900px] px-6 py-16">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-primary-500)"
+      >
+        vs · 自招 vs Retainer
+      </p>
+      <h2
+        class="mb-6 font-semibold"
+        style="font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.15;color:var(--fg-display)"
+      >
+        为什么不自己招一个全职 AI 工程师
+      </h2>
+
+      <div
+        class="overflow-x-auto rounded-[var(--radius-lg)] border"
+        style="background:var(--bg-card);border-color:var(--border-default)"
+      >
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr
+              class="border-b text-left"
+              style="border-color:var(--border-default);background:var(--bg-muted)"
+            >
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">维度</th>
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">自招全职 AI 工程师</th>
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--color-signal-600)">Crew-M Retainer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b" style="border-color:var(--border-default)">
+              <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">人力成本</td>
+              <td class="px-4 py-3" style="color:var(--fg-muted)">¥35K/月 + 五险一金 ≈ ¥45K/月 全包</td>
+              <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">¥11,800/月 · 一口价</td>
+            </tr>
+            <tr class="border-b" style="border-color:var(--border-default);background:var(--bg-muted)">
+              <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">启动时间</td>
+              <td class="px-4 py-3" style="color:var(--fg-muted)">招聘 2-3 月 + 熟悉 3 月 = 半年</td>
+              <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">下个月 1 号即刻开跑</td>
+            </tr>
+            <tr class="border-b" style="border-color:var(--border-default)">
+              <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">技术栈</td>
+              <td class="px-4 py-3" style="color:var(--fg-muted)">现学 Claude Code + 你们的 stack</td>
+              <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">交付团队原班人马延续</td>
+            </tr>
+            <tr class="border-b" style="border-color:var(--border-default);background:var(--bg-muted)">
+              <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">离职风险</td>
+              <td class="px-4 py-3" style="color:var(--fg-muted)">年离职率 15-30%, 项目延续受损</td>
+              <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">团队共享知识, 单人离职无感</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">灵活性</td>
+              <td class="px-4 py-3" style="color:var(--fg-muted)">裁员 N+1 / N+3 补偿</td>
+              <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">月付可取消, 下月生效</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="mt-6 text-sm" style="color:var(--fg-muted)">
+        注: 如果你公司有 10 人+ 的 AI 工程团队 · Retainer 可能不是最优解, 我们的定位是补充而非替代。
+      </p>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,104 @@
+---
+export interface Props {
+  title: string;
+  effectiveDate: string;
+  lastUpdated: string;
+}
+
+const { title, effectiveDate, lastUpdated } = Astro.props;
+---
+
+<main class="mx-auto max-w-[800px] px-6 pb-20 pt-16 sm:pt-24">
+  <p
+    class="mb-3 font-mono uppercase"
+    style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+  >
+    Legal
+  </p>
+  <h1
+    class="mb-4 font-semibold"
+    style="font-size:clamp(2rem,5vw,3rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+  >
+    {title}
+  </h1>
+
+  <div
+    class="mb-10 flex flex-wrap gap-4 border-b pb-6 text-sm"
+    style="border-color:var(--border-default);color:var(--fg-muted)"
+  >
+    <span>
+      <span class="font-mono text-xs uppercase tracking-[0.08em]">生效日期:</span>
+      <span class="ml-1" style="color:var(--fg-default)">{effectiveDate}</span>
+    </span>
+    <span>
+      <span class="font-mono text-xs uppercase tracking-[0.08em]">最后更新:</span>
+      <span class="ml-1" style="color:var(--fg-default)">{lastUpdated}</span>
+    </span>
+  </div>
+
+  <div
+    class="prose prose-sm max-w-none"
+    style="color:var(--fg-default);line-height:1.75"
+  >
+    <slot />
+  </div>
+
+  <div
+    class="mt-10 rounded-[var(--radius-md)] border-l-2 p-4 text-sm"
+    style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
+  >
+    <strong style="color:var(--fg-display)">问题或申诉:</strong>
+    发送至 <a href="mailto:legal@shipwright.co" style="color:var(--color-signal-600);font-weight:600">legal@shipwright.co</a>
+    · 我们 5 个工作日内回复。
+  </div>
+</main>
+
+<style>
+  .prose h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--fg-display);
+    margin: 2rem 0 1rem;
+    line-height: 1.25;
+  }
+  .prose h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--fg-heading);
+    margin: 1.5rem 0 0.75rem;
+  }
+  .prose p {
+    margin: 0.75rem 0;
+  }
+  .prose ul {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+    list-style: disc;
+  }
+  .prose ol {
+    margin: 0.75rem 0;
+    padding-left: 1.5rem;
+    list-style: decimal;
+  }
+  .prose li {
+    margin: 0.25rem 0;
+  }
+  .prose strong {
+    color: var(--fg-display);
+    font-weight: 600;
+  }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--bg-muted);
+    padding: 0.1em 0.4em;
+    border-radius: var(--radius-sm);
+    color: var(--color-signal-600);
+  }
+  .prose a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 2px;
+  }
+</style>

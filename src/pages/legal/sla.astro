@@ -1,0 +1,157 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import LegalLayout from "../../components/LegalLayout.astro";
+---
+
+<BaseLayout
+  title="SLA · 服务水平协议 · Shipwright 船匠"
+  description="Shipwright SLA 服务水平协议 · 可用性承诺 · 响应时间 · 赔付条款（Fleet Integration + Crew Retainer 客户适用）"
+  path="/legal/sla"
+>
+  <NavBar />
+
+  <LegalLayout
+    title="SLA · 服务水平协议"
+    effectiveDate="2026-04-22"
+    lastUpdated="2026-04-22"
+  >
+    <p>
+      本 <strong>SLA（Service Level Agreement）</strong> 适用于 Shipwright <strong>Fleet Integration</strong> 与 <strong>Crew Retainer</strong> 产品客户, 定义可用性、响应时间、赔付条款。
+      Pilot Pod 与 Vibecoding Pod（交付后保修期内）按合同附件执行。
+    </p>
+
+    <h2>1. 定义</h2>
+    <ul>
+      <li><strong>可用性 (Availability)</strong>: 每月中, 由 Shipwright 负责的 AI Agent / API / 看板 能正常响应请求的时间占比</li>
+      <li><strong>计划维护 (Planned Maintenance)</strong>: 提前 72h 通知的停机维护, 不计入可用性</li>
+      <li><strong>严重故障 (P0)</strong>: AI Agent 完全停摆 / 数据错误 / 安全事件</li>
+      <li><strong>一般故障 (P1)</strong>: 部分场景故障 / 准确率下降 &gt; 20% / 看板不可访问</li>
+      <li><strong>轻度故障 (P2)</strong>: 偶发错误 / 性能下降 &lt; 20%</li>
+    </ul>
+
+    <h2>2. 可用性承诺</h2>
+
+    <table class="my-4 w-full border-collapse text-sm">
+      <thead>
+        <tr style="background:var(--bg-muted)">
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">产品</th>
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">月可用性</th>
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">对应月度停机</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border-b px-3 py-2 font-medium" style="border-color:var(--border-default);color:var(--fg-display)">Vibecoding Pod（保修期内）</td>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">≥ 99.0%</td>
+          <td class="border-b px-3 py-2 font-mono" style="border-color:var(--border-default);color:var(--fg-muted)">≤ 7h 18m</td>
+        </tr>
+        <tr>
+          <td class="border-b px-3 py-2 font-medium" style="border-color:var(--border-default);color:var(--fg-display)">Fleet Integration</td>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">≥ 99.5%</td>
+          <td class="border-b px-3 py-2 font-mono" style="border-color:var(--border-default);color:var(--fg-muted)">≤ 3h 39m</td>
+        </tr>
+        <tr>
+          <td class="px-3 py-2 font-medium" style="color:var(--fg-display)">Crew Retainer (增值支持)</td>
+          <td class="px-3 py-2" style="color:var(--fg-default)">≥ 99.5%</td>
+          <td class="px-3 py-2 font-mono" style="color:var(--fg-muted)">≤ 3h 39m</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>3. 响应时间</h2>
+
+    <table class="my-4 w-full border-collapse text-sm">
+      <thead>
+        <tr style="background:var(--bg-muted)">
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">优先级</th>
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">首次响应</th>
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">解决目标</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border-b px-3 py-2 font-medium" style="border-color:var(--border-default);color:var(--color-error-500)">P0 严重</td>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default);color:var(--fg-display)">15 分钟 (7×24)</td>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">4 小时 (7×24)</td>
+        </tr>
+        <tr>
+          <td class="border-b px-3 py-2 font-medium" style="border-color:var(--border-default);color:var(--color-warning-500)">P1 一般</td>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default);color:var(--fg-display)">2 小时 (工作时段)</td>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">24 小时</td>
+        </tr>
+        <tr>
+          <td class="px-3 py-2 font-medium" style="color:var(--color-primary-500)">P2 轻度</td>
+          <td class="px-3 py-2" style="color:var(--fg-display)">下个工作日</td>
+          <td class="px-3 py-2" style="color:var(--fg-default)">5 个工作日</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <strong>工作时段</strong>: 中国标准时间（CST）工作日 09:00-22:00
+      <br /><strong>7×24</strong>: Fleet Integration 客户默认 7×24; Vibecoding Pod 保修期内仅工作时段, 如需 7×24 可升级 Crew Retainer
+    </p>
+
+    <h2>4. 赔付条款</h2>
+    <p>如 Shipwright 未达到 §2 可用性承诺或 §3 响应时间, 按下表赔付:</p>
+
+    <table class="my-4 w-full border-collapse text-sm">
+      <thead>
+        <tr style="background:var(--bg-muted)">
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">违约类型</th>
+          <th class="border-b px-3 py-2 text-left font-mono text-xs uppercase tracking-[0.08em]" style="border-color:var(--border-default);color:var(--fg-muted)">赔付比例 (月度 Platform Fee)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">可用性 95-99%</td>
+          <td class="border-b px-3 py-2 font-semibold" style="border-color:var(--border-default);color:var(--color-signal-600)">10%</td>
+        </tr>
+        <tr>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">可用性 90-95%</td>
+          <td class="border-b px-3 py-2 font-semibold" style="border-color:var(--border-default);color:var(--color-signal-600)">25%</td>
+        </tr>
+        <tr>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">可用性 &lt; 90%</td>
+          <td class="border-b px-3 py-2 font-semibold" style="border-color:var(--border-default);color:var(--color-signal-600)">50%</td>
+        </tr>
+        <tr>
+          <td class="border-b px-3 py-2" style="border-color:var(--border-default)">P0 首次响应 &gt; 30 分钟</td>
+          <td class="border-b px-3 py-2 font-semibold" style="border-color:var(--border-default);color:var(--color-signal-600)">额外 10%</td>
+        </tr>
+        <tr>
+          <td class="px-3 py-2">P0 未在 8h 内解决</td>
+          <td class="px-3 py-2 font-semibold" style="color:var(--color-signal-600)">额外 15%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      <strong>赔付方式</strong>: 下个月 Platform Fee 按比例抵扣 · 单月赔付上限 <strong>100% Platform Fee</strong>
+      <br /><strong>主动触发</strong>: 我们每月 1 号发可用性报告, 如达到赔付条件主动在次月账单扣除, 无需客户申请
+    </p>
+
+    <h2>5. SLA 不适用情形</h2>
+    <ul>
+      <li>计划维护（提前 72h 通知）</li>
+      <li>不可抗力（地震、战争、电网中断）</li>
+      <li>客户方原因（API Key 过期、误操作删除、超额欠费）</li>
+      <li>第三方服务商故障超出 Shipwright 控制（如 Anthropic API 集体宕机）—— 我们会主动协调但不触发赔付</li>
+      <li>客户未按要求提供必要访问权限导致的故障</li>
+    </ul>
+
+    <h2>6. 升级路径</h2>
+    <p>如需更严格的 SLA 承诺（如 99.9% 可用性、专属客户经理、7×24 P1 响应）, 请联系 <code>sales@shipwright.co</code> 定制企业级 SLA。</p>
+
+    <h2>7. 监控与透明度</h2>
+    <ul>
+      <li>我们提供实时可用性看板（客户登录后可见）</li>
+      <li>每月 1 号自动发送月度可用性报告</li>
+      <li>重大事件（P0 故障超 4h）48h 内发布 post-mortem 报告</li>
+    </ul>
+  </LegalLayout>
+
+  <SiteFooter />
+</BaseLayout>
