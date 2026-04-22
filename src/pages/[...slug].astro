@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import ConstructionPage from "../components/ConstructionPage.astro";
+import { roadmap } from "../data/roadmap";
+
+export function getStaticPaths() {
+  // 所有 roadmap 里除首页外的页面都通过此动态路由预渲染为占位页
+  // 当真实页面完成后，在 src/pages/ 下创建同名 .astro 文件即可覆盖
+  return roadmap
+    .filter((p) => p.slug !== "/")
+    .map((p) => ({
+      params: { slug: p.slug.slice(1) },  // 去掉前导 "/"
+      props: { spec: p },
+    }));
+}
+
+const { spec } = Astro.props;
+---
+
+<BaseLayout
+  title={`${spec.title} · Shipwright 船匠`}
+  description={`${spec.jtbd} — 本页计划于 ${spec.plannedDate} 完成。`}
+  path={spec.slug}
+>
+  <NavBar />
+  <ConstructionPage spec={spec} />
+
+  <footer
+    class="border-t"
+    style="background:var(--color-primary-900);color:var(--color-canvas-100);border-color:var(--color-primary-800)"
+  >
+    <div class="mx-auto max-w-[1200px] px-6 py-10 text-sm">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <span>© 2026 Shipwright 船匠</span>
+        <span style="color:var(--color-cool-400)">
+          沪 ICP 备 备案申请中 · 别堆人，造船。
+        </span>
+      </div>
+    </div>
+  </footer>
+</BaseLayout>

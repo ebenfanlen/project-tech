@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+---
+
+<BaseLayout
+  title="404 · 这里没有船 · Shipwright 船匠"
+  description="你访问的页面不在我们的航线图里。"
+  path="/404"
+>
+  <NavBar />
+
+  <main class="mx-auto max-w-[680px] px-6 pb-24 pt-24 text-center">
+    <div
+      class="mx-auto mb-8 font-mono"
+      style="font-size:6rem;line-height:1;color:var(--color-signal-500);letter-spacing:-0.05em"
+    >
+      404
+    </div>
+
+    <h1
+      class="mb-4 font-semibold"
+      style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;color:var(--fg-display)"
+    >
+      这里没有船
+    </h1>
+
+    <p
+      class="mb-10"
+      style="font-size:var(--text-body-lg);color:var(--fg-default)"
+    >
+      你访问的页面不在 Shipwright 的航线图里。可能是还没建（我们有 23 页的清单），
+      也可能是输错了。
+    </p>
+
+    <nav class="flex flex-wrap justify-center gap-3">
+      <a
+        href="/"
+        class="inline-flex h-10 items-center rounded-[var(--radius-md)] px-4 text-sm font-semibold transition hover:brightness-110"
+        style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+      >
+        回首页 →
+      </a>
+      <a
+        href="/roadmap"
+        class="inline-flex h-10 items-center rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+        style="border-color:var(--border-strong);color:var(--fg-default)"
+      >
+        看 6 周路线图 →
+      </a>
+    </nav>
+  </main>
+</BaseLayout>

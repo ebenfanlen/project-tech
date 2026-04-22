@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import { roadmap, type PageSpec } from "../data/roadmap";
+
+// 按 Week 分组
+const groups: Record<string, PageSpec[]> = {};
+roadmap.forEach((p) => {
+  const key = p.plannedDay.startsWith("D")
+    ? "Week 1 骨架 (D1-D7)"
+    : p.plannedDay.startsWith("D8") || p.plannedDay.startsWith("D9") || p.plannedDay.match(/^D1[0-4]/)
+      ? "Week 2 MVP + 海外灰度 (D8-D14)"
+      : p.plannedDay.includes("W3") || p.plannedDay === "D9+"
+        ? "Week 3 剩余 SKU + SEOMachine (D15-D21)"
+        : p.plannedDay.includes("W4")
+          ? "Week 4 国内备案切流 (D22-D28)"
+          : "Week 5-6 P1 补齐 + 内容冲刺";
+  (groups[key] ??= []).push(p);
+});
+
+const weekOrder = [
+  "Week 1 骨架 (D1-D7)",
+  "Week 2 MVP + 海外灰度 (D8-D14)",
+  "Week 3 剩余 SKU + SEOMachine (D15-D21)",
+  "Week 4 国内备案切流 (D22-D28)",
+  "Week 5-6 P1 补齐 + 内容冲刺",
+];
+
+const statusColor: Record<PageSpec["status"], string> = {
+  live: "var(--color-success-500)",
+  "in-progress": "var(--color-signal-500)",
+  planned: "var(--color-primary-400)",
+};
+
+const totalPages = roadmap.length;
+const livePages = roadmap.filter((p) => p.status === "live").length;
+const inProgressPages = roadmap.filter((p) => p.status === "in-progress").length;
+---
+
+<BaseLayout
+  title="6 周交付路线图 · Shipwright 船匠"
+  description="Shipwright 官网 Phase 1 开发进度。每页透明标注预计完成时间和计划内容。"
+  path="/roadmap"
+>
+  <NavBar />
+
+  <main class="mx-auto max-w-[1000px] px-6 pb-24 pt-16">
+    <p
+      class="mb-4 font-mono uppercase"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+    >
+      Our own 14-day promise · live dogfooding
+    </p>
+
+    <h1
+      class="mb-4 font-semibold"
+      style="font-size:clamp(2rem,5vw,3rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+    >
+      6 周路线图
+    </h1>
+
+    <p
+      class="mb-10 max-w-2xl"
+      style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default)"
+    >
+      我们自己的官网也用 14 天 MVP 方式在造。这页透明展示每个子页面的计划 + 完成状态。
+      点任何一行进去看详细计划；完成后就会自动替换成真页面。
+    </p>
+
+    <!-- 概览计数 -->
+    <section
+      class="mb-10 grid grid-cols-3 gap-4 rounded-[var(--radius-lg)] border p-5 font-mono text-sm"
+      style="background:var(--bg-card);border-color:var(--border-default)"
+    >
+      <div>
+        <div class="text-2xl font-bold tabular-nums" style="color:var(--color-success-500)">
+          {livePages}
+        </div>
+        <div class="text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">已上线</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold tabular-nums" style="color:var(--color-signal-500)">
+          {inProgressPages}
+        </div>
+        <div class="text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">进行中</div>
+      </div>
+      <div>
+        <div class="text-2xl font-bold tabular-nums" style="color:var(--fg-display)">
+          {totalPages}
+        </div>
+        <div class="text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">总页数</div>
+      </div>
+    </section>
+
+    <!-- 分 Week 列表 -->
+    {weekOrder.map((week) => groups[week] && groups[week].length > 0 && (
+      <section class="mb-10">
+        <h2
+          class="mb-4 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+        >
+          {week}
+        </h2>
+
+        <ul class="space-y-2">
+          {groups[week].map((p) => (
+            <li>
+              <a
+                href={p.slug}
+                class="flex items-center gap-4 rounded-[var(--radius-md)] border px-4 py-3 transition hover:-translate-y-0.5"
+                style="background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-xs)"
+              >
+                <span
+                  class="inline-block h-2 w-2 shrink-0 rounded-full"
+                  style={`background:${statusColor[p.status]}`}
+                ></span>
+                <span
+                  class="font-mono text-xs shrink-0 tabular-nums"
+                  style="color:var(--fg-muted);min-width:4rem"
+                >
+                  {p.plannedDay}
+                </span>
+                <span
+                  class="font-mono text-xs shrink-0 uppercase tracking-[0.08em]"
+                  style="color:var(--fg-subtle);min-width:2.5rem"
+                >
+                  {p.priority}
+                </span>
+                <span class="flex-1" style="color:var(--fg-display)">
+                  <span class="font-medium">{p.title}</span>
+                  <span
+                    class="ml-2 font-mono text-xs"
+                    style="color:var(--fg-muted)"
+                  >
+                    {p.slug}
+                  </span>
+                </span>
+                <span
+                  class="hidden md:inline text-sm"
+                  style="color:var(--fg-muted)"
+                >
+                  {p.jtbd.slice(0, 32)}{p.jtbd.length > 32 ? "…" : ""}
+                </span>
+                <span style="color:var(--fg-subtle)">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </main>
+
+  <footer
+    class="border-t"
+    style="background:var(--color-primary-900);color:var(--color-canvas-100);border-color:var(--color-primary-800)"
+  >
+    <div class="mx-auto max-w-[1200px] px-6 py-10 text-sm">
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <span>© 2026 Shipwright 船匠</span>
+        <span style="color:var(--color-cool-400)">
+          沪 ICP 备 备案申请中 · 别堆人，造船。
+        </span>
+      </div>
+    </div>
+  </footer>
+</BaseLayout>

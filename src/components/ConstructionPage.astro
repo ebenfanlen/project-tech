@@ -1,0 +1,160 @@
+---
+import type { PageSpec } from "../data/roadmap";
+
+export interface Props {
+  spec: PageSpec;
+}
+
+const { spec } = Astro.props;
+
+const statusLabel: Record<PageSpec["status"], string> = {
+  live: "已上线",
+  "in-progress": "进行中",
+  planned: "建设中",
+};
+
+const statusColor: Record<PageSpec["status"], string> = {
+  live: "var(--color-success-500)",
+  "in-progress": "var(--color-signal-500)",
+  planned: "var(--color-primary-400)",
+};
+---
+
+<main class="mx-auto max-w-[900px] px-6 pb-24 pt-16">
+  <!-- Status pill -->
+  <div class="mb-10 flex items-center gap-3">
+    <span
+      class="inline-flex items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs uppercase tracking-[0.08em]"
+      style="border-color:var(--border-default);color:var(--fg-muted)"
+    >
+      <span
+        class="inline-block h-1.5 w-1.5 rounded-full"
+        style={`background:${statusColor[spec.status]}`}
+      ></span>
+      {statusLabel[spec.status]} · {spec.priority}
+    </span>
+    <a
+      href="/"
+      class="font-mono text-xs uppercase tracking-[0.08em]"
+      style="color:var(--fg-muted)"
+    >
+      ← 回首页
+    </a>
+  </div>
+
+  <p
+    class="mb-4 font-mono uppercase"
+    style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+  >
+    {spec.label}
+  </p>
+
+  <h1
+    class="mb-3 font-semibold"
+    style="font-size:clamp(2rem,5vw,3rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+  >
+    {spec.title}
+  </h1>
+
+  {spec.titleEn && (
+    <p
+      class="mb-8 font-mono tracking-tight"
+      style="font-size:1.25rem;color:var(--fg-muted)"
+    >
+      {spec.titleEn}
+    </p>
+  )}
+
+  <p
+    class="mb-10 max-w-2xl"
+    style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default)"
+  >
+    <strong style="color:var(--fg-display)">这页在做什么：</strong>
+    {spec.jtbd}
+  </p>
+
+  <!-- 计划内容块 -->
+  <section
+    class="mb-10 rounded-[var(--radius-lg)] border p-8"
+    style="background:var(--bg-card);border-color:var(--border-default)"
+  >
+    <header class="mb-6 flex items-center justify-between gap-4 border-b pb-4" style="border-color:var(--border-default)">
+      <span
+        class="font-mono text-xs uppercase tracking-[0.08em]"
+        style="color:var(--fg-muted)"
+      >
+        Planned for {spec.plannedDay} · {spec.plannedDate}
+      </span>
+      {spec.seoKw && (
+        <span
+          class="hidden sm:inline font-mono text-xs"
+          style="color:var(--fg-subtle)"
+        >
+          SEO KW: {spec.seoKw}
+        </span>
+      )}
+    </header>
+
+    <p
+      class="mb-4 font-mono uppercase tracking-[0.08em]"
+      style="font-size:var(--text-overline);color:var(--fg-muted)"
+    >
+      本页计划包含
+    </p>
+
+    <ul class="space-y-3">
+      {spec.sections.map((section, i) => (
+        <li class="flex items-start gap-3">
+          <span
+            class="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full"
+            style="background:var(--color-primary-400)"
+          ></span>
+          <span
+            class="tabular-nums font-mono text-xs"
+            style="color:var(--fg-subtle);min-width:1.5rem"
+          >
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <span style="color:var(--fg-default)">{section}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Honesty note -->
+  <section
+    class="mb-10 rounded-[var(--radius-md)] border p-5 font-mono text-sm"
+    style="background:var(--bg-muted);border-color:var(--border-default);color:var(--fg-default)"
+  >
+    <p class="mb-2" style="color:var(--fg-muted)">
+      $ shipwright roadmap --show=current-page
+    </p>
+    <p>
+      我们自己对客户承诺 14 天交付，这页还没做好是因为我们正把 Week 1-2
+      的精力先投到首屏 + 定价 + 方法论 3 页（MVP 核心）。
+      <br /><br />
+      如果你现在就想聊 <strong style="color:var(--fg-display)">{spec.title}</strong>，
+      <a href="/contact" style="color:var(--color-signal-600);font-weight:600">
+        预约 30 分钟诊断 →
+      </a>
+    </p>
+  </section>
+
+  <!-- Alternate actions -->
+  <nav class="flex flex-wrap gap-3" aria-label="其他可访问页面">
+    <a
+      href="/"
+      class="inline-flex h-10 items-center rounded-[var(--radius-md)] px-4 text-sm font-semibold transition hover:brightness-110"
+      style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+    >
+      回首页看 Hero ({'{'}"Don't hire. Ship."{'}'})
+    </a>
+    <a
+      href="/roadmap"
+      class="inline-flex h-10 items-center rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+      style="border-color:var(--border-strong);color:var(--fg-default)"
+    >
+      查看完整 6 周路线图 →
+    </a>
+  </nav>
+</main>
