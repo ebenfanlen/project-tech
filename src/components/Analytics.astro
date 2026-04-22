@@ -1,0 +1,81 @@
+---
+// 分析埋点 · 双通道 (国内百度统计 + 海外 Plausible)
+// Phase 1 只有 env hook, 真的 token 等 Week 2 用户配好 GitHub Secrets 后自动注入
+// 如果 PUBLIC_BAIDU_TONGJI_ID / PUBLIC_PLAUSIBLE_DOMAIN 未设 → 此组件为空
+const baiduId = import.meta.env.PUBLIC_BAIDU_TONGJI_ID;
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const sentryDsn = import.meta.env.PUBLIC_SENTRY_DSN;
+---
+
+{/* 百度统计 (国内主) */}
+{baiduId && (
+  <script is:inline define:vars={{ baiduId }}>
+    {`var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?" + "${baiduId}";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();`}
+  </script>
+)}
+
+{/* Plausible (海外, 隐私友好, 无 Cookie) */}
+{plausibleDomain && (
+  <script
+    is:inline
+    defer
+    data-domain={plausibleDomain}
+    src="https://plausible.io/js/script.js"
+  ></script>
+)}
+
+{/* Sentry (错误监控, 国内外通用) */}
+{sentryDsn && (
+  <script is:inline define:vars={{ sentryDsn }}>
+    {`
+    (function(sDsn){
+      window.__SENTRY_DSN__ = sDsn;
+      var s = document.createElement("script");
+      s.src = "https://browser.sentry-cdn.com/7.110.0/bundle.tracing.min.js";
+      s.crossOrigin = "anonymous";
+      s.onload = function() {
+        window.Sentry && window.Sentry.init({
+          dsn: sDsn,
+          tracesSampleRate: 0.1,
+          environment: "production",
+        });
+      };
+      document.head.appendChild(s);
+    })(${JSON.stringify(sentryDsn)});
+    `}
+  </script>
+)}
+
+{/* 通用事件 helper · 所有 CTA 点击双埋点 */}
+<script is:inline>
+  window.shipwrightTrack = function(eventName, props) {
+    // 百度统计
+    if (window._hmt) {
+      window._hmt.push(["_trackEvent", "shipwright", eventName, JSON.stringify(props || {})]);
+    }
+    // Plausible
+    if (window.plausible) {
+      window.plausible(eventName, { props: props || {} });
+    }
+    // Sentry breadcrumb
+    if (window.Sentry && window.Sentry.addBreadcrumb) {
+      window.Sentry.addBreadcrumb({ category: "ui.click", message: eventName, data: props });
+    }
+  };
+  // 自动追踪所有 [data-track] 元素
+  document.addEventListener("click", function(e) {
+    var el = e.target.closest("[data-track]");
+    if (el) {
+      window.shipwrightTrack(el.dataset.track, {
+        page: location.pathname,
+        label: el.dataset.trackLabel || el.textContent.trim().slice(0, 40),
+      });
+    }
+  });
+</script>

@@ -7,6 +7,16 @@ import mdx from "@astrojs/mdx";
 // https://astro.build/config
 export default defineConfig({
   site: "https://shipwright.co",
+  // i18n 路由预留 (Phase 2 启用翻译)
+  // 当前 Phase 1: 简中默认走根路径 · 未配置 locale 子目录
+  // Phase 2: 启用 zh-TW / en 后, 改这里的 locales + routing 即可
+  i18n: {
+    defaultLocale: "zh-CN",
+    locales: ["zh-CN", "zh-TW", "en"],
+    routing: {
+      prefixDefaultLocale: false, // zh-CN 不走 /zh-CN/ 子目录
+    },
+  },
   integrations: [
     mdx(),
     sitemap({
