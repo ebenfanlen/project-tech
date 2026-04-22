@@ -1,0 +1,368 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import { skus } from "../data/skus";
+
+const competitors = [
+  { name: "CC Strategic", product: "AI 咨询项目", price: "不透明 · 估 $15K-$50K", shipwright: "SKU-02 $8,500 透明" },
+  { name: "NextAutomation", product: "AI workflow", price: "$5,000 起（仅起步价）", shipwright: "SKU-01 $2,400 · SKU-02 $8,500" },
+  { name: "LeftClick AI", product: "自动化咨询", price: "$3K-$8K/月 订阅", shipwright: "Crew-M Retainer $1,780/月" },
+  { name: "MindStudio", product: "SaaS 平台", price: "Platform + pass-through", shipwright: "相同模式 + 定制化 + 代码交付" },
+  { name: "国内通用 AI 外包", product: "按人月", price: "¥30K-¥80K/人月", shipwright: "SKU-02 ¥58K 一口价 · 14 天" },
+];
+---
+
+<BaseLayout
+  title="定价 · Shipwright 船匠 · 4 SKU 明码标价"
+  description="Pilot Pod ¥12,800 / Vibecoding Pod ¥58,000 / Fleet Integration ¥168K-298K / Crew Retainer ¥5.8K+/月。BYOK 可选 -20~25%。反 Credit 黑盒，反 book-a-call。"
+  path="/pricing"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1200px] px-6 pb-12 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Pricing
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.5rem,6vw,4rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        定价像代码一样公开。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        4 款 SKU · 人民币 + 美元双报价 · BYOK 自带 Key 可减 20-25%。
+        反 Credit 黑盒 · 反 book-a-call · 反按人月计费。30 秒内看完决定。
+      </p>
+    </section>
+
+    <!-- 4 SKU 价格卡（复用 SkuShowcase 但加完整 feature 列表） -->
+    <section class="mx-auto max-w-[1200px] px-6 pb-20">
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {skus.map((sku) => {
+          const isRecommended = sku.recommended;
+          const accentColor = sku.accentColor === "signal" ? "var(--color-signal-500)" : "var(--color-primary-500)";
+          return (
+            <div
+              class="relative flex flex-col rounded-[var(--radius-lg)] border p-6"
+              style={
+                isRecommended
+                  ? `background:var(--bg-card);border-color:${accentColor};border-width:2px;box-shadow:var(--shadow-lg)`
+                  : `background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)`
+              }
+            >
+              {isRecommended && (
+                <span
+                  class="absolute -top-3 left-6 rounded-[var(--radius-sm)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-canvas-50)]"
+                  style={`background:${accentColor}`}
+                >
+                  主推 · 80% 订单
+                </span>
+              )}
+
+              <span
+                class="mb-2 font-mono text-[11px] uppercase tracking-[0.08em]"
+                style={`color:${accentColor}`}
+              >
+                {sku.nameEn}
+              </span>
+
+              <h3 class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
+                {sku.nameZh}
+              </h3>
+              <p class="mb-5 text-sm" style="color:var(--fg-muted)">{sku.tagline}</p>
+
+              <div
+                class="tabular-nums"
+                style={`font-size:1.75rem;font-weight:700;color:var(--fg-display)`}
+              >
+                {sku.priceCN}
+              </div>
+              <div class="mb-4 flex flex-wrap items-center gap-2 text-xs" style="color:var(--fg-muted)">
+                <span class="font-mono">{sku.priceUS}</span>
+                <span>·</span>
+                <span>{sku.duration}</span>
+              </div>
+
+              {sku.byokDiscount && (
+                <div
+                  class="mb-4 inline-flex w-fit items-center gap-1.5 rounded-full px-2 py-1 font-mono text-xs font-semibold"
+                  style="background:var(--color-signal-100);color:var(--color-signal-700)"
+                >
+                  <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+                  </svg>
+                  {sku.byokDiscount} · 自带 Key
+                </div>
+              )}
+
+              <p
+                class="mb-4 border-t pt-4 text-xs"
+                style="border-color:var(--border-default);color:var(--fg-muted)"
+              >
+                目标客户: {sku.targetPersona}
+              </p>
+
+              <ul class="mb-6 flex-1 space-y-2 text-sm">
+                {sku.features.map((f) => (
+                  <li class="flex items-start gap-2" style="color:var(--fg-default)">
+                    <svg
+                      class="mt-1 h-3 w-3 shrink-0"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={accentColor}
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span>{f.text}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href={sku.ctaHref}
+                class="inline-flex h-10 items-center justify-center rounded-[var(--radius-md)] px-4 text-sm font-semibold transition hover:brightness-110"
+                style={
+                  isRecommended
+                    ? `background:${accentColor};color:var(--color-canvas-50);box-shadow:var(--shadow-sm)`
+                    : `border:1px solid var(--border-strong);color:${accentColor};background:transparent`
+                }
+              >
+                {sku.cta}
+              </a>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- 三段式定价公式 -->
+    <section
+      class="border-y py-20"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[900px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          How we calculate
+        </p>
+        <h2
+          class="mb-6 font-semibold"
+          style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+        >
+          透明三段式定价公式
+        </h2>
+
+        <div
+          class="mb-8 rounded-[var(--radius-lg)] border p-6 font-mono text-sm"
+          style="background:var(--color-cool-800);border-color:var(--color-cool-700);color:var(--color-canvas-100)"
+        >
+          <div class="mb-1" style="color:var(--color-cool-400)"># 客户月度总支出</div>
+          <div class="mb-3">
+            <span style="color:var(--color-signal-400)">= Setup Fee</span>
+            <span style="color:var(--color-cool-500)"> (一次性，首月摊销)</span>
+          </div>
+          <div class="mb-3">
+            <span style="color:var(--color-signal-400)">+ Platform Fee</span>
+            <span style="color:var(--color-cool-500)"> (月度固定，可随时取消)</span>
+          </div>
+          <div>
+            <span style="color:var(--color-signal-400)">+ AI Cost Pass-through</span>
+            <span style="color:var(--color-cool-500)"> (按量，原价透传 + 10% 管理费 · 或 BYOK)</span>
+          </div>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          <div>
+            <h3 class="mb-2 font-semibold" style="color:var(--fg-display)">Setup Fee</h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              交付的一次性成本。SKU-01 ¥12.8K / SKU-02 ¥58K / SKU-03 ¥168K-298K。
+              按 GMV 阶梯报价，签约前公开。
+            </p>
+          </div>
+          <div>
+            <h3 class="mb-2 font-semibold" style="color:var(--fg-display)">Platform Fee</h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              月度托管 + 监控 + 小修小补。SKU-02 前 3 月免费 · 第 4 月起 ¥2,400/月。
+              <strong>随时取消，不锁合约。</strong>
+            </p>
+          </div>
+          <div>
+            <h3 class="mb-2 font-semibold" style="color:var(--fg-display)">AI Pass-through</h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              Claude/GPT 调用费。托管模式 +10% 管理费；<strong style="color:var(--color-signal-600)">BYOK 模式 0 markup</strong>，
+              你直付模型厂商。
+            </p>
+          </div>
+        </div>
+
+        <!-- 举例 -->
+        <div
+          class="mt-8 rounded-[var(--radius-md)] border p-5"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <p
+            class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--color-signal-600)"
+          >
+            举例 · V-CS 客服场景 · 月客服量 2000 条
+          </p>
+          <ul class="space-y-2 text-sm" style="color:var(--fg-default)">
+            <li>
+              <strong style="color:var(--fg-display)">首月:</strong>
+              ¥58,000 setup (一次性) + 前 3 月免 Platform + AI 约 ¥1,200
+              = <strong style="color:var(--fg-display)">¥59,200</strong>
+            </li>
+            <li>
+              <strong style="color:var(--fg-display)">第 4 月起稳态:</strong>
+              ¥2,400 platform + AI 约 ¥1,500-2,500
+              = <strong style="color:var(--color-signal-600)">约 ¥4,000/月</strong>
+              <span style="color:var(--fg-muted)">
+                (对比招 1 客服 ¥6K/月 · 仅 1 语种 · 8 小时)
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- BYOK 说明 -->
+    <section class="mx-auto max-w-[900px] px-6 py-20">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        BYOK · 反 markup · 反 credit
+      </p>
+      <h2
+        class="mb-6 font-semibold"
+        style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        你自己的 API Key, 你自己的账单
+      </h2>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <div
+          class="rounded-[var(--radius-lg)] border p-6"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <h3 class="mb-2 text-lg font-semibold" style="color:var(--fg-display)">托管模式</h3>
+          <p class="mb-4 text-sm" style="color:var(--fg-default)">
+            我们代付 Anthropic / OpenAI / Google 的调用费, 原价透传 + 10% 管理费。
+            简单省心, 适合预算管控不严的小团队。
+          </p>
+          <ul class="space-y-1 text-xs" style="color:var(--fg-muted)">
+            <li>✓ 统一账单</li>
+            <li>✓ 我们盯用量不超标</li>
+            <li>✓ 月报透明到每条 API 调用</li>
+          </ul>
+        </div>
+
+        <div
+          class="rounded-[var(--radius-lg)] border-2 p-6"
+          style="background:var(--bg-card);border-color:var(--color-signal-500);box-shadow:var(--shadow-md)"
+        >
+          <div class="mb-2 flex items-center gap-2">
+            <h3 class="text-lg font-semibold" style="color:var(--fg-display)">BYOK 模式</h3>
+            <span
+              class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+              style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+            >
+              −20~25% Platform Fee
+            </span>
+          </div>
+          <p class="mb-4 text-sm" style="color:var(--fg-default)">
+            你开自己的 Anthropic/OpenAI/Google 账号, 提供 API Key。
+            Platform Fee 立减; AI 调用费由你直付模型厂商, 我们 0 markup。
+          </p>
+          <ul class="space-y-1 text-xs" style="color:var(--fg-muted)">
+            <li>✓ 大客户采购流程友好</li>
+            <li>✓ Cloudflare Secrets 托管 Key (不落我们 DB)</li>
+            <li>✓ 反 vendor lock · 反 credit 黑盒</li>
+          </ul>
+        </div>
+      </div>
+
+      <p
+        class="mt-8 rounded-[var(--radius-md)] border-l-2 p-4 text-sm"
+        style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
+      >
+        <strong style="color:var(--fg-display)">为什么反 Credit 计费 ?</strong>
+        多数 AI SaaS 用 "10 credits = 1 次调用" 包装利润 · 换算不透明, CFO 没法预算。
+        我们拒绝这种模式, AI 成本明细到每条 API 调用, 月报能对到秒。
+      </p>
+    </section>
+
+    <!-- 对标竞品 -->
+    <section
+      class="border-y py-20"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          Apples to apples
+        </p>
+        <h2
+          class="mb-8 font-semibold"
+          style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+        >
+          对标压制 · 同场景竞品定价
+        </h2>
+
+        <div
+          class="overflow-x-auto rounded-[var(--radius-lg)] border"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr
+                class="border-b text-left"
+                style="border-color:var(--border-default);background:var(--bg-muted)"
+              >
+                <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">竞品</th>
+                <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">同类产品</th>
+                <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">他们的定价</th>
+                <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--color-signal-600)">Shipwright</th>
+              </tr>
+            </thead>
+            <tbody>
+              {competitors.map((c, i) => (
+                <tr
+                  class="border-b"
+                  style={`border-color:var(--border-default);${i % 2 === 1 ? 'background:var(--bg-muted)' : ''}`}
+                >
+                  <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">{c.name}</td>
+                  <td class="px-4 py-3" style="color:var(--fg-default)">{c.product}</td>
+                  <td class="px-4 py-3" style="color:var(--fg-muted)">{c.price}</td>
+                  <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">{c.shipwright}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

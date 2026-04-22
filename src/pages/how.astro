@@ -1,0 +1,333 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import { methodology } from "../data/methodology";
+---
+
+<BaseLayout
+  title="14 天方法论 · Shipwright 船匠 · Day-by-Day 透明交付"
+  description="14 个自然日, 14 个可验收产物. Day 7 Mid-sprint Demo 是 go/no-go 决策点. 超期按 3% setup/天退款, 上限 30%. follow-the-sun + Claude Code + starter kits 三件事支撑."
+  path="/how"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[1200px] px-6 pb-12 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        How we ship
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.5rem,6vw,4rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        14 天, 14 个可验收产物。
+      </h1>
+      <p
+        class="mb-8 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        不是 4-8 周的黑盒外包。每天有明确产物, 每晚有 stand-up,
+        Day 7 是 go/no-go 决策点。超期按 3% setup fee/天退款, 最高退 30%。
+      </p>
+
+      <!-- 关键承诺 -->
+      <div class="grid gap-3 text-sm sm:grid-cols-3">
+        <div
+          class="rounded-[var(--radius-md)] border p-4"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <div
+            class="mb-1 font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--color-signal-600)"
+          >
+            Hard deadline
+          </div>
+          <div style="color:var(--fg-display)">14 个自然日硬交付</div>
+        </div>
+        <div
+          class="rounded-[var(--radius-md)] border p-4"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <div
+            class="mb-1 font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--color-signal-600)"
+          >
+            Delay penalty
+          </div>
+          <div style="color:var(--fg-display)">3% setup/天退款, 上限 30%</div>
+        </div>
+        <div
+          class="rounded-[var(--radius-md)] border p-4"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <div
+            class="mb-1 font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--color-signal-600)"
+          >
+            Exit clause
+          </div>
+          <div style="color:var(--fg-display)">Day 7 可终止, 退 70% setup</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Day-by-Day 完整 Timeline -->
+    <section class="mx-auto max-w-[1100px] px-6 py-16">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Day-by-Day schedule
+      </p>
+      <h2
+        class="mb-10 font-semibold"
+        style="font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.15;color:var(--fg-display)"
+      >
+        每天一个产物 · 客户随时验收
+      </h2>
+
+      <ol class="relative border-l pl-0" style="border-color:var(--border-strong)">
+        {methodology.map((step) => {
+          const isCritical = step.day === 7 || step.day === 14;
+          return (
+            <li class="relative mb-6 pl-10">
+              <span
+                class="absolute left-0 top-1 inline-flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full font-mono text-[10px] font-bold"
+                style={
+                  isCritical
+                    ? "background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:0 0 0 4px rgba(232,106,42,0.15);border:3px solid var(--bg-page)"
+                    : "background:var(--color-primary-500);color:var(--color-canvas-50);border:3px solid var(--bg-page)"
+                }
+              >
+                {step.phaseEn}
+              </span>
+
+              <div
+                class="rounded-[var(--radius-lg)] border p-5"
+                style={
+                  isCritical
+                    ? "background:var(--bg-card);border-color:var(--color-signal-500);border-width:2px"
+                    : "background:var(--bg-card);border-color:var(--border-default)"
+                }
+              >
+                <div class="mb-2 flex flex-wrap items-center gap-3">
+                  <h3 class="text-base font-semibold" style="color:var(--fg-display)">
+                    {step.phase}
+                  </h3>
+                  {isCritical && (
+                    <span
+                      class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+                      style="background:var(--color-signal-100);color:var(--color-signal-700)"
+                    >
+                      {step.day === 7 ? "go/no-go" : "🚢 SHIP"}
+                    </span>
+                  )}
+                </div>
+
+                <p class="mb-3 text-sm" style="color:var(--fg-default)">
+                  <strong style="color:var(--fg-display)">可验收产物:</strong> {step.deliverable}
+                </p>
+
+                <div class="flex flex-wrap gap-4 border-t pt-3 text-xs" style="border-color:var(--border-default)">
+                  <span style="color:var(--fg-muted)">
+                    <span class="font-mono uppercase tracking-[0.08em]">负责人:</span>{' '}
+                    <span style="color:var(--fg-default)">{step.owner}</span>
+                  </span>
+                  <span style="color:var(--fg-muted)">
+                    <span class="font-mono uppercase tracking-[0.08em]">客户参与:</span>{' '}
+                    <span style="color:var(--fg-default)">{step.clientTime}</span>
+                  </span>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    <!-- 为什么能做到 14 天 -->
+    <section
+      class="border-y py-20"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-3 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          Why we can actually ship in 14
+        </p>
+        <h2
+          class="mb-10 font-semibold"
+          style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+        >
+          为什么行业 4-8 周, 我们 14 天
+        </h2>
+
+        <div class="grid gap-5 lg:grid-cols-3">
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <div
+              class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+              style="color:var(--color-signal-600)"
+            >
+              01 · Physical reality
+            </div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              Follow the sun · 16h/天
+            </h3>
+            <p class="mb-3 text-sm" style="color:var(--fg-default)">
+              北京团队 9:00-18:00 UTC+8 · 深圳/东南亚晚班 18:00-次日 2:00 UTC+8。
+              美西客户下班 (18:00 PT) 发问题, 中国早班 9:00 CST 已在处理,
+              客户次日醒来看到答复。
+            </p>
+            <p class="font-mono text-xs" style="color:var(--fg-muted)">
+              14 天 × 16h ≈ 美西团队 28 天 × 8h
+            </p>
+          </div>
+
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <div
+              class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+              style="color:var(--color-signal-600)"
+            >
+              02 · Claude Code benchmark
+            </div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              单人 ×3 生产率
+            </h3>
+            <p class="mb-3 text-sm" style="color:var(--fg-default)">
+              内部 benchmark: 一个全栈工程师 + Claude Code, 产出相当于
+              <strong style="color:var(--fg-display)">3 个未用 Claude Code 的工程师</strong>。
+              典型 SKU-02 代码量 3K-8K 行, Claude 辅助下 5-7 天出首版。
+            </p>
+            <p class="font-mono text-xs" style="color:var(--fg-muted)">
+              dogfooding: 这个官网我们也在 14 天内上线 · 见 /roadmap
+            </p>
+          </div>
+
+          <div
+            class="rounded-[var(--radius-lg)] border p-6"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+          >
+            <div
+              class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+              style="color:var(--color-signal-600)"
+            >
+              03 · Starter kits
+            </div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              5 大场景 70% 模板化
+            </h3>
+            <p class="mb-3 text-sm" style="color:var(--fg-default)">
+              V-CS / V-SEO / V-AD / V-CONTENT / V-OPS 各有预置 Agent 架构 +
+              Shopify/Meta/Amazon/小红书 API 集成 + 中英日西阿 5 语种 Prompt 库。
+              每单 Day 1 不是从零起步, 而是从 <strong style="color:var(--fg-display)">70% 成品 + 30% 定制</strong> 起步。
+            </p>
+            <p class="font-mono text-xs" style="color:var(--fg-muted)">
+              这是 Shipwright 核心内部资产, 不开源
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="mt-10 rounded-[var(--radius-lg)] border p-6"
+          style="background:var(--bg-card);border-color:var(--border-default)"
+        >
+          <div
+            class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--color-signal-600)"
+          >
+            04 · PM 强控流
+          </div>
+          <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+            Scope creep 硬拒绝
+          </h3>
+          <ul class="space-y-2 text-sm" style="color:var(--fg-default)">
+            <li>• Day 2 PRD 一旦签字, 中途新需求全部入 Crew Retainer 排期, 不挤 14 天</li>
+            <li>• 每日 15min stand-up 硬锁 blocker, 当晚不过夜</li>
+            <li>• Day 7 Mid-sprint Demo 是 go/no-go, no-go 则协商阶段性交付 + 退款</li>
+            <li>• 14 天内所有变更需 PM 书面签字才生效</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 超期退款条款 -->
+    <section class="mx-auto max-w-[900px] px-6 py-20">
+      <p
+        class="mb-3 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Guarantee clause
+      </p>
+      <h2
+        class="mb-6 font-semibold"
+        style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        超期 = 我们的钱, 不是你的风险
+      </h2>
+
+      <div
+        class="mb-6 rounded-[var(--radius-lg)] border p-6"
+        style="background:var(--bg-card);border-color:var(--border-default)"
+      >
+        <table class="w-full text-sm">
+          <tbody>
+            <tr class="border-b" style="border-color:var(--border-default)">
+              <td class="py-3 pr-4 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+                Day 7 mid-demo 不通过
+              </td>
+              <td class="py-3" style="color:var(--fg-default)">
+                客户可无理由终止 · 退 <strong style="color:var(--fg-display)">70% setup</strong> · 已投工时折算
+              </td>
+            </tr>
+            <tr class="border-b" style="border-color:var(--border-default)">
+              <td class="py-3 pr-4 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+                Day 14 超期
+              </td>
+              <td class="py-3" style="color:var(--fg-default)">
+                按 <strong style="color:var(--fg-display)">3% setup/天</strong> 退款
+              </td>
+            </tr>
+            <tr class="border-b" style="border-color:var(--border-default)">
+              <td class="py-3 pr-4 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+                退款上限
+              </td>
+              <td class="py-3" style="color:var(--fg-default)">
+                <strong style="color:var(--fg-display)">30% setup</strong> (即超期 10 天 = 退满)
+              </td>
+            </tr>
+            <tr>
+              <td class="py-3 pr-4 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+                客户方原因延误
+              </td>
+              <td class="py-3" style="color:var(--fg-default)">
+                暂停计时 (API 权限未开 / UAT 不配合) · 需双方签字
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm" style="color:var(--fg-muted)">
+        完整合同条款在签约前提供 · 国内合同法 + 美国 Stripe 合同模板双版本 · 法务已 review。
+      </p>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

@@ -43,7 +43,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["4 SKU 价格卡并排", "BYOK chip (-20%/-25%)", "透明三段式公式 (Setup + Platform + AI Pass-through)", "对标压制竞品表", "滑块计算器 Island"],
     seoKw: "AI agent 定价 / vibecoding 价格",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/how",
@@ -56,7 +56,7 @@ export const roadmap: PageSpec[] = [
     priority: "P0",
     sections: ["Day-by-Day Timeline 可视化", "6 个节点 (Kickoff/Spec/Demo/Integration/UAT/Handoff)", "为什么能做到 14 天 (follow-the-sun + Claude Code + starter kits)", "超期退款条款说明"],
     seoKw: "14 天交付方法论",
-    status: "planned",
+    status: "live",
   },
   {
     slug: "/pilot-pod",
