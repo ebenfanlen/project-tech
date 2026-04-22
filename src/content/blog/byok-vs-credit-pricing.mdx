@@ -1,0 +1,157 @@
+---
+title: "BYOK vs Credit 计费: 为什么跨境电商 SMB 不应该为 AI 包月套餐付冤枉钱"
+description: "大多数 AI SaaS 用 Credit 计费包装利润, 10 credits = 1 调用的换算对 CFO 不透明. BYOK (Bring Your Own Key) 让你直付模型厂商 0 markup. 数字对比 + 3 个场景测算."
+pubDate: 2026-04-20
+locale: zh-CN
+cluster: supporting
+keywords:
+  - BYOK AI 订阅
+  - AI credit 计费
+  - 跨境电商 AI 成本
+  - Claude API 定价
+  - AI SaaS 比价
+author: Shipwright Team
+status: published
+---
+
+## TL;DR
+
+大多数 AI SaaS (Jasper / Copy.ai / Lindy / 国内 AI 平台) 用 **Credit 计费** 包装利润. "1000 credits / 月 ¥499" 看着便宜, 换算到实际 Claude / GPT-4 调用成本, **markup 通常 200-400%**.
+
+**BYOK (Bring Your Own Key)** 让你自己开 Anthropic / OpenAI 账号, 直付模型厂商 0 markup, 服务商只收 Platform Fee.
+
+Shipwright Vibecoding Pod BYOK 模式: Platform Fee -20% · AI cost 100% 原价透传 · 月度账单精确到每条 API 调用.
+
+---
+
+## 1. Credit 计费的数学游戏
+
+典型 AI SaaS 定价:
+
+> "专业版 ¥499/月 · 含 1000 credits · 1 credit ≈ 1 次 AI 调用"
+
+看起来合理. 但问:
+
+- **1 次调用** 是啥? 500 tokens 输入 + 500 tokens 输出? 还是 5000 + 5000?
+- **用哪个模型**? Claude 3.5 Haiku 和 Claude 4 Sonnet 成本差 10 倍
+- **Credit 到期吗**? 用不完下月清零还是累积?
+
+答案通常:
+
+- 1 credit = **1000 tokens** (输入 + 输出合计)
+- 模型 = Claude Haiku / GPT-3.5-turbo (成本最低的)
+- 过期 = 月度清零
+
+对比实际成本 (2026 年 4 月):
+
+| 模型 | 输入 $/MTok | 输出 $/MTok | 1 credit (1K token) 真成本 |
+|---|---|---|---|
+| Claude Haiku 4.5 | $1.00 | $5.00 | ~$0.002 |
+| Claude Sonnet 4.6 | $3.00 | $15.00 | ~$0.008 |
+| Claude Opus 4.7 | $15.00 | $75.00 | ~$0.037 |
+| GPT-4o | $2.50 | $10.00 | ~$0.005 |
+
+**1000 credits @ ¥499 = ¥0.50/credit ≈ $0.07/credit**.
+
+vs Claude Haiku 真成本 $0.002 · **markup ≈ 3400%**.
+vs Claude Sonnet 真成本 $0.008 · **markup ≈ 775%**.
+
+## 2. BYOK 怎么运作
+
+Bring Your Own Key · 你做 3 件事:
+
+1. **开 Anthropic / OpenAI / Google 账号** (需要信用卡 + 企业认证 · 国内用户也可开海外账号)
+2. **提供 API Key** 给服务商 (Shipwright 存 Cloudflare Workers Secrets, 不落我们 DB)
+3. **月度账单** 直接来自 Anthropic · 你看到的就是实际 token 消耗
+
+服务商只收 **Platform Fee** (托管 / 监控 / 小修小补), 不转售 AI cost.
+
+## 3. 三个真实场景测算
+
+### 场景 A · V-CS 客服 · 月 2000 条 DM
+
+平均每条 DM 消耗:
+- 输入 (context + 用户消息) · ~1,500 tokens
+- 输出 (回复) · ~400 tokens
+- 用 Claude Sonnet 4.6
+
+**月 AI 成本**:
+
+- 输入: 2000 × 1500 = 3M tokens × $3 = **$9/月**
+- 输出: 2000 × 400 = 0.8M tokens × $15 = **$12/月**
+- **合计 ~$21/月 ≈ ¥150/月**
+
+同样功能 Credit SaaS:
+
+- 2000 次调用 × 1 credit = 2000 credits
+- 按 ¥499/1000 credits · 需买 2 包 = **¥998/月**
+
+**月省: ¥848 · 年省 ¥10,176**.
+
+(Shipwright Vibecoding Pod Platform Fee ¥2,400/月 + AI ¥150 pass-through = ¥2,550/月 · vs Credit SaaS ¥998 + 但功能通用不定制, 合不合适?)
+
+### 场景 B · V-SEO Listing · 月 240 条
+
+每条 listing 消耗:
+- 输入 (产品规格 + keywords + 竞品参考) · ~3,000 tokens
+- 输出 (title + 5 bullets + description · 3 语种) · ~3,500 tokens
+- 用 Claude Sonnet 4.6
+
+**月 AI 成本**:
+- 输入: 240 × 3000 = 720K × $3 = **$2.16/月**
+- 输出: 240 × 3500 = 840K × $15 = **$12.6/月**
+- **合计 ~$15/月 ≈ ¥105/月**
+
+(NordicNest 案例实测 AI cost **¥1,800/月**, 因为跑了更多 prompt iteration + 合规检查 + Helium 10 比对)
+
+### 场景 C · V-CONTENT 内容 · 月 200 条脚本
+
+每条脚本:
+- 输入 (热点 + 产品 + 风格参考) · ~2,000 tokens
+- 输出 (脚本 + 封面标题 + 标签) · ~1,500 tokens
+
+**月 AI 成本**:
+- 输入: 200 × 2000 = 400K × $3 = **$1.2/月**
+- 输出: 200 × 1500 = 300K × $15 = **$4.5/月**
+- **合计 ~$6/月 ≈ ¥42/月**
+
+3 场景合计实际 AI cost: ~¥300/月.
+换成 Credit SaaS 等效容量: 估计 **¥2,000-3,000/月** · 7-10 倍 markup.
+
+## 4. 谁适合 BYOK
+
+✅ **适合 BYOK**:
+- 月 AI 调用量 **> 100,000 tokens** (约 100 次中量调用)
+- 有法务 / 财务要看 "真实 AI 成本" 的企业
+- 预算需要按实际用量预测 · 不接受套餐清零
+- 有技术团队 (哪怕兼职) 能管 API Key rotation
+- 大客户 (集团 / 上市公司) 采购流程要求 0 markup
+
+❌ **不适合 BYOK**:
+- 月调用量 < 10K tokens (成本太低, 管 API Key 麻烦)
+- 完全 no-tech 团队 (需要有人盯 API Key 过期 / 超额)
+- 不想签 Anthropic / OpenAI 的 TOS (BYOK 模式下直接客户合约)
+- 需要即时切换模型 (BYOK 下切换厂商要换 API Key)
+
+## 5. Shipwright 的 BYOK 具体机制
+
+Vibecoding Pod BYOK 模式:
+
+- **Platform Fee**: ¥2,400/月 → **¥1,920/月** (−20%)
+- **AI Cost Pass-through**: 你开自己的 Anthropic 账号, 我们拿 API Key 调用 · 月末你直接收 Anthropic 的账单 (我们不过手)
+- **API Key 存储**: Cloudflare Workers Secrets · 不落我们数据库 · 可随时 rotate
+- **用量监控**: 我们看板显示每日 token 消耗 + 每个 Agent 的占比 · 你同时在 Anthropic console 能对得上
+
+Fleet Integration BYOK: -25% Platform Fee (¥5,800 → ¥4,350).
+
+## 6. 反 Credit 计费的 3 个硬态度
+
+1. **官网明码标价**: Shipwright 的 /pricing 公开所有数字 · 不 book-a-call · 不卖套餐
+2. **账单透传**: AI cost 明细到每条 API 调用 · 反 credit 黑盒
+3. **反 vendor lock**: 代码 100% 交付 · 你可以随时自己接管或换服务商 · 不保留任何 backdoor
+
+## 7. 下一步
+
+- 看 [/pricing 完整定价](/pricing) (BYOK 折扣计算 + 三段式公式)
+- 看 [pillar 14 天方法论](/blog/ai-driven-dtc-14-day-mvp)
+- [预约 30 分钟诊断](/contact) · 告诉你你的场景用托管模式 vs BYOK 哪个划算

@@ -1,0 +1,228 @@
+---
+title: "Shopify 店铺如何用 AI Agent 自动化客服 (Claude Code 实操)"
+description: "跨境电商 Shopify 独立站从 IG DM + Inbox + 邮件 + 小红书多渠道人肉回复, 到 AI Agent 自动化 63% 解决率的具体实施步骤 · 附 Agent 架构图 + Prompt 模板."
+pubDate: 2026-04-22
+locale: zh-CN
+cluster: supporting
+keywords:
+  - Shopify AI 客服
+  - AI 客服机器人 跨境电商
+  - Claude Code Shopify
+  - 多语言客服 agent
+  - IG DM 自动回复
+author: Shipwright Team
+status: published
+---
+
+## TL;DR
+
+Shopify 独立站多渠道客服 (IG DM + Inbox + 邮件 + 小红书私信) 用 AI Agent 自动化, 3-5 天可跑通, 自动解决率 60%+. 核心 3 步:
+
+1. 盘点 5 个客服入口的真实意图分布 (前 500 条 DM)
+2. 用 Claude Code + Meta Graph API / Shopify Admin API 搭 3 个协作 Agent
+3. 置信度 < 80% 自动转人工 · HITL 工作流锁死
+
+本文是 supporting cluster 的实操版, 完整方法论见 pillar [《AI 驱动跨境电商 DTC 的 14 天 MVP 方法论》](/blog/ai-driven-dtc-14-day-mvp).
+
+---
+
+## 1. 问题画像
+
+典型 Shopify DTC 客服痛点:
+
+| 症状 | 数据 |
+|---|---|
+| 响应时长 | **12-24h**（跨时区 + 凌晨无值守）|
+| 差评率 | **3-5%**（客服响应慢是 Top 1 差评原因）|
+| 客服人力 | 3-5 人轮班 · 月支出 ¥15-25K |
+| 渠道分散 | IG DM / Shopify Inbox / 邮件 / 小红书 / WhatsApp / 亚马逊 buyer-seller |
+| 多语言 | 英日德西阿至少 3 种不同程度需要 |
+
+人力堆解决的速度跟不上 DTC 规模扩张。
+
+## 2. 3 个协作 Agent 架构
+
+```
+Customer message (IG DM / Shopify Inbox / 邮件 / 小红书)
+      │
+      ▼
+┌────────────────────────┐
+│  主 Agent (意图识别)    │  Claude Sonnet 4 + Prompt
+│  - 分类 (订单/物流/退款/产品/其他)
+│  - 语言检测
+│  - 情绪检测 (投诉 vs 询问)
+└──────┬─────────────────┘
+       │
+       ├── ┌────────────────────┐
+       │   │ 工具 Agent          │  Claude Haiku (成本优化)
+       │   │ - 查订单 (Shopify API)
+       │   │ - 查物流 (17track)
+       │   │ - 查库存
+       │   │ - 查退款状态
+       │   └────────────────────┘
+       │
+       └── ┌────────────────────┐
+           │ 人工接管 Agent       │  置信度 < 80% 触发
+           │ - 生成工单 (Gorgias)
+           │ - 通知飞书 @客服
+           │ - 附完整对话上下文
+           └────────────────────┘
+      │
+      ▼
+Reply (5 语种 · 含订单查询结果 · 含退款链接 · 含 FAQ 引用)
+```
+
+## 3. Claude Code 实操步骤 (Day 1-5)
+
+### Day 1: Discovery
+
+抓取客户过去 30 天 500 条真实客服对话, 人工标注意图分布:
+
+```bash
+# 伪代码 · Shopify Admin API 拉 conversations
+curl -H "X-Shopify-Access-Token: $TOKEN" \
+  "https://$SHOP.myshopify.com/admin/api/2024-10/inbox/conversations.json?limit=500"
+```
+
+典型分布:
+
+- 物流查询 · 32%
+- 订单状态 · 22%
+- 产品咨询 · 18%
+- 退款 · 11%
+- 尺码/颜色 · 8%
+- 其他 · 9%
+
+前 3 类 = 72% 客服量 = AI 自动化的主战场.
+
+### Day 2: Prompt v1 设计
+
+主 Agent 系统 prompt (节选):
+
+```
+你是 __store_name__ 的客服助手 · 跨境电商 DTC 品牌.
+
+分类规则:
+- [LOGISTICS]: 物流/发货/到货时间 → 调 tool_track_shipment
+- [ORDER]: 订单状态/修改/取消 → 调 tool_get_order
+- [REFUND]: 退款/换货 → 调 tool_check_refund
+- [PRODUCT]: 产品咨询/规格 → 引用 FAQ, 置信度 < 70% 转人工
+- [COMPLAINT]: 投诉/差评情绪 → 立即转人工 + 优先级标高
+
+响应规则:
+- 语言: 跟随客户语言 (中英日西阿 5 种)
+- 签名: 来自 __store_name__ 客服
+- 如果涉及订单金额/退款/替换: 必须引用订单号 + 处理时效
+- 如果情绪检测 = 愤怒: 首句道歉 + 升级到人工
+
+置信度评分:
+- 调用 tool 后有明确答案 = 0.95
+- FAQ 匹配 = 0.85
+- 需要产品知识但无 FAQ = 0.50 (触发转人工)
+
+禁止:
+- 不说"我们会尽快处理" (不具体)
+- 不给客户承诺未确认的到货时间
+- 不自己创造退款政策 (永远引用订单实际状态)
+```
+
+### Day 3: 部署到 Cloudflare Worker
+
+```typescript
+// src/agents/cs-main.ts
+import Anthropic from "@anthropic-ai/sdk";
+
+export async function handleCustomerMessage(msg: IncomingMessage) {
+  const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+
+  const systemPrompt = await loadSystemPrompt(msg.storeId);
+  const tools = [
+    { name: "tool_track_shipment", input_schema: { /* ... */ } },
+    { name: "tool_get_order", input_schema: { /* ... */ } },
+    { name: "tool_check_refund", input_schema: { /* ... */ } },
+  ];
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-6",  // 主 Agent
+    max_tokens: 1024,
+    system: systemPrompt,
+    messages: [{ role: "user", content: msg.text }],
+    tools,
+  });
+
+  // 置信度评分
+  const confidence = estimateConfidence(response);
+
+  if (confidence < 0.80) {
+    // 转人工
+    await createTicket({ channel: msg.channel, text: msg.text, aiDraft: response.content });
+    return { escalated: true };
+  }
+
+  // 执行 tool + 生成最终回复
+  const reply = await executeToolsAndSynthesize(response);
+  return { reply, confidence };
+}
+```
+
+### Day 4-5: 集成 + 测试
+
+- Meta Graph API webhook → Worker
+- Shopify Inbox API polling (暂无 webhook) 或 GraphQL subscription
+- 小红书开放平台 API (商家 / 品牌号)
+
+HITL 触发配置:
+
+```yaml
+confidence_threshold: 0.80
+escalation_channels:
+  - feishu_webhook: https://open.feishu.cn/...
+  - gorgias_ticket: true
+  - ops_dashboard: log
+emergency_keywords:  # 这些词强制转人工
+  - 投诉
+  - 举报
+  - 12315
+  - refund chargeback
+  - I want to speak to a manager
+```
+
+## 4. 实测数据 (Lumesque 案例)
+
+深圳某美妆独立站上线第 2 周数据:
+
+| 指标 | 前 | 后 |
+|---|---|---|
+| 自动解决率 | 0% | **63%** |
+| 平均响应时长 | 14h | **11min** |
+| 差评率 | 4.2% | **2.8%** |
+| 月客服成本 | ¥18K (3 人) | **¥8K** (1 人 + AI) |
+
+完整案例: [Lumesque V-CS 案例详情](/work/lumesque-v-cs)
+
+## 5. 常见陷阱
+
+**不要**:
+
+- ❌ 让 AI 创造退款政策 (永远引用订单实际状态 + 链接)
+- ❌ 全语言只用一个模型 (小语种 / 阿拉伯语 / 越南语 Claude Haiku 可能效果差, 用 Sonnet)
+- ❌ 不做 HITL 阈值 · AI 100% 自动 = 下一天差评暴涨
+- ❌ 忽视情绪检测 · 愤怒客户 AI 回复没意义
+
+**要做**:
+
+- ✅ 置信度 < 80% 直接转人工, 不博
+- ✅ 所有 AI 回复记录到数据库 · 周度复盘 Prompt
+- ✅ FAQ 每周维护 · 客服新发现的问题类型加进去
+- ✅ 客户反馈 (⭐️ 或 "这个回复没帮助") 反馈给 Prompt 优化
+
+## 6. 下一步
+
+- 看 [/scenes/v-cs V-CS 场景详情](/scenes/v-cs) (agents + integrations + KPIs)
+- 看 [/work/lumesque-v-cs 完整案例](/work/lumesque-v-cs)
+- [预约 30 分钟诊断](/contact?sku=pilot-pod&scene=v-cs) · Pilot Pod ¥12,800 / 5 天能帮你跑通一个窄场景
+
+本 cluster 还有这些 supporting:
+- 弃购挽回自动化 (下周发布)
+- WhatsApp 营销自动化: 东南亚/中东跨境电商的 AI 打法 (下周发布)
+- 多语言 listing 自动翻译: 10 个小语种的质量实测 (下周发布)
