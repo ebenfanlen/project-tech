@@ -159,11 +159,10 @@ const openings = [
       </p>
 
       <div class="space-y-4">
-        {openings.map((o, i) => (
+        {openings.map((o) => (
           <details
             class="group overflow-hidden rounded-[var(--radius-lg)] border"
             style="background:var(--bg-card);border-color:var(--border-default)"
-            open={i === 0}
           >
             <summary
               class="flex cursor-pointer items-start justify-between gap-4 p-6"
@@ -214,7 +213,7 @@ const openings = [
               </ul>
 
               <h4 class="mb-2 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
-                ⬢ 加分项
+                &mdash; 加分项
               </h4>
               <ul class="mb-6 space-y-1 text-sm">
                 {o.niceToHave.map((n) => (

@@ -1,5 +1,10 @@
 ---
+// SKU 展示 · asymmetric 2x3 grid · Vibecoding Pod 占 2x2 主推大卡
+// (Stitch Taste: 禁 3+ equal cards horizontal · 视觉权重 = 真实销量占比 80%)
 import { skus } from "../data/skus";
+
+const main = skus.find((s) => s.recommended)!;        // Vibecoding Pod
+const others = skus.filter((s) => !s.recommended);    // Pilot / Fleet / Crew
 ---
 
 <section class="mx-auto max-w-[1200px] px-6 py-20">
@@ -22,93 +27,138 @@ import { skus } from "../data/skus";
     </p>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-    {skus.map((sku) => {
-      const isRecommended = sku.recommended;
-      const accentColor = sku.accentColor === "signal" ? "var(--color-signal-500)" : "var(--color-primary-500)";
-      return (
-        <a
-          href={sku.slug}
-          class="group relative flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-1"
-          style={
-            isRecommended
-              ? `background:var(--bg-card);border-color:${accentColor};border-width:2px;box-shadow:var(--shadow-lg)`
-              : `background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)`
-          }
-        >
-          {isRecommended && (
-            <span
-              class="absolute -top-3 left-6 rounded-[var(--radius-sm)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--color-canvas-50)]"
-              style={`background:${accentColor}`}
-            >
-              主推
-            </span>
-          )}
+  <!-- Asymmetric grid: 主推左边 2x3 大 · 其他 3 张右侧小卡堆叠 -->
+  <div class="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
+    <!-- Main Vibecoding Pod · 大卡 -->
+    <a
+      href={main.slug}
+      class="group relative flex flex-col rounded-[var(--radius-2xl)] border-2 p-8 transition hover:-translate-y-1"
+      style={`background:var(--bg-card);border-color:var(--color-primary-500);box-shadow:var(--shadow-xl)`}
+    >
+      <span
+        class="absolute -top-3 left-8 rounded-[var(--radius-sm)] px-3 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-canvas-50)]"
+        style={`background:var(--color-primary-500)`}
+      >
+        主推 · 80% 订单打这里
+      </span>
 
-          <span
-            class="mb-2 font-mono text-[11px] uppercase tracking-[0.08em]"
-            style={`color:${accentColor}`}
-          >
-            {sku.nameEn}
-          </span>
+      <span
+        class="mb-3 font-mono text-xs uppercase tracking-[0.1em]"
+        style="color:var(--color-primary-600)"
+      >
+        {main.nameEn}
+      </span>
 
-          <h3 class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
-            {sku.nameZh}
-          </h3>
-          <p class="mb-4 text-sm" style="color:var(--fg-muted)">{sku.subtitle}</p>
+      <h3 class="mb-2" style="font-size:clamp(1.5rem,3vw,2rem);line-height:1.15;font-weight:600;color:var(--fg-display)">
+        {main.nameZh}
+      </h3>
+      <p class="mb-6 max-w-md" style="font-size:var(--text-body-md);color:var(--fg-muted)">{main.subtitle}</p>
 
-          <div
-            class="mb-2 tabular-nums"
-            style={`font-size:1.5rem;font-weight:700;color:var(--fg-display)`}
-          >
-            {sku.priceCN}
-          </div>
-          <div class="mb-4 flex items-center gap-2 text-xs" style="color:var(--fg-muted)">
-            <span class="font-mono">{sku.priceUS}</span>
+      <!-- 大号价格 + tabular + slashed-zero -->
+      <div
+        class="mb-2 tabular-nums"
+        style="font-size:clamp(2rem,4vw,2.75rem);font-weight:700;color:var(--fg-display);font-variant-numeric:tabular-nums slashed-zero;line-height:1"
+      >
+        {main.priceCN}
+      </div>
+      <div class="mb-6 flex flex-wrap items-center gap-2 text-xs" style="color:var(--fg-muted)">
+        <span class="font-mono">{main.priceUS}</span>
+        <span>·</span>
+        <span>{main.duration}</span>
+        {main.byokDiscount && (
+          <>
             <span>·</span>
-            <span>{sku.duration}</span>
-            {sku.byokDiscount && (
-              <>
-                <span>·</span>
-                <span
-                  class="rounded-full px-2 py-0.5 font-mono font-semibold"
-                  style="background:var(--color-signal-100);color:var(--color-signal-700)"
-                >
-                  {sku.byokDiscount}
-                </span>
-              </>
-            )}
-          </div>
+            <span
+              class="rounded-full px-2 py-0.5 font-mono font-semibold"
+              style="background:var(--color-signal-100);color:var(--color-signal-700)"
+            >
+              {main.byokDiscount}
+            </span>
+          </>
+        )}
+      </div>
 
-          <ul class="mb-6 flex-1 space-y-1.5 text-sm">
-            {sku.features.slice(0, 4).map((f) => (
-              <li class="flex items-start gap-2" style="color:var(--fg-default)">
-                <svg
-                  class="mt-1 h-3 w-3 shrink-0"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke={accentColor}
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span>{f.text}</span>
-              </li>
-            ))}
-          </ul>
+      <ul class="mb-8 grid flex-1 gap-2 text-sm sm:grid-cols-2">
+        {main.features.slice(0, 6).map((f) => (
+          <li class="flex items-start gap-2" style="color:var(--fg-default)">
+            <svg
+              class="mt-1 h-3 w-3 shrink-0"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--color-primary-500)"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>{f.text}</span>
+          </li>
+        ))}
+      </ul>
 
-          <span
-            class="inline-flex items-center gap-1 text-sm font-semibold transition group-hover:translate-x-0.5"
-            style={`color:${accentColor}`}
+      <span
+        class="inline-flex items-center gap-1 text-sm font-semibold transition group-hover:translate-x-0.5"
+        style="color:var(--color-primary-600)"
+      >
+        {main.cta}
+      </span>
+    </a>
+
+    <!-- 3 小卡纵排 -->
+    <div class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+      {others.map((sku) => {
+        const accentColor = sku.accentColor === "signal" ? "var(--color-signal-500)" : "var(--color-primary-500)";
+        return (
+          <a
+            href={sku.slug}
+            class="group flex flex-col rounded-[var(--radius-xl)] border p-5 transition hover:-translate-y-0.5"
+            style={`background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)`}
           >
-            {sku.cta}
-          </span>
-        </a>
-      );
-    })}
+            <span
+              class="mb-1 font-mono text-[10px] uppercase tracking-[0.08em]"
+              style={`color:${accentColor}`}
+            >
+              {sku.nameEn}
+            </span>
+
+            <h3 class="mb-1 text-base font-semibold" style="color:var(--fg-display)">
+              {sku.nameZh}
+            </h3>
+            <p class="mb-3 text-xs" style="color:var(--fg-muted);line-height:1.5">{sku.subtitle.split(" · ")[0]}</p>
+
+            <div
+              class="mb-1 tabular-nums"
+              style="font-size:1.125rem;font-weight:700;color:var(--fg-display);font-variant-numeric:tabular-nums slashed-zero"
+            >
+              {sku.priceCN}
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5 text-[11px]" style="color:var(--fg-muted)">
+              <span class="font-mono">{sku.duration}</span>
+              {sku.byokDiscount && (
+                <>
+                  <span>·</span>
+                  <span
+                    class="rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold"
+                    style="background:var(--color-signal-100);color:var(--color-signal-700)"
+                  >
+                    {sku.byokDiscount}
+                  </span>
+                </>
+              )}
+            </div>
+
+            <span
+              class="mt-4 inline-flex items-center gap-1 text-xs font-semibold transition group-hover:translate-x-0.5"
+              style={`color:${accentColor}`}
+            >
+              {sku.cta}
+            </span>
+          </a>
+        );
+      })}
+    </div>
   </div>
 
   <div class="mt-10 text-center">

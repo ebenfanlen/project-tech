@@ -1,12 +1,12 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/jetbrains-mono";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
 @import "@fontsource-variable/noto-sans-sc";
 @import "@fontsource-variable/noto-sans-tc";
 
-/* NOTE: 生产阶段如切换 HarmonyOS Sans SC/TC, 把 Noto Sans 替换为自托管华为字体
-   (需创始人从 developer.harmonyos.com 下载 woff2 放 public/fonts/).
-   Noto Sans SC 作开源等价 — 同 Adobe-Google 思源系, 视觉接近 HarmonyOS. */
+/* 字体战略 (Stitch Taste 框架): 反 Inter 过度同质化 · 用 Geist (Vercel 同款) 匹配 craftsman 定位.
+   中文 Noto Sans SC/TC 保留 (Adobe-Google 思源系 · 和 Geist 字怀协调).
+   生产可切换 HarmonyOS Sans SC/TC (需手动从 developer.harmonyos.com 下载 woff2). */
 
 @theme {
   /* === Primary · Deep Harbor 深海蓝 === */
@@ -85,11 +85,11 @@
   --color-info-700: #1E4C80;
 
   /* === 字体 === */
-  --font-sans: "Inter Variable", "Noto Sans SC Variable", "Noto Sans TC Variable",
+  --font-sans: "Geist Variable", "Noto Sans SC Variable", "Noto Sans TC Variable",
                "HarmonyOS Sans SC", "HarmonyOS Sans TC",
                -apple-system, BlinkMacSystemFont, "PingFang SC",
                "Microsoft YaHei", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular,
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular,
                "SF Mono", Menlo, Consolas, monospace;
 
   /* === Type Scale · Desktop === */
@@ -144,12 +144,12 @@
   /* === Spacing (4px 基准) === */
   --spacing: 0.25rem;
 
-  /* === Radius (偏方 · 工艺感) === */
+  /* === Radius · 偏方 craftsman (品牌 spec) + 双档 feature layer (Stitch Taste) === */
   --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 10px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
+  --radius-md: 6px;       /* Button / small chip */
+  --radius-lg: 10px;      /* 标准 Card */
+  --radius-xl: 14px;      /* Hero CTA / 双画像卡 (拉层级) */
+  --radius-2xl: 20px;     /* Feature hero card · Vibecoding Pod 主推 */
 
   /* === Shadow (品牌色温 rgba(23, 48, 61)) === */
   --shadow-xs: 0 1px 2px rgba(23, 48, 61, 0.05);

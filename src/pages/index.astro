@@ -20,11 +20,11 @@ import SiteFooter from "../components/SiteFooter.astro";
 >
   <NavBar />
 
-  <!-- Section 2: Hero -->
-  <section class="mx-auto max-w-[1200px] px-6 pb-16 pt-16 sm:pt-24">
+  <!-- Section 2: Hero (cascade stagger · Motion One spring) -->
+  <section class="mx-auto max-w-[1200px] px-6 pb-16 pt-16 sm:pt-24" data-hero-stagger>
     <p
-      class="mb-8 inline-flex items-center gap-2 font-mono uppercase"
-      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      class="mb-8 inline-flex items-center gap-2 font-mono uppercase hero-item"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600);opacity:0"
     >
       <span
         class="inline-block h-1.5 w-1.5 rounded-full"
@@ -36,32 +36,32 @@ import SiteFooter from "../components/SiteFooter.astro";
     <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-start">
       <div>
         <h1
-          class="mb-6 font-semibold"
-          style="font-size:clamp(2.75rem,7vw,4.5rem);line-height:var(--text-display-xl--line-height);letter-spacing:0.04em;color:var(--fg-display)"
+          class="mb-6 font-semibold hero-item"
+          style="font-size:clamp(2.75rem,7vw,4.5rem);line-height:var(--text-display-xl--line-height);letter-spacing:0.04em;color:var(--fg-display);opacity:0"
         >
           别堆人<span style="font-weight:400">，</span>造船<span style="font-weight:400">。</span>
         </h1>
 
         <p
-          class="mb-8 font-mono tracking-tight"
-          style="font-size:clamp(1.75rem,4.5vw,3.5rem);line-height:var(--text-display-lg--line-height);color:var(--fg-muted)"
+          class="mb-8 font-mono tracking-tight hero-item"
+          style="font-size:clamp(1.75rem,4.5vw,3.5rem);line-height:var(--text-display-lg--line-height);color:var(--fg-muted);opacity:0"
         >
           Don't hire. Ship.
         </p>
 
         <p
-          class="mb-10 max-w-xl"
-          style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default)"
+          class="mb-10 max-w-xl hero-item"
+          style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default);opacity:0"
         >
           14 天交付一个可量产的 AI 工作流 · 代码 100% 归你 · 透明定价 · 支持 BYOK。
           我们是 vibecoding pod，不是外包。
         </p>
 
         <!-- 双画像 CTA -->
-        <div class="grid max-w-xl gap-4 sm:grid-cols-2" role="group" aria-label="主要行动入口">
+        <div class="grid max-w-xl gap-4 sm:grid-cols-2 hero-item" role="group" aria-label="主要行动入口" style="opacity:0">
           <a
             href="/pilot-pod"
-            class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5"
+            class="group flex flex-col rounded-[var(--radius-xl)] border p-6 transition hover:-translate-y-0.5"
             style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-signal-500);box-shadow:var(--shadow-sm)"
           >
             <span
@@ -86,7 +86,7 @@ import SiteFooter from "../components/SiteFooter.astro";
 
           <a
             href="/how"
-            class="group flex flex-col rounded-[var(--radius-lg)] border p-6 transition hover:-translate-y-0.5"
+            class="group flex flex-col rounded-[var(--radius-xl)] border p-6 transition hover:-translate-y-0.5"
             style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-primary-500);box-shadow:var(--shadow-sm)"
           >
             <span
@@ -111,12 +111,36 @@ import SiteFooter from "../components/SiteFooter.astro";
         </div>
       </div>
 
-      <!-- 14 天 Live Timer (右侧，desktop) -->
-      <div class="lg:sticky lg:top-24">
+      <!-- 14 天 Live Timer (右侧，desktop) · stagger 最后出现 -->
+      <div class="lg:sticky lg:top-24 hero-item" style="opacity:0">
         <LiveTimer />
       </div>
     </div>
   </section>
+
+  <!-- Hero cascade stagger · Motion One spring(100,20) -->
+  <script>
+    import { animate, stagger } from "motion";
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const items = document.querySelectorAll("[data-hero-stagger] .hero-item");
+
+    if (reduced) {
+      items.forEach((el) => ((el as HTMLElement).style.opacity = "1"));
+    } else {
+      animate(
+        items,
+        { opacity: [0, 1], y: [16, 0] },
+        {
+          delay: stagger(0.08, { start: 0.1 }),
+          duration: 0.7,
+          type: "spring",
+          stiffness: 100,
+          damping: 20,
+        }
+      );
+    }
+  </script>
 
   <!-- Section 4: 客户信任墙 -->
   <TrustedLogos />

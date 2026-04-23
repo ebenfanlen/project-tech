@@ -1,7 +1,7 @@
 ---
 // 14 天 Live Timer · 首屏 Geek 证据核心
-// Day 1 用 mock 数据（Phase 1 dogfooding 项目时间线，Phase 2 接 ops dashboard API）
-// 本 Island 不走 client 水合 — 静态 SSG，避免 SEO 陷阱
+// (Stitch Taste 增强: shimmer 扫描 active row · countdown 真 setInterval · tabular slashed-zero)
+// Phase 1 用 mock 数据 (dogfooding 项目时间线) · Phase 2 接 ops dashboard API
 const steps = [
   { day: 1, label: "Kickoff", status: "done", desc: "需求对齐 + 业务流程图" },
   { day: 2, label: "Architecture Draft", status: "done", desc: "架构图 + Agent 分工 + Prompt v1" },
@@ -26,8 +26,8 @@ const currentDay = 3;
       ></span>
       <span style="color:var(--color-cool-300)">Current Ship</span>
     </span>
-    <span style="color:var(--color-canvas-100)">
-      Day <span class="font-semibold" style="color:var(--color-signal-400)">{String(currentDay).padStart(2, "0")}</span>
+    <span style="color:var(--color-canvas-100)" data-live-day>
+      Day <span class="font-semibold" style="color:var(--color-signal-400);font-variant-numeric:tabular-nums slashed-zero">{String(currentDay).padStart(2, "0")}</span>
       / 14
     </span>
     <span class="hidden sm:inline uppercase" style="color:var(--color-cool-400)">
@@ -35,31 +35,95 @@ const currentDay = 3;
     </span>
   </header>
 
-  <ol class="mt-4 space-y-2">
-    {steps.map((step) => (
-      <li class="grid grid-cols-[auto_auto_1fr_auto] items-center gap-3 tabular-nums">
-        <span
-          class="inline-block h-2 w-2 rounded-full"
-          style={
-            step.status === "done"
-              ? "background:var(--color-success-500)"
-              : step.status === "active"
-                ? "background:var(--color-signal-500);box-shadow:0 0 0 4px rgba(232,106,42,0.15)"
-                : "background:var(--color-cool-600)"
-          }
-        ></span>
-        <span style="color:var(--color-cool-400)">Day {String(step.day).padStart(2, "0")}</span>
-        <span style={step.status === "pending" ? "color:var(--color-cool-500)" : "color:var(--color-canvas-100)"}>
-          {step.label}
-        </span>
-        <span class="hidden md:inline text-right" style="color:var(--color-cool-500)">
-          {step.desc || ""}
-        </span>
-      </li>
-    ))}
+  <ol class="mt-4 space-y-2 relative">
+    {steps.map((step) => {
+      const isActive = step.status === "active";
+      return (
+        <li
+          class:list={[
+            "grid grid-cols-[auto_auto_1fr_auto] items-center gap-3 tabular-nums relative",
+            isActive && "timer-active-row",
+          ]}
+          style="font-variant-numeric:tabular-nums slashed-zero"
+        >
+          <span
+            class:list={[
+              "inline-block h-2 w-2 rounded-full",
+              isActive && "[animation:var(--animate-pulse-signal)]",
+            ]}
+            style={
+              step.status === "done"
+                ? "background:var(--color-success-500)"
+                : step.status === "active"
+                  ? "background:var(--color-signal-500);box-shadow:0 0 0 4px rgba(232,106,42,0.15)"
+                  : "background:var(--color-cool-600)"
+            }
+          ></span>
+          <span style="color:var(--color-cool-400)">Day {String(step.day).padStart(2, "0")}</span>
+          <span style={step.status === "pending" ? "color:var(--color-cool-500)" : "color:var(--color-canvas-100)"}>
+            {step.label}
+          </span>
+          <span class="hidden md:inline text-right" style="color:var(--color-cool-500)">
+            {step.desc || ""}
+          </span>
+        </li>
+      );
+    })}
   </ol>
 
-  <footer class="mt-4 border-t pt-3 text-[11px]" style="border-color:var(--color-cool-700);color:var(--color-cool-500)">
-    <span>实时 from Shipwright ops dashboard · 下次同步 in 58m</span>
+  <footer class="mt-4 border-t pt-3 text-[11px] flex items-center justify-between gap-3" style="border-color:var(--color-cool-700);color:var(--color-cool-500)">
+    <span>实时 · Shipwright ops dashboard</span>
+    <span class="tabular-nums" style="font-variant-numeric:tabular-nums slashed-zero;color:var(--color-cool-400)" data-next-sync>
+      Next sync · <span data-countdown>58:42</span>
+    </span>
   </footer>
 </section>
+
+<style>
+  /* Shimmer scan on active row · Stitch Taste perpetual micro-interaction */
+  .timer-active-row::before {
+    content: "";
+    position: absolute;
+    inset: -4px -8px;
+    border-radius: 4px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(232, 106, 42, 0.06) 40%,
+      rgba(232, 106, 42, 0.14) 50%,
+      rgba(232, 106, 42, 0.06) 60%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-scan 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @keyframes shimmer-scan {
+    0%, 100% { background-position: -100% 0; }
+    50% { background-position: 200% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .timer-active-row::before { animation: none; }
+  }
+</style>
+
+<script is:inline>
+  // 真 countdown: 从 58:42 倒数 · 到 0 重置 59:59 (mock)
+  (() => {
+    const el = document.querySelector("[data-countdown]");
+    if (!el) return;
+    let seconds = 58 * 60 + 42;
+    const tick = () => {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      el.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+      seconds--;
+      if (seconds < 0) seconds = 59 * 60 + 59;
+    };
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

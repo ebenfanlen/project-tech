@@ -1,21 +1,18 @@
 ---
-// 客户信任墙 · Phase 1 用匿名脱敏 + 动态计数 (真 logo 随客户增加补)
-const clients = [
-  { label: "某深圳跨境美妆独立站", handle: "L / 月 GMV ¥80 万" },
-  { label: "某杭州 Amazon 家居品牌", handle: "Z / 月 GMV $120K" },
-  { label: "某广州 3C 跨境品牌", handle: "W / 月 GMV $280K" },
-  { label: "某上海新消费茶饮出海", handle: "O / TikTok + 小红书" },
-  { label: "某宁波工具类 DTC", handle: "H / 欧洲独立站" },
-  { label: "某佛山灯饰品牌", handle: "F / Amazon 全站" },
-  { label: "某温州鞋服品牌", handle: "C / Shopify Plus" },
-  { label: "某厦门母婴品牌", handle: "M / TikTok Shop" },
-];
+// 客户信任墙 · Phase 1 占位 (真客户签约同意后替换)
+// 注: 去掉 aspirational 计数 (12 品牌/34 agent/1840 小时) · 反 Stitch Taste "fabricated stats" ban
+// 签约真客户后, 把 label 换成真品牌名 + 可选 logo · 计数用真数字
 
-const stats = {
-  clientCount: 12,
-  agentCount: 34,
-  savedHoursMonthly: 1840,
-};
+const clients = [
+  { label: "[Brand #01 · 跨境美妆独立站]", handle: "月 GMV ¥80 万" },
+  { label: "[Brand #02 · Amazon 家居]", handle: "月 GMV $120K" },
+  { label: "[Brand #03 · 3C 跨境]", handle: "月 GMV $280K" },
+  { label: "[Brand #04 · 茶饮出海]", handle: "TikTok + 小红书" },
+  { label: "[Brand #05 · 工具 DTC]", handle: "欧洲独立站" },
+  { label: "[Brand #06 · 灯饰]", handle: "Amazon 全站" },
+  { label: "[Brand #07 · 鞋服]", handle: "Shopify Plus" },
+  { label: "[Brand #08 · 母婴]", handle: "TikTok Shop" },
+];
 ---
 
 <section
@@ -24,14 +21,14 @@ const stats = {
 >
   <div class="mx-auto max-w-[1200px] px-6 py-14">
     <p
-      class="mb-8 text-center font-mono uppercase"
+      class="mb-8 font-mono uppercase"
       style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
     >
-      已在为这些团队造船 · Phase 1 脱敏展示
+      Phase 1 · 首批合作品牌占位 (签约同意后替换真 logo)
     </p>
 
-    <!-- 客户 label grid -->
-    <ul class="mb-10 grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
+    <!-- 客户 label grid · asymmetric 左对齐 -->
+    <ul class="grid grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
       {clients.map((c) => (
         <li class="flex flex-col">
           <span
@@ -50,56 +47,15 @@ const stats = {
       ))}
     </ul>
 
-    <!-- 动态计数 -->
-    <div
-      class="grid grid-cols-3 gap-4 border-t pt-8 text-center"
-      style="border-color:var(--border-default)"
+    <!-- 诚实声明 (代替假数字) -->
+    <p
+      class="mt-10 max-w-2xl border-l-2 pl-4 text-sm"
+      style="border-color:var(--color-signal-500);color:var(--fg-default);line-height:1.7"
     >
-      <div>
-        <div
-          class="tabular-nums font-semibold"
-          style="font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--fg-display)"
-        >
-          {stats.clientCount}
-          <span class="ml-1 text-base font-normal" style="color:var(--fg-muted)">个品牌</span>
-        </div>
-        <div
-          class="mt-1 font-mono text-xs uppercase tracking-[0.08em]"
-          style="color:var(--fg-muted)"
-        >
-          已交付
-        </div>
-      </div>
-      <div>
-        <div
-          class="tabular-nums font-semibold"
-          style="font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--fg-display)"
-        >
-          {stats.agentCount}
-          <span class="ml-1 text-base font-normal" style="color:var(--fg-muted)">个 AI 员工</span>
-        </div>
-        <div
-          class="mt-1 font-mono text-xs uppercase tracking-[0.08em]"
-          style="color:var(--fg-muted)"
-        >
-          运行中
-        </div>
-      </div>
-      <div>
-        <div
-          class="tabular-nums font-semibold"
-          style="font-size:clamp(1.75rem,3.5vw,2.5rem);color:var(--color-signal-500)"
-        >
-          {stats.savedHoursMonthly.toLocaleString()}
-          <span class="ml-1 text-base font-normal" style="color:var(--fg-muted)">小时/月</span>
-        </div>
-        <div
-          class="mt-1 font-mono text-xs uppercase tracking-[0.08em]"
-          style="color:var(--fg-muted)"
-        >
-          累计节省
-        </div>
-      </div>
-    </div>
+      <strong style="color:var(--fg-display)">诚实说明:</strong>
+      Shipwright 2026 年 4 月刚启动 · 前 3 个 Pilot Pod / Vibecoding Pod 客户正在对接.
+      这里的 8 个品牌占位是客户画像 · 真实客户 logo 和案例会随交付完成陆续替换.
+      反"fabricated stats" · 反"99.99% uptime" · 只放可验证的数字.
+    </p>
   </div>
 </section>
