@@ -1,0 +1,214 @@
+---
+export const prerender = true;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import NavBar from "../../components/NavBar.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import FinalCTA from "../../components/FinalCTA.astro";
+---
+
+<BaseLayout
+  title="Shipwright · 14-day AI workflow delivery for cross-border DTC"
+  description="Don't hire. Ship. Cross-border DTC AI agency. 14-day hard delivery. Code 100% yours. Transparent pricing. BYOK."
+  lang="en"
+  path="/en/"
+>
+  <NavBar />
+
+  <main>
+    <!-- Phase 2 notice banner -->
+    <div
+      class="border-b px-6 py-3 text-center text-sm"
+      style="background:var(--color-warning-50);border-color:var(--color-warning-500);color:var(--color-warning-700)"
+    >
+      <strong>🚧 Phase 2 English site · Coming May 2027</strong> · Shipwright is currently China-focused (Phase 1). Full English content launches post ICP filing.
+      For now: <a href="mailto:hello@shipwright.co" style="color:var(--color-signal-600);font-weight:600">hello@shipwright.co</a> in English.
+    </div>
+
+    <!-- Hero (simplified for MVP) -->
+    <section class="mx-auto max-w-[1200px] px-6 pb-16 pt-16 sm:pt-24">
+      <p
+        class="mb-8 inline-flex items-center gap-2 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        <span class="inline-block h-1.5 w-1.5 rounded-full" style="background:var(--color-signal-500)"></span>
+        For DTC Operators
+      </p>
+
+      <h1
+        class="mb-6 font-semibold"
+        style="font-size:clamp(2.5rem,6vw,4rem);line-height:1.1;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        Don't hire. Ship.
+      </h1>
+
+      <p
+        class="mb-10 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        14-day AI workflow delivery for cross-border DTC brands.
+        Code 100% yours. Transparent pricing. BYOK accepted. We're a vibecoding pod, not an outsourcing shop.
+      </p>
+
+      <!-- 4 SKU grid (English) -->
+      <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4 max-w-5xl">
+        {[
+          {
+            name: "Pilot Pod",
+            subtitle: "Try 1 narrow scenario in 5 days",
+            price: "$2,400",
+            href: "/pilot-pod",
+            signal: true,
+          },
+          {
+            name: "Vibecoding Pod",
+            subtitle: "Full business loop · 14-day hard commit",
+            price: "$8,500 + $350/mo",
+            href: "/vibecoding-pod",
+            recommended: true,
+          },
+          {
+            name: "Fleet Integration",
+            subtitle: "Multi-SaaS AI orchestration · 21-28 days",
+            price: "$24.8K-$42K",
+            href: "/fleet-integration",
+          },
+          {
+            name: "Crew Retainer",
+            subtitle: "Monthly AI ops · Skip the $5K/mo senior eng hire",
+            price: "$880-$3,480/mo",
+            href: "/crew-retainer",
+          },
+        ].map((sku) => (
+          <a
+            href={sku.href}
+            class="flex flex-col rounded-[var(--radius-lg)] border p-5 transition hover:-translate-y-1"
+            style={
+              sku.recommended
+                ? "background:var(--bg-card);border-color:var(--color-signal-500);border-width:2px;box-shadow:var(--shadow-md)"
+                : "background:var(--bg-card);border-color:var(--border-default);box-shadow:var(--shadow-sm)"
+            }
+          >
+            {sku.recommended && (
+              <span class="mb-2 inline-flex w-fit rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]" style="background:var(--color-signal-500);color:var(--color-canvas-50)">
+                Main · 80% of orders
+              </span>
+            )}
+            <h3 class="mb-1 text-lg font-semibold" style="color:var(--fg-display)">{sku.name}</h3>
+            <p class="mb-3 flex-1 text-sm" style="color:var(--fg-muted)">{sku.subtitle}</p>
+            <div class="tabular-nums font-bold" style="font-size:1.25rem;color:var(--fg-display)">{sku.price}</div>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-10">
+        <a
+          href="/contact"
+          class="inline-flex h-12 items-center rounded-[var(--radius-md)] px-6 text-sm font-semibold transition hover:brightness-110"
+          style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+        >
+          Book 30-min free diagnosis →
+        </a>
+      </div>
+    </section>
+
+    <!-- Key differentiators (3 bullets English) -->
+    <section
+      class="border-y py-16"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[1100px] px-6">
+        <p
+          class="mb-4 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+        >
+          Why we're different
+        </p>
+        <h2
+          class="mb-10 font-semibold"
+          style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;color:var(--fg-display)"
+        >
+          Not an agency · not a PPT consulting shop.
+        </h2>
+
+        <div class="grid gap-5 md:grid-cols-3">
+          <div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              14-day hard commit
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              Contract: 3% setup/day refund over Day 14 (cap 30%). Day 7 mid-sprint demo · no-fault exit refunds 70%.
+            </p>
+          </div>
+          <div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              Code 100% yours
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              All agent source · prompts · configs · deploy scripts pushed to your GitHub org at Day 14. No vendor lock. No API gatekeeping.
+            </p>
+          </div>
+          <div>
+            <h3 class="mb-3 text-lg font-semibold" style="color:var(--fg-display)">
+              BYOK · 0 markup
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              Bring your own Anthropic / OpenAI API key. AI cost billed directly by vendor. We take Platform Fee only. −20% to −25% with BYOK.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notice about Phase 2 -->
+    <section class="mx-auto max-w-[900px] px-6 py-16">
+      <div
+        class="rounded-[var(--radius-lg)] border p-6"
+        style="background:var(--bg-card);border-color:var(--border-default)"
+      >
+        <p
+          class="mb-3 font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:var(--color-signal-600)"
+        >
+          English site Phase 2
+        </p>
+        <h2
+          class="mb-3 font-semibold"
+          style="font-size:1.5rem;line-height:1.2;color:var(--fg-display)"
+        >
+          We're Chinese-team first · English expansion May 2027
+        </h2>
+        <p class="mb-4 text-sm" style="color:var(--fg-default)">
+          Shipwright is run by a Shenzhen/Shanghai-based team. Phase 1 (2026-05 to 2027-04) is focused on Chinese
+          cross-border DTC sellers (那些做 Shopify / Amazon / TikTok Shop 的跨境卖家).
+          Phase 2 starts May 2027 with full English content + US/EU customer onboarding.
+        </p>
+        <p class="text-sm" style="color:var(--fg-default)">
+          <strong style="color:var(--fg-display)">Today (Phase 1)</strong>, if you're an English-speaking client with cross-border DTC operations
+          (especially bilingual teams): email <a href="mailto:hello@shipwright.co" style="color:var(--color-signal-600);font-weight:600">hello@shipwright.co</a>
+          or switch to <a href="/" style="color:var(--color-signal-600);font-weight:600">the Chinese main site</a> for full pricing and case studies.
+        </p>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a
+          href="/"
+          class="inline-flex h-10 items-center rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+          style="border-color:var(--border-strong);color:var(--fg-default)"
+        >
+          中文主站 · Chinese main site →
+        </a>
+        <a
+          href="mailto:hello@shipwright.co?subject=English inquiry"
+          class="inline-flex h-10 items-center rounded-[var(--radius-md)] border px-4 text-sm font-medium transition hover:opacity-80"
+          style="border-color:var(--border-strong);color:var(--fg-default)"
+        >
+          Email hello@shipwright.co
+        </a>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

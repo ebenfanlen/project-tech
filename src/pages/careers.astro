@@ -1,0 +1,273 @@
+---
+export const prerender = true;
+import BaseLayout from "../layouts/BaseLayout.astro";
+import NavBar from "../components/NavBar.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+
+const openings = [
+  {
+    title: "Senior AI Engineer (全栈 + Claude Code)",
+    level: "Senior",
+    base: "深圳 / 上海 / Remote",
+    type: "Full-time",
+    salary: "月综合 ¥35-55K + 期权",
+    mustHave: [
+      "3+ 年生产级 TypeScript / Node 经验",
+      "做过至少 1 个 Claude / GPT API 真实集成 (非 demo)",
+      "熟悉 Shopify Admin API / Meta Graph API / 小红书开放平台中至少 2 个",
+      "能独立完成一个 SKU 从 Day 1 Discovery 到 Day 14 Ship",
+    ],
+    niceToHave: [
+      "做过跨境电商独立站 (买家 / 运营经验)",
+      "AWS / 阿里云 / Cloudflare Workers 经验",
+      "写过技术博客 / 开源过小项目",
+    ],
+    why: "我们核心产品资产 (SKU-02 5 大场景 starter kits) 的所有权. 决策权高, 代码直接上线到客户生产环境.",
+  },
+  {
+    title: "PM · 跨境电商项目",
+    level: "Mid-Senior",
+    base: "深圳 / 上海",
+    type: "Full-time",
+    salary: "月综合 ¥25-40K + 项目奖",
+    mustHave: [
+      "做过至少 1 年跨境电商 DTC 或独立站运营",
+      "熟悉 Shopify / Amazon / TikTok Shop 至少 2 个平台",
+      "会写清晰的 PRD · 会主持 Day 7 Mid-sprint Demo",
+      "能 2h 内响应客户紧急请求 (我们对客户承诺)",
+    ],
+    niceToHave: [
+      "懂点 AI / Prompt / API (不用写代码)",
+      "小红书 / 飞书 / 企业微信高强度用户",
+      "做过跨境电商自己的独立站, 知道痛点",
+    ],
+    why: "Shipwright 核心差异化是 14 天交付 · PM 是兑现承诺的指挥官.",
+  },
+  {
+    title: "Content Lead (SEO + 品牌)",
+    level: "Mid",
+    base: "深圳 / 上海 / Remote",
+    type: "Full-time",
+    salary: "月综合 ¥20-35K",
+    mustHave: [
+      "做过中文 SEO 内容 1 年+ (百度为主 + Google 也会)",
+      "写过至少 5 篇 3000+ 字技术 / 商业中文博客",
+      "会用 SEOMachine / 5118 / 百度站长平台 等工具",
+      "中英读写 · 能 review 机翻质量",
+    ],
+    niceToHave: [
+      "懂点 AI / Prompt engineering (帮我们写 prompt 模板)",
+      "做过百家号 / 知乎 / 小红书 / 公众号至少 2 个",
+      "之前是 DTC 品牌的内容岗位",
+    ],
+    why: "Shipwright 自己的官网内容 + 4 个 pillar cluster 由你主导. 月产 12 篇 supporting + 1 pillar · 参考我们的 CLAUDE.md.",
+  },
+];
+---
+
+<BaseLayout
+  title="加入 Shipwright · 我们正在招聘 · 船匠"
+  description="Shipwright 正在招 Senior AI Engineer / PM 跨境电商 / Content Lead SEO · Remote-friendly · 月综合 ¥20-55K · 代码所有权 + 期权 + 真实影响力."
+  path="/careers"
+>
+  <NavBar />
+
+  <main>
+    <!-- Hero -->
+    <section class="mx-auto max-w-[900px] px-6 pb-10 pt-16 sm:pt-24">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Careers · We're hiring
+      </p>
+      <h1
+        class="mb-4 font-semibold"
+        style="font-size:clamp(2.25rem,5vw,3.25rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+      >
+        找几个真会造船的人。
+      </h1>
+      <p
+        class="mb-6 max-w-2xl"
+        style="font-size:var(--text-body-lg);color:var(--fg-default)"
+      >
+        我们核心团队目前 <strong style="color:var(--fg-display)">&lt; 10 人</strong> · 想长期维持小而精.
+        每个岗位都有真决策权 · 代码直接上线客户生产环境 · 不是大厂螺丝钉.
+      </p>
+      <p class="font-mono text-xs" style="color:var(--fg-muted)">
+        Remote-friendly (深圳 / 上海 / 全国) · follow-the-sun 双班制 · 工作日 9:00-22:00 CST 协作窗口
+      </p>
+    </section>
+
+    <!-- 我们提供什么 -->
+    <section
+      class="border-y py-12"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[900px] px-6">
+        <p
+          class="mb-4 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+        >
+          为什么加入
+        </p>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="rounded-[var(--radius-md)] border p-4" style="background:var(--bg-card);border-color:var(--border-default)">
+            <h3 class="mb-2 text-base font-semibold" style="color:var(--fg-display)">
+              ✓ 代码所有权
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              所有交付给客户的代码, 你的 Git commit history 都公开可查. 简历上加一行"做了 X 客户的 14 天 AI 工作流".
+            </p>
+          </div>
+          <div class="rounded-[var(--radius-md)] border p-4" style="background:var(--bg-card);border-color:var(--border-default)">
+            <h3 class="mb-2 text-base font-semibold" style="color:var(--fg-display)">
+              ✓ Claude Code 生产级实战
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              每天用 Claude Code + Anthropic / OpenAI API + 真实 Shopify / Meta / 小红书 API 写代码. 这个技能栈 2-3 年后值钱.
+            </p>
+          </div>
+          <div class="rounded-[var(--radius-md)] border p-4" style="background:var(--bg-card);border-color:var(--border-default)">
+            <h3 class="mb-2 text-base font-semibold" style="color:var(--fg-display)">
+              ✓ Follow-the-sun 时区自由
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              双班制 · 早班 9:00-18:00 或晚班 18:00-2:00 选一个. 完整 8h 深度工作 + 1h 交接.
+            </p>
+          </div>
+          <div class="rounded-[var(--radius-md)] border p-4" style="background:var(--bg-card);border-color:var(--border-default)">
+            <h3 class="mb-2 text-base font-semibold" style="color:var(--fg-display)">
+              ✓ 小团队 · 决策权
+            </h3>
+            <p class="text-sm" style="color:var(--fg-default)">
+              不是大厂螺丝钉. 你签约的 SKU, 从 PRD 到 Ship 你是主导. 不需要 4 层审批.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 个 opening -->
+    <section class="mx-auto max-w-[900px] px-6 py-16">
+      <p
+        class="mb-4 font-mono uppercase"
+        style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+      >
+        Open Positions · 3 个岗位
+      </p>
+
+      <div class="space-y-4">
+        {openings.map((o, i) => (
+          <details
+            class="group overflow-hidden rounded-[var(--radius-lg)] border"
+            style="background:var(--bg-card);border-color:var(--border-default)"
+            open={i === 0}
+          >
+            <summary
+              class="flex cursor-pointer items-start justify-between gap-4 p-6"
+              style="color:var(--fg-display)"
+            >
+              <div class="flex-1">
+                <h3 class="mb-1 text-lg font-semibold">{o.title}</h3>
+                <div class="flex flex-wrap gap-3 text-xs font-mono" style="color:var(--fg-muted)">
+                  <span>{o.level}</span>
+                  <span>·</span>
+                  <span>{o.base}</span>
+                  <span>·</span>
+                  <span>{o.type}</span>
+                  <span>·</span>
+                  <span style="color:var(--color-signal-600)">{o.salary}</span>
+                </div>
+              </div>
+              <svg
+                class="mt-1 h-5 w-5 shrink-0 transition group-open:rotate-45"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+            </summary>
+            <div
+              class="border-t px-6 py-5"
+              style="border-color:var(--border-default);color:var(--fg-default)"
+            >
+              <p class="mb-5 rounded-[var(--radius-sm)] p-3 text-sm" style="background:var(--bg-muted);border-left:2px solid var(--color-signal-500)">
+                <strong style="color:var(--fg-display)">为什么这岗位 · </strong>{o.why}
+              </p>
+
+              <h4 class="mb-2 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--color-success-700)">
+                ✓ 必备
+              </h4>
+              <ul class="mb-4 space-y-1 text-sm">
+                {o.mustHave.map((m) => (
+                  <li class="flex gap-2" style="color:var(--fg-default)">
+                    <span style="color:var(--color-success-500)">•</span>
+                    <span>{m}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <h4 class="mb-2 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+                ⬢ 加分项
+              </h4>
+              <ul class="mb-6 space-y-1 text-sm">
+                {o.niceToHave.map((n) => (
+                  <li class="flex gap-2" style="color:var(--fg-muted)">
+                    <span>•</span>
+                    <span>{n}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href={`/contact?role=${encodeURIComponent(o.title)}`}
+                class="inline-flex h-10 items-center rounded-[var(--radius-md)] px-5 text-sm font-semibold transition hover:brightness-110"
+                style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+              >
+                投递这个岗位 →
+              </a>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <!-- 流程说明 -->
+    <section
+      class="border-y py-12"
+      style="background:var(--bg-section);border-color:var(--border-default)"
+    >
+      <div class="mx-auto max-w-[900px] px-6">
+        <p
+          class="mb-4 font-mono uppercase"
+          style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
+        >
+          Hiring process · 我们的面试
+        </p>
+        <ol class="space-y-3">
+          {[
+            { step: "1. 投简历", desc: "发到 hello@shipwright.co · 标题 '[岗位名] + 姓名'. 24h 内回复." },
+            { step: "2. 45 分钟初聊", desc: "线上 · 不考算法. 聊你做过的项目 + 我们做什么 + 匹配度." },
+            { step: "3. 真实项目 trial (带薪 · 1 周)", desc: "给你一个真实的 SKU starter kit · 做一个场景的 Day 1-3 Discovery + PRD. 不是免费劳动, 按项目制付费." },
+            { step: "4. offer + 期权协议", desc: "trial 通过即 offer. 期权协议 4 年 vesting · 1 年 cliff." },
+          ].map((s) => (
+            <li class="rounded-[var(--radius-md)] border p-4 text-sm" style="background:var(--bg-card);border-color:var(--border-default)">
+              <strong style="color:var(--fg-display)">{s.step}</strong>
+              <span style="color:var(--fg-default)"> · {s.desc}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <FinalCTA />
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

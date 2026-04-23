@@ -47,6 +47,14 @@ const canonical = `${siteUrl}${path}`;
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- 性能优化: preconnect + 字体 preload (关键可视字体) -->
+    <link rel="dns-prefetch" href="//hm.baidu.com" />
+    <link rel="preconnect" href="https://hm.baidu.com" crossorigin />
+
+    <!-- 资源提示: 首屏需要的优先 -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
     <!-- Theme color（跟随浅/深） -->
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FDFCF9" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E2230" />
