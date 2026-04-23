@@ -1,6 +1,6 @@
 # /research - 跨境电商关键词研究 (SEOMachine-CN fork)
 
-基于 Craig Hewitt SEOMachine (MIT), 本地化为 shipwright-org/seomachine-cn.
+基于 Craig Hewitt SEOMachine (MIT), 本地化为 aioars-org/seomachine-cn.
 替换数据源: Google Search Console → 百度站长平台 + 5118 · 保留 DataForSEO 作海外对标.
 
 ## 使用
@@ -15,7 +15,7 @@
 
 1. **Seed keyword** (从 `docs/research/2026-04-22-seo-keyword-matrix.md` 40 个核心 KW 选)
 2. **Business context** (2 句话):
-   > "Shipwright 是华人团队的 AI 跨境电商服务商. 目标客户: 月 GMV ¥50K-$300K 的中型跨境卖家. 主力卖 [X SKU] 解决 [Y 场景]."
+   > "AiOars 是华人团队的 AI 跨境电商服务商. 目标客户: 月 GMV ¥50K-$300K 的中型跨境卖家. 主力卖 [X SKU] 解决 [Y 场景]."
 3. **Target SERP**: `baidu` (中国大陆) / `google` (US+SG) / `both`
 4. **Intent lock**: `top` (认知) / `mid` (考虑) / `bottom` (决策)
 5. **Competitive exclude**: 3-5 个不想抄的竞品站 (默认: ccstrategic.io, liamottley.com, 中国汉化 AI 自媒体 Top 10)

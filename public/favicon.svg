@@ -1,13 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Shipwright · The Keel">
-    <title>Shipwright</title>
-    <!-- The Keel: 桅杆 (CLI 光标) -->
-    <rect class="mark" x="31" y="4" width="2" height="20" />
-    <!-- The Keel: 龙骨梯形船体 -->
-    <polygon class="mark" points="20,28 44,28 56,60 8,60" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AiOars">
+    <title>AiOars</title>
+    <rect class="mark" x="8" y="8" width="48" height="48" rx="14" fill="none" stroke-width="6"/>
     <style>
-        .mark { fill: #2B5468; }
+        .mark { stroke: #1B1B1B; }
         @media (prefers-color-scheme: dark) {
-            .mark { fill: #FDFCF9; }
+            .mark { stroke: #FEF297; }
         }
     </style>
 </svg>

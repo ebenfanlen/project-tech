@@ -1,4 +1,4 @@
-# Shipwright · Claude Code Standards
+# AiOars · Claude Code Standards
 
 > 这个文件是团队 + Claude 的共享约束. 所有 Claude Code 调用 / AI agent / 内部工具都读这份.
 > 与官网品牌一致 · 反 CC Strategic / 反 credit 计费 / 反 vendor lock.
@@ -126,7 +126,7 @@ ANTHROPIC_API_KEY=              # Chat Widget 真 AI 回复 (Phase 2)
 - `v-ops/` — 订单 / 物流 / 退款 AI 分诊
 
 精简 demo 版 (v-cs-starter-public / v-content-starter-public) 公开在 GitHub 作引流 "试用装".
-核心生产版在 shipwright-org/sku-starters-private.
+核心生产版在 aioars-org/sku-starters-private.
 
 ---
 

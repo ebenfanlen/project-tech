@@ -8,16 +8,16 @@ import PricingCalculator from "../components/PricingCalculator.astro";
 import { skus } from "../data/skus";
 
 const competitors = [
-  { name: "CC Strategic", product: "AI 咨询项目", price: "不透明 · 估 $15K-$50K", shipwright: "SKU-02 $8,500 透明" },
-  { name: "NextAutomation", product: "AI workflow", price: "$5,000 起（仅起步价）", shipwright: "SKU-01 $2,400 · SKU-02 $8,500" },
-  { name: "LeftClick AI", product: "自动化咨询", price: "$3K-$8K/月 订阅", shipwright: "Crew-M Retainer $1,780/月" },
-  { name: "MindStudio", product: "SaaS 平台", price: "Platform + pass-through", shipwright: "相同模式 + 定制化 + 代码交付" },
-  { name: "国内通用 AI 外包", product: "按人月", price: "¥30K-¥80K/人月", shipwright: "SKU-02 ¥58K 一口价 · 14 天" },
+  { name: "CC Strategic", product: "AI 咨询项目", price: "不透明 · 估 $15K-$50K", aioars: "SKU-02 $8,500 透明" },
+  { name: "NextAutomation", product: "AI workflow", price: "$5,000 起（仅起步价）", aioars: "SKU-01 $2,400 · SKU-02 $8,500" },
+  { name: "LeftClick AI", product: "自动化咨询", price: "$3K-$8K/月 订阅", aioars: "Crew-M Retainer $1,780/月" },
+  { name: "MindStudio", product: "SaaS 平台", price: "Platform + pass-through", aioars: "相同模式 + 定制化 + 代码交付" },
+  { name: "国内通用 AI 外包", product: "按人月", price: "¥30K-¥80K/人月", aioars: "SKU-02 ¥58K 一口价 · 14 天" },
 ];
 ---
 
 <BaseLayout
-  title="定价 · Shipwright 船匠 · 4 SKU 明码标价"
+  title="定价 · AiOars 船匠 · 4 SKU 明码标价"
   description="Pilot Pod ¥12,800 / Vibecoding Pod ¥58,000 / Fleet Integration ¥168K-298K / Crew Retainer ¥5.8K+/月。BYOK 可选 -20~25%。反 Credit 黑盒，反 book-a-call。"
   path="/pricing"
 >
@@ -342,7 +342,7 @@ const competitors = [
                 <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">竞品</th>
                 <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">同类产品</th>
                 <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">他们的定价</th>
-                <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--color-signal-600)">Shipwright</th>
+                <th class="px-4 py-3 font-mono text-xs uppercase tracking-[0.08em]" style="color:var(--color-signal-600)">AiOars</th>
               </tr>
             </thead>
             <tbody>
@@ -354,7 +354,7 @@ const competitors = [
                   <td class="px-4 py-3 font-medium" style="color:var(--fg-display)">{c.name}</td>
                   <td class="px-4 py-3" style="color:var(--fg-default)">{c.product}</td>
                   <td class="px-4 py-3" style="color:var(--fg-muted)">{c.price}</td>
-                  <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">{c.shipwright}</td>
+                  <td class="px-4 py-3 font-semibold" style="color:var(--color-signal-600)">{c.aioars}</td>
                 </tr>
               ))}
             </tbody>

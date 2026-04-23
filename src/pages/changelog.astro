@@ -9,7 +9,7 @@ import FinalCTA from "../components/FinalCTA.astro";
 const entries = [
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 2 批量: 11 stub 转真页 + Blog + Playbooks + 5 场景页",
     items: [
       "新增 /blog + 首篇 pillar 《AI 驱动跨境电商 DTC 的 14 天 MVP 方法论》(2000+ 字)",
@@ -19,11 +19,11 @@ const entries = [
       "新增 /playbooks + 4 个 playbook metadata (邮箱 gate)",
       "/changelog 这页本身也是 dogfooding 证据",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commits",
+    link: "https://github.com/aioars-org/aioars/commits",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 1 Day 7: SEO + CI/CD + 交付报告",
     items: [
       "@astrojs/sitemap 集成 · 25 URL 自动生成 sitemap-index.xml",
@@ -33,11 +33,11 @@ const entries = [
       "GitHub Actions: 阿里云 OSS/CDN + Cloudflare Pages 双分发 + 百度主动推送 hook",
       "docs/DELIVERY-2026-04-23.md 完整交付报告",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/db14b43",
+    link: "https://github.com/aioars-org/aioars/commit/db14b43",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 1 Day 6: /about + 3 剩余 SKU + 4 Legal 真页",
     items: [
       "/about: 三人创始团队 + 4 价值观 + Dogfooding 证据",
@@ -46,11 +46,11 @@ const entries = [
       "/crew-retainer: 3 档 Retainer + 对标自招工程师表",
       "/legal/terms /privacy /icp /sla 完整法律文本 (PIPL + GDPR)",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/77886ff",
+    link: "https://github.com/aioars-org/aioars/commit/77886ff",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 1 Day 5: /pilot-pod + /contact + LeadForm Island",
     items: [
       "/pilot-pod: 5 天 ¥12,800 + 3 个窄场景 + 升级钩子 60% 折抵可视化",
@@ -58,21 +58,21 @@ const entries = [
       "LeadForm 提交到 localStorage mock (Week 2 Day 10 接真后端)",
       "PIPL 授权 checkbox 必勾",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/823a11a",
+    link: "https://github.com/aioars-org/aioars/commit/823a11a",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 1 Day 4: /pricing 和 /how 真页面",
     items: [
       "/pricing: 4 SKU 详细卡片 + 三段式定价公式 (代码块样式) + BYOK 对比 + 对标压制竞品表",
       "/how: 完整 Day-by-Day 14 天 Timeline + 为什么能做到 4 理由 + 超期退款条款",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/5ec9eb7",
+    link: "https://github.com/aioars-org/aioars/commit/5ec9eb7",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 1 Day 3: 首页 10 section 补全",
     items: [
       "客户信任墙 (8 脱敏客户 + 3 动态计数 12/34/1840)",
@@ -83,11 +83,11 @@ const entries = [
       "FAQ 8 核心问答 (手风琴)",
       "FinalCTA + SiteFooter (4 栏 + Newsletter + 社交 + ICP)",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/92373c6",
+    link: "https://github.com/aioars-org/aioars/commit/92373c6",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Week 1 Day 2: Dark 三态 + 中文字体 + pangu",
     items: [
       "Noto Sans SC/TC Variable 自托管 (HarmonyOS 开源等价)",
@@ -96,11 +96,11 @@ const entries = [
       "system 模式监听 prefers-color-scheme",
       "百度 applicable-device meta",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/e1ca0fa",
+    link: "https://github.com/aioars-org/aioars/commit/e1ca0fa",
   },
   {
     date: "2026-04-23",
-    tag: "shipwright.co",
+    tag: "aioars.com",
     title: "Day 1: Astro 6 + Tailwind v4 骨架 + Hero + Dark Mode",
     items: [
       "Astro 6.1 + Tailwind v4 via @tailwindcss/vite",
@@ -113,20 +113,20 @@ const entries = [
       "Dark Mode 底色 primary-900 不用纯黑",
       "prefers-reduced-motion 硬约束",
     ],
-    link: "https://github.com/shipwright-org/shipwright/commit/b213e29",
+    link: "https://github.com/aioars-org/aioars/commit/b213e29",
   },
 ];
 
 const tagColors: Record<string, string> = {
-  "shipwright.co": "var(--color-signal-600)",
+  "aioars.com": "var(--color-signal-600)",
   "starter-kits": "var(--color-primary-600)",
   "seomachine-cn": "var(--color-info-500)",
 };
 ---
 
 <BaseLayout
-  title="Changelog · 产品更新日志 · Shipwright 船匠"
-  description="Shipwright 每周更新日志 · 官网 + starter kits + SEOMachine 本地化 fork · dogfooding 透明度 · 公开 Git 历史."
+  title="Changelog · 产品更新日志 · AiOars 船匠"
+  description="AiOars 每周更新日志 · 官网 + starter kits + SEOMachine 本地化 fork · dogfooding 透明度 · 公开 Git 历史."
   path="/changelog"
 >
   <NavBar />
@@ -149,21 +149,21 @@ const tagColors: Record<string, string> = {
         class="mb-10 max-w-2xl"
         style="font-size:var(--text-body-lg);color:var(--fg-default)"
       >
-        官网 (shipwright.co) · 5 大场景 starter kits · SEOMachine 本地化 fork · 三个仓库的每次更新.
+        官网 (aioars.com) · 5 大场景 starter kits · SEOMachine 本地化 fork · 三个仓库的每次更新.
         我们对客户承诺 14 天, 自己的产品也用同样方法在造。
       </p>
 
       <!-- 三个仓库快捷链接 -->
       <div class="mb-12 flex flex-wrap gap-3 font-mono text-xs">
         <a
-          href="https://github.com/shipwright-org/shipwright"
+          href="https://github.com/aioars-org/aioars"
           class="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border px-3 transition hover:opacity-80"
           style="border-color:var(--border-strong);color:var(--fg-default)"
         >
           <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.9.57.1.78-.25.78-.55v-2.01c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18.92-.26 1.91-.38 2.89-.39.98 0 1.97.13 2.89.39 2.21-1.5 3.18-1.18 3.18-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.13v3.16c0 .31.21.66.79.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
           </svg>
-          shipwright (公开)
+          aioars (公开)
         </a>
         <span class="inline-flex h-8 items-center gap-1.5 rounded-[var(--radius-sm)] border px-3" style="border-color:var(--border-default);color:var(--fg-muted)">
           seomachine-cn (私有 · fork)

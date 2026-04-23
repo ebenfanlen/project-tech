@@ -6,8 +6,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="Admin · Leads · Shipwright"
-  description="Shipwright 内部 Admin · Lead 列表"
+  title="Admin · Leads · AiOars"
+  description="AiOars 内部 Admin · Lead 列表"
   path="/admin/leads"
 >
   <style is:inline>
@@ -34,7 +34,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           class="mb-1 font-mono text-xs uppercase tracking-[0.08em]"
           style="color:var(--color-signal-600)"
         >
-          Admin · Shipwright 内部
+          Admin · AiOars 内部
         </p>
         <h1 class="text-2xl font-semibold" style="color:var(--fg-display)">
           Leads · 留资线索
@@ -74,7 +74,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <input
           id="token-input"
           type="password"
-          placeholder="输入 ADMIN_TOKEN (dev 默认: shipwright-dev-token-2026)"
+          placeholder="输入 ADMIN_TOKEN (dev 默认: aioars-dev-token-2026)"
           class="h-9 flex-1 rounded-[var(--radius-sm)] border px-3 text-sm"
           style="background:var(--bg-page);border-color:var(--border-strong);color:var(--fg-display)"
         />
@@ -208,17 +208,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     >
       <strong style="color:var(--fg-display)">Phase 1.5 真 API 已接通:</strong>
       <code style="font-family:var(--font-mono);color:var(--color-signal-600)">GET /api/leads</code>
-      · 数据持久化到 <code style="font-family:var(--font-mono)">.shipwright-data/leads.json</code>
+      · 数据持久化到 <code style="font-family:var(--font-mono)">.aioars-data/leads.json</code>
       · 状态改动调 <code style="font-family:var(--font-mono);color:var(--color-signal-600)">PATCH /api/leads</code>
       · Phase 2 Day 10 切阿里云 RDS PostgreSQL + Auth.js magic link.
       <br/><br/>
-      <strong>测试:</strong> /contact 填一个 lead → API 写 <code style="font-family:var(--font-mono)">.shipwright-data/leads.json</code> → 这页自动拉新数据.
+      <strong>测试:</strong> /contact 填一个 lead → API 写 <code style="font-family:var(--font-mono)">.aioars-data/leads.json</code> → 这页自动拉新数据.
     </div>
   </main>
 
   <script is:inline>
   (() => {
-    const TOKEN_KEY = "shipwright-admin-token";
+    const TOKEN_KEY = "aioars-admin-token";
     const tbody = document.getElementById("leads-tbody");
     const authPanel = document.getElementById("auth-panel");
     const tokenInput = document.getElementById("token-input");
@@ -376,7 +376,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `shipwright-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.download = `aioars-leads-${new Date().toISOString().slice(0, 10)}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     });

@@ -4,7 +4,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-const DATA_DIR = process.env.SHIPWRIGHT_DATA_DIR || ".shipwright-data";
+const DATA_DIR = process.env.SHIPWRIGHT_DATA_DIR || ".aioars-data";
 const LEADS_FILE = path.join(DATA_DIR, "leads.json");
 
 export interface Lead {
@@ -81,6 +81,6 @@ export async function deleteLead(id: string): Promise<boolean> {
 
 // 简单 admin token · Phase 2 切 Auth.js magic link
 export function verifyAdminToken(token: string | null): boolean {
-  const expected = process.env.ADMIN_TOKEN || "shipwright-dev-token-2026";
+  const expected = process.env.ADMIN_TOKEN || "aioars-dev-token-2026";
   return Boolean(token && token === expected);
 }

@@ -1,10 +1,10 @@
-# Shipwright / 船匠
+# AiOars / 船匠
 
 > 别堆人，造船。/ Don't hire. Ship.
 >
 > 跨境电商 DTC 的 AI 工作流定制团队。14 天硬交付 · 代码 100% 归你 · 透明定价 · 支持 BYOK。
 
-[shipwright.co](https://shipwright.co) (海外主) · [shipwright.cn](https://shipwright.cn) (国内主 · 备案中)
+[aioars.com](https://aioars.com) (海外主) · [aioars.cn](https://aioars.cn) (国内主 · 备案中)
 
 这个仓库本身就是 dogfooding 证据 — 我们用自己对客户承诺的 14 天 MVP 方法, 造了这个官网。
 
@@ -57,8 +57,8 @@ pnpm preview          # 预览 production build
 
 双栈同代码, 按访问者地理 edge 分流:
 
-- **国内 (shipwright.cn)**: GitHub Actions → 阿里云 OSS + CDN (杭州/张家口双 region) + 函数计算 FC + RDS PostgreSQL
-- **海外 (shipwright.co)**: GitHub Actions → Cloudflare Pages + Workers + R2 + Neon (Phase 2)
+- **国内 (aioars.cn)**: GitHub Actions → 阿里云 OSS + CDN (杭州/张家口双 region) + 函数计算 FC + RDS PostgreSQL
+- **海外 (aioars.com)**: GitHub Actions → Cloudflare Pages + Workers + R2 + Neon (Phase 2)
 
 CI/CD:
 - `.github/workflows/ci.yml`: PR / push 上 build + smoke test
@@ -74,13 +74,13 @@ CI/CD:
 
 | Week | 目标 | 状态 |
 |------|------|------|
-| W1 | 骨架 + 海外灰度 shipwright.co 上线 | ✅ 完成 (D1-D7) |
+| W1 | 骨架 + 海外灰度 aioars.com 上线 | ✅ 完成 (D1-D7) |
 | W2 | 内容引擎 + Chat Widget + CRM | 🚧 进行中 |
 | W3 | 剩余 SKU 详情 + SEOMachine 本地化 fork | 计划中 |
-| W4 | 国内 ICP 备案完成 + shipwright.cn 切流 | 计划中 |
+| W4 | 国内 ICP 备案完成 + aioars.cn 切流 | 计划中 |
 | W5-6 | P1 补齐 + 一稿多投 + 内容冲刺 | 计划中 |
 
-详见 [`/roadmap`](https://shipwright.co/roadmap) 网站页面.
+详见 [`/roadmap`](https://aioars.com/roadmap) 网站页面.
 
 ## 品牌资产
 
@@ -104,9 +104,9 @@ CI/CD:
 
 ## 联系
 
-- hello@shipwright.co
-- [30 分钟免费诊断 →](https://shipwright.co/contact)
+- hello@aioars.com
+- [30 分钟免费诊断 →](https://aioars.com/contact)
 
 ---
 
-© 2026 Shipwright 船匠 · 别堆人, 造船.
+© 2026 AiOars 船匠 · 别堆人, 造船.

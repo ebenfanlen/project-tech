@@ -54,10 +54,10 @@ const sentryDsn = import.meta.env.PUBLIC_SENTRY_DSN;
 
 {/* 通用事件 helper · 所有 CTA 点击双埋点 */}
 <script is:inline>
-  window.shipwrightTrack = function(eventName, props) {
+  window.aioarsTrack = function(eventName, props) {
     // 百度统计
     if (window._hmt) {
-      window._hmt.push(["_trackEvent", "shipwright", eventName, JSON.stringify(props || {})]);
+      window._hmt.push(["_trackEvent", "aioars", eventName, JSON.stringify(props || {})]);
     }
     // Plausible
     if (window.plausible) {
@@ -72,7 +72,7 @@ const sentryDsn = import.meta.env.PUBLIC_SENTRY_DSN;
   document.addEventListener("click", function(e) {
     var el = e.target.closest("[data-track]");
     if (el) {
-      window.shipwrightTrack(el.dataset.track, {
+      window.aioarsTrack(el.dataset.track, {
         page: location.pathname,
         label: el.dataset.trackLabel || el.textContent.trim().slice(0, 40),
       });

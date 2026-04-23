@@ -30,7 +30,7 @@
     - H2 每 800-1200 字一个大节
     - H3 下展开
     - 3-5 张自制图 (blueprint 风 · Deep Harbor 底)
-    - 每 1500 字一条 "Shipwright 视角" 引用块
+    - 每 1500 字一条 "AiOars 视角" 引用块
 
 04. 代码示例 (如果技术文)
     - JetBrains Mono 等宽块
@@ -46,7 +46,7 @@
 08. 结论 + CTA
     - "如果你想让我们帮你跑一遍 → 预约 Pilot Pod"
 
-09. 作者 bio (Shipwright Team)
+09. 作者 bio (AiOars Team)
 
 10. Schema.org (Article + Author + BreadcrumbList)
 ```
@@ -68,7 +68,7 @@ pubDate: YYYY-MM-DD
 locale: zh-CN | zh-TW | en (default zh-CN)
 cluster: pillar-cross-border-ai | pillar-shopify-custom | pillar-tiktok-shop | pillar-claude-code-method | supporting
 keywords: string[] (max 8)
-author: string (default "Shipwright Team")
+author: string (default "AiOars Team")
 status: draft | review | published
 crossPost:
   baijiahao: <url>

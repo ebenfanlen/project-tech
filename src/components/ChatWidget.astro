@@ -170,7 +170,7 @@
   const badge = document.getElementById("chat-badge");
   if (!fab || !panel) return;
 
-  const STORAGE_KEY = "shipwright-chat-session";
+  const STORAGE_KEY = "aioars-chat-session";
   const now = new Date();
   const cst = new Date(now.getTime() + (8 * 60 + now.getTimezoneOffset()) * 60000);
   const hour = cst.getHours(), day = cst.getDay();
@@ -287,8 +287,8 @@
   };
 
   // 真 API /api/chat · Phase 1.5 rule router · Phase 2 真 Claude Haiku
-  let sessionId = localStorage.getItem("shipwright-chat-sid") || crypto.randomUUID();
-  localStorage.setItem("shipwright-chat-sid", sessionId);
+  let sessionId = localStorage.getItem("aioars-chat-sid") || crypto.randomUUID();
+  localStorage.setItem("aioars-chat-sid", sessionId);
 
   const sendMessage = async (text) => {
     if (!text.trim()) return;
@@ -314,7 +314,7 @@
       if (res.ok && data.reply) {
         appendMessage("ai", data.reply);
       } else {
-        appendMessage("ai", "API 调用失败. 请直接 [预约 30 分钟诊断](/contact) 或发邮件 hello@shipwright.co.");
+        appendMessage("ai", "API 调用失败. 请直接 [预约 30 分钟诊断](/contact) 或发邮件 hello@aioars.com.");
       }
     } catch (err) {
       typing.remove();

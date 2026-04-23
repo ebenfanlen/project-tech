@@ -7,7 +7,7 @@ import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://shipwright.co",
+  site: "https://aioars.com",
   // Hybrid: 默认静态 · API routes + 特定页面 (如 admin) 走 SSR
   // Phase 2 部署: 国内用阿里云 FC 作 Node runtime · 海外用 Cloudflare Pages Functions (换 adapter)
   output: "server",
@@ -42,7 +42,7 @@ export default defineConfig({
       lastmod: new Date(),
       serialize(item) {
         // 首页和 Pricing 最高优先级
-        if (item.url === "https://shipwright.co/" || item.url.endsWith("/pricing/")) {
+        if (item.url === "https://aioars.com/" || item.url.endsWith("/pricing/")) {
           item.priority = 1.0;
           item.changefreq = "daily";
         }

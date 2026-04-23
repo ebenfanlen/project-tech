@@ -1,4 +1,4 @@
-// Shipwright 网站 6 周开发路线图
+// AiOars 网站 6 周开发路线图
 // 每个页面标注：spec 规划的 JTBD + 预计完成时间 + 核心 section + 状态
 
 export type PageStatus = "live" | "in-progress" | "planned";
@@ -146,7 +146,7 @@ export const roadmap: PageSpec[] = [
     plannedDate: "2026-05-07~13",
     priority: "P0",
     sections: ["创始团队实名 + 照片 (反 CC Strategic 的强化)", "价值观 (别堆人，造船 展开解读)", "GitHub 公开仓库链接 (dogfooding 证据)", "办公地 (上海 · 纽约 · 深圳)"],
-    seoKw: "shipwright 团队",
+    seoKw: "aioars 团队",
     status: "live",
   },
   {

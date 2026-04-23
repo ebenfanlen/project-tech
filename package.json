@@ -1,6 +1,6 @@
 {
-  "name": "shipwright",
-  "description": "Shipwright / 船匠 — Cross-border DTC AI agency. 别堆人，造船。",
+  "name": "aioars",
+  "description": "AiOars / 船匠 — Cross-border DTC AI agency. 别堆人，造船。",
   "type": "module",
   "version": "0.0.1",
   "private": true,

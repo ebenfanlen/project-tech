@@ -18,7 +18,7 @@ const blog = defineCollection({
       "supporting",
     ]),
     keywords: z.array(z.string()).max(8),
-    author: z.string().default("Shipwright Team"),
+    author: z.string().default("AiOars Team"),
     heroImage: z.string().optional(),
     canonical: z.string().url().optional(),
     crossPost: z

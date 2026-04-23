@@ -92,7 +92,7 @@ export const skus: Sku[] = [
       { text: "主控 Agent + 6-10 工具 Agent 架构" },
       { text: "5-8 个 SaaS 集成 (按客户 stack 定制)" },
       { text: "中央数据层 (Supabase / 客户 DB / Airtable)" },
-      { text: "Shipwright 自研 orchestration 层" },
+      { text: "AiOars 自研 orchestration 层" },
       { text: "2 自定义看板 + 异常预警机器人 (飞书/Slack)" },
       { text: "1 个月陪跑 + 90 天 bug 保修 + 架构文档全交付" },
     ],

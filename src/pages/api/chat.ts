@@ -98,7 +98,7 @@ function route(userMessage: string): string {
 
 · Vibecoding Pod Platform Fee -20%
 · Fleet Integration Platform Fee -25%
-· AI cost 直付模型厂商 · Shipwright 0 markup
+· AI cost 直付模型厂商 · AiOars 0 markup
 · API Key 存 Cloudflare Workers Secrets (不落我们 DB)
 
 读这篇 blog 看详细对比: /blog/byok-vs-credit-pricing`;
@@ -123,7 +123,7 @@ function route(userMessage: string): string {
 · We ship in 14 days. Code 100% yours. Transparent pricing.
 · 4 SKUs: Pilot (¥12.8K/5d) / Vibecoding (¥58K/14d) / Fleet (¥168K+/21-28d) / Crew Retainer (¥5.8K+/mo).
 · BYOK accepted, 0 markup.
-· Email hello@shipwright.co for English discussion.`;
+· Email hello@aioars.com for English discussion.`;
   }
 
   // 默认兜底
@@ -156,7 +156,7 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({
         sessionId,
         reply,
-        model: "shipwright-rule-router-v1",  // Phase 2 → "claude-haiku-4-5"
+        model: "aioars-rule-router-v1",  // Phase 2 → "claude-haiku-4-5"
         latency_ms: 0,
       }),
       { status: 200, headers: { "content-type": "application/json" } }

@@ -160,7 +160,7 @@
       <span>
         我同意按照
         <a href="/legal/privacy" style="color:var(--color-signal-600)">《隐私政策》</a>
-        处理我的联系方式 · 仅用于 Shipwright 对接, 24 个月后自动归档。
+        处理我的联系方式 · 仅用于 AiOars 对接, 24 个月后自动归档。
       </span>
     </label>
   </div>
@@ -243,14 +243,14 @@
 
       // localStorage fallback (in case API down · browser crash recovery)
       try {
-        const existing = JSON.parse(localStorage.getItem("shipwright-leads") || "[]");
+        const existing = JSON.parse(localStorage.getItem("aioars-leads") || "[]");
         existing.push({
           ...data,
           id: apiResult?.id || crypto.randomUUID(),
           createdAt: apiResult?.createdAt || new Date().toISOString(),
           __apiStatus: apiError ? `error: ${apiError}` : "ok",
         });
-        localStorage.setItem("shipwright-leads", JSON.stringify(existing));
+        localStorage.setItem("aioars-leads", JSON.stringify(existing));
       } catch {}
 
       msg.classList.remove("hidden");
@@ -260,7 +260,7 @@
         msg.style.color = "var(--color-warning-700)";
         msg.innerHTML = `
           <strong>出错了 · ${data.name}</strong><br>
-          <span style="font-size:12px">已经把你的信息保存在浏览器本地. 请发邮件到 hello@shipwright.co, 我们优先处理.</span><br>
+          <span style="font-size:12px">已经把你的信息保存在浏览器本地. 请发邮件到 hello@aioars.com, 我们优先处理.</span><br>
           <span style="font-size:11px;font-family:var(--font-mono);opacity:0.75">API 错误: ${apiError}</span>
         `;
       } else {
