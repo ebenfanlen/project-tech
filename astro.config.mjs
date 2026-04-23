@@ -3,10 +3,15 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
+import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://shipwright.co",
+  // Hybrid: 默认静态 · API routes + 特定页面 (如 admin) 走 SSR
+  // Phase 2 部署: 国内用阿里云 FC 作 Node runtime · 海外用 Cloudflare Pages Functions (换 adapter)
+  output: "server",
+  adapter: node({ mode: "standalone" }),
   // i18n 路由预留 (Phase 2 启用翻译)
   // 当前 Phase 1: 简中默认走根路径 · 未配置 locale 子目录
   // Phase 2: 启用 zh-TW / en 后, 改这里的 locales + routing 即可

@@ -1,6 +1,7 @@
 ---
-// Admin /admin/leads · Phase 1 localStorage 版
-// Phase 2 (Day 10+): 接真 RDS Postgres + Auth.js magic link + /api/leads GET/PATCH
+// Admin /admin/leads · 切真 API /api/leads
+// 简单 URL token 认证: ?token=<ADMIN_TOKEN> · 存到 sessionStorage
+// Phase 2 Auth.js magic link 替换
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
@@ -25,22 +26,54 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div class="flex gap-2">
         <button
           type="button"
+          id="refresh"
+          class="inline-flex h-9 items-center gap-1.5 rounded-[var(--radius-md)] border px-3 text-sm transition hover:opacity-80"
+          style="border-color:var(--border-strong);color:var(--fg-default)"
+        >
+          刷新
+        </button>
+        <button
+          type="button"
           id="export-csv"
           class="inline-flex h-9 items-center gap-1.5 rounded-[var(--radius-md)] border px-3 text-sm transition hover:opacity-80"
           style="border-color:var(--border-strong);color:var(--fg-default)"
         >
           导出 CSV
         </button>
-        <button
-          type="button"
-          id="clear-all"
-          class="inline-flex h-9 items-center gap-1.5 rounded-[var(--radius-md)] border px-3 text-sm transition hover:opacity-80"
-          style="border-color:var(--color-error-500);color:var(--color-error-500)"
-        >
-          清空所有
-        </button>
       </div>
     </header>
+
+    <!-- Auth panel (if no token) -->
+    <div
+      id="auth-panel"
+      class="mb-6 hidden rounded-[var(--radius-lg)] border p-5"
+      style="background:var(--bg-card);border-color:var(--border-default)"
+    >
+      <p class="mb-3 text-sm" style="color:var(--fg-default)">
+        <strong style="color:var(--fg-display)">需要 admin token</strong>
+        · Phase 1.5 用 URL token · Phase 2 切 Auth.js magic link.
+      </p>
+      <div class="flex gap-2">
+        <input
+          id="token-input"
+          type="password"
+          placeholder="输入 ADMIN_TOKEN (dev 默认: shipwright-dev-token-2026)"
+          class="h-9 flex-1 rounded-[var(--radius-sm)] border px-3 text-sm"
+          style="background:var(--bg-page);border-color:var(--border-strong);color:var(--fg-display)"
+        />
+        <button
+          type="button"
+          id="token-submit"
+          class="inline-flex h-9 items-center rounded-[var(--radius-md)] px-4 text-sm font-semibold"
+          style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+        >
+          登录
+        </button>
+      </div>
+      <p class="mt-3 text-xs" style="color:var(--fg-muted)">
+        生产环境 token 通过 <code style="font-family:var(--font-mono);color:var(--color-signal-600)">ADMIN_TOKEN</code> 环境变量设置 · 切 Auth.js 后本面板移除.
+      </p>
+    </div>
 
     <!-- 计数 -->
     <div class="mb-6 grid grid-cols-5 gap-3 font-mono text-sm" id="stats">
@@ -145,18 +178,24 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       class="mt-6 rounded-[var(--radius-md)] border-l-2 p-4 text-sm"
       style="background:var(--bg-muted);border-color:var(--color-signal-500);color:var(--fg-default)"
     >
-      <strong style="color:var(--fg-display)">Phase 1 Mock Admin:</strong>
-      Lead 数据从 <code style="font-family:var(--font-mono);color:var(--color-signal-600)">localStorage["shipwright-leads"]</code> 读取 ·
-      和首页/Contact 页的 LeadForm 共享同一 key · 真后端 Day 10+ 切换 <code style="font-family:var(--font-mono);color:var(--color-signal-600)">GET /api/leads</code> (RDS + Auth.js).
+      <strong style="color:var(--fg-display)">Phase 1.5 真 API 已接通:</strong>
+      <code style="font-family:var(--font-mono);color:var(--color-signal-600)">GET /api/leads</code>
+      · 数据持久化到 <code style="font-family:var(--font-mono)">.shipwright-data/leads.json</code>
+      · 状态改动调 <code style="font-family:var(--font-mono);color:var(--color-signal-600)">PATCH /api/leads</code>
+      · Phase 2 Day 10 切阿里云 RDS PostgreSQL + Auth.js magic link.
       <br/><br/>
-      <strong>使用方法:</strong> 访问 /contact 填一个测试 lead → 刷新本页就能看到数据 + 可改状态 + 导 CSV.
+      <strong>测试:</strong> /contact 填一个 lead → API 写 <code style="font-family:var(--font-mono)">.shipwright-data/leads.json</code> → 这页自动拉新数据.
     </div>
   </main>
 
   <script is:inline>
   (() => {
-    const KEY = "shipwright-leads";
+    const TOKEN_KEY = "shipwright-admin-token";
     const tbody = document.getElementById("leads-tbody");
+    const authPanel = document.getElementById("auth-panel");
+    const tokenInput = document.getElementById("token-input");
+    const tokenSubmit = document.getElementById("token-submit");
+    const refreshBtn = document.getElementById("refresh");
     const search = document.getElementById("filter-search");
     const fStatus = document.getElementById("filter-status");
     const fGmv = document.getElementById("filter-gmv");
@@ -173,11 +212,47 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       lost: { bg: "#FCE8E8", fg: "#8C2020" },
     };
 
-    const loadLeads = () => {
-      const raw = JSON.parse(localStorage.getItem(KEY) || "[]");
-      return raw.map((l) => ({ ...l, status: l.status || "new" }));
-    };
-    const saveLeads = (list) => localStorage.setItem(KEY, JSON.stringify(list));
+    let cachedLeads = [];
+
+    const getToken = () => sessionStorage.getItem(TOKEN_KEY) || new URLSearchParams(location.search).get("token");
+
+    async function fetchLeads() {
+      const token = getToken();
+      if (!token) {
+        authPanel.classList.remove("hidden");
+        tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-12 text-center" style="color:var(--fg-muted)">请先登录 · 输入 admin token</td></tr>`;
+        return;
+      }
+      try {
+        const res = await fetch("/api/leads", {
+          headers: { "x-admin-token": token },
+        });
+        if (res.status === 401) {
+          sessionStorage.removeItem(TOKEN_KEY);
+          authPanel.classList.remove("hidden");
+          tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-12 text-center" style="color:var(--color-error-500)">Token 无效 · 请重新输入</td></tr>`;
+          return;
+        }
+        const data = await res.json();
+        cachedLeads = data.leads || [];
+        authPanel.classList.add("hidden");
+        render();
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-12 text-center" style="color:var(--color-error-500)">API 调用失败: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function updateStatus(id, status) {
+      const token = getToken();
+      if (!token) return;
+      try {
+        await fetch("/api/leads", {
+          method: "PATCH",
+          headers: { "content-type": "application/json", "x-admin-token": token },
+          body: JSON.stringify({ id, status }),
+        });
+      } catch {}
+    }
 
     const matchFilter = (l) => {
       const q = search.value.trim().toLowerCase();
@@ -188,27 +263,27 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       return true;
     };
 
+    const escape = (s) => String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
     const render = () => {
-      const leads = loadLeads();
-      // Counts
       const counts = { new: 0, contacted: 0, qualified: 0, converted: 0, lost: 0 };
-      leads.forEach((l) => { counts[l.status] = (counts[l.status] || 0) + 1; });
+      cachedLeads.forEach((l) => { counts[l.status] = (counts[l.status] || 0) + 1; });
       Object.entries(counts).forEach(([k, v]) => {
         const el = document.querySelector(`[data-count="${k}"]`);
         if (el) el.textContent = v;
       });
 
-      const filtered = leads.filter(matchFilter);
+      const filtered = cachedLeads.filter(matchFilter);
       if (filtered.length === 0) {
         tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-12 text-center" style="color:var(--fg-muted)">
-          ${leads.length === 0 ? "localStorage 无数据 · 去 /contact 填一个测试 lead →" : "筛选无结果"}
+          ${cachedLeads.length === 0 ? "API 返回 0 条数据 · 去 /contact 填一个测试 lead →" : "筛选无结果"}
         </td></tr>`;
         return;
       }
       tbody.innerHTML = filtered.sort((a, b) =>
         new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
       ).map((l) => {
-        const sc = statusColors[l.status];
+        const sc = statusColors[l.status] || statusColors.new;
         const time = l.createdAt ? new Date(l.createdAt).toLocaleString("zh-CN", { hour12: false }) : "-";
         return `
           <tr class="border-b" style="border-color:var(--border-default)">
@@ -237,32 +312,37 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         `;
       }).join("");
 
-      // Bind status change
       tbody.querySelectorAll("[data-lead-status]").forEach((el) => {
-        el.addEventListener("change", (e) => {
+        el.addEventListener("change", async (e) => {
           const id = el.dataset.leadStatus;
-          const list = loadLeads();
-          const lead = list.find((l) => l.id === id);
+          const lead = cachedLeads.find((l) => l.id === id);
           if (lead) {
             lead.status = e.target.value;
             lead.updatedAt = new Date().toISOString();
-            saveLeads(list);
+            await updateStatus(id, e.target.value);
             render();
           }
         });
       });
     };
 
-    const escape = (s) => String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    tokenSubmit?.addEventListener("click", () => {
+      const t = tokenInput.value.trim();
+      if (t) {
+        sessionStorage.setItem(TOKEN_KEY, t);
+        fetchLeads();
+      }
+    });
+    tokenInput?.addEventListener("keydown", (e) => { if (e.key === "Enter") tokenSubmit.click(); });
 
+    refreshBtn?.addEventListener("click", fetchLeads);
     [search, fStatus, fGmv, fScene].forEach((el) => el?.addEventListener("input", render));
 
     document.getElementById("export-csv")?.addEventListener("click", () => {
-      const leads = loadLeads();
-      if (leads.length === 0) return alert("无数据可导出");
+      if (cachedLeads.length === 0) return alert("无数据可导出");
       const headers = ["id", "createdAt", "name", "contact_type", "contact_value", "company", "gmv_band", "scenario", "utm_source", "notes", "status", "sourcePage"];
       const csv = [headers.join(",")].concat(
-        leads.map((l) => headers.map((h) => `"${String(l[h] || "").replace(/"/g, '""')}"`).join(","))
+        cachedLeads.map((l) => headers.map((h) => `"${String(l[h] || "").replace(/"/g, '""')}"`).join(","))
       ).join("\n");
       const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
       const url = URL.createObjectURL(blob);
@@ -273,13 +353,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       URL.revokeObjectURL(url);
     });
 
-    document.getElementById("clear-all")?.addEventListener("click", () => {
-      if (!confirm("确定清空所有 leads? 此操作不可恢复 (Phase 1 localStorage only).")) return;
-      localStorage.removeItem(KEY);
-      render();
-    });
+    // Auto-grab ?token= URL param
+    const urlToken = new URLSearchParams(location.search).get("token");
+    if (urlToken) {
+      sessionStorage.setItem(TOKEN_KEY, urlToken);
+      // Clean URL to hide token from bookmarks
+      history.replaceState({}, "", location.pathname);
+    }
 
-    render();
+    fetchLeads();
   })();
   </script>
 </BaseLayout>

@@ -286,27 +286,40 @@
     history.forEach((m) => appendMessage(m.role, m.content, false));
   };
 
-  // Mock AI 回复
-  const mockAIReply = (userMsg) => {
-    const m = userMsg.toLowerCase();
-    if (m.includes("客服") || m.includes("dm")) return "听起来是 V-CS 场景 · Vibecoding Pod (¥58K / 14 天) 就能搞定 IG DM + Shopify Inbox + 邮件 + 小红书 4 个渠道 · 5 语种同时回复 · 自动解决率 60%+. 想看案例可以访问 /work/lumesque-v-cs.";
-    if (m.includes("listing") || m.includes("seo")) return "V-SEO 场景 · 我们有 NordicNest 案例 (杭州家居品牌 · 月产 listing 80 → 240 条). Vibecoding Pod ¥58K / 14 天交付. 接入 Helium 10 关键词库 + 合规检查. 看 /scenes/v-seo 详情.";
-    if (m.includes("广告") || m.includes("投")) return "V-AD 场景 · 我们做 Meta + Google + TikTok Shop 广告素材批量 + ROAS 滚动预测. 目标客户信号: 月投放 $10K+ . 详情 /scenes/v-ad.";
-    if (m.includes("retainer") || m.includes("月租")) return "Crew Retainer 三档: 轻量 ¥5.8K / 标准 ¥11.8K / 深度 ¥22.8K 月. 对标自招 AI 工程师 (至少 ¥35K/月). 预付 12 月 -12%. 详情 /crew-retainer.";
-    if (m.includes("多少") || m.includes("价格") || m.includes("钱")) return "4 SKU 明码标价: Pilot Pod ¥12,800 / 5 天 · Vibecoding Pod ¥58K / 14 天 (主推) · Fleet Integration ¥168K-298K / 21-28 天 · Crew Retainer ¥5.8K+/月. 全部在 /pricing 能看到.";
-    if (m.includes("14 天") || m.includes("时间")) return "14 天是硬承诺 + 超期按 3% setup/天退款 (上限 30%). Day 7 Mid-sprint Demo 可无理由终止退 70%. 详细 /how.";
-    return "我还在做 mock 回复 · Phase 1 真 AI 回复 Day 11 上线 (WSS + Claude Haiku). 现在可以 [预约 30 分钟真人诊断](/contact) · 或查看 [4 个 SKU 定价](/pricing) · [14 天方法论](/how).";
-  };
+  // 真 API /api/chat · Phase 1.5 rule router · Phase 2 真 Claude Haiku
+  let sessionId = localStorage.getItem("shipwright-chat-sid") || crypto.randomUUID();
+  localStorage.setItem("shipwright-chat-sid", sessionId);
 
-  const sendMessage = (text) => {
+  const sendMessage = async (text) => {
     if (!text.trim()) return;
     appendMessage("visitor", text);
     input.value = "";
     input.style.height = "auto";
-    // 模拟 AI 回复延迟
-    setTimeout(() => {
-      appendMessage("ai", mockAIReply(text));
-    }, 600);
+
+    // 显示 typing indicator
+    const typing = document.createElement("div");
+    typing.className = "mb-4 flex max-w-[85%] flex-col gap-1";
+    typing.innerHTML = `<div class="rounded-[var(--radius-md)] rounded-bl-sm px-4 py-2.5 text-sm" style="background:var(--bg-card);color:var(--fg-muted);border:1px solid var(--border-default)">船匠 AI 正在想...</div>`;
+    messages.appendChild(typing);
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: text, sessionId }),
+      });
+      const data = await res.json();
+      typing.remove();
+      if (res.ok && data.reply) {
+        appendMessage("ai", data.reply);
+      } else {
+        appendMessage("ai", "API 调用失败. 请直接 [预约 30 分钟诊断](/contact) 或发邮件 hello@shipwright.co.");
+      }
+    } catch (err) {
+      typing.remove();
+      appendMessage("ai", "网络连接问题. 请直接 [预约 30 分钟诊断](/contact) 或刷新重试.");
+    }
   };
 
   form?.addEventListener("submit", (e) => {

@@ -50,5 +50,8 @@ coverage/
 # Playwright MCP snapshots (per-session, not code)
 .playwright-mcp/
 
+# Lead store JSON (本地 Phase 1.5 mock, 生产切 RDS)
+.shipwright-data/
+
 # Keystatic local state (auth tokens live here)
 .keystatic/
