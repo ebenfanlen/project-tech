@@ -1,0 +1,387 @@
+---
+// Pricing Calculator Island · 真交互
+// 输入: 月 GMV 区间 + 场景 + BYOK? → 输出: 推荐 SKU + 首月/稳态成本估算
+// Phase 1 无 React, 用原生 Astro script + vanilla JS
+---
+
+<section
+  class="mx-auto max-w-[900px] px-6 py-20"
+  id="pricing-calculator"
+>
+  <p
+    class="mb-3 font-mono uppercase"
+    style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600)"
+  >
+    Calculator · 告诉你月度成本
+  </p>
+  <h2
+    class="mb-2 font-semibold"
+    style="font-size:clamp(1.75rem,4vw,2.5rem);line-height:1.15;letter-spacing:-0.02em;color:var(--fg-display)"
+  >
+    定价计算器 · 30 秒算出你的月成本
+  </h2>
+  <p
+    class="mb-10"
+    style="font-size:var(--text-body-lg);color:var(--fg-default)"
+  >
+    输入你的月 GMV + 主要想解决的场景 + 是否 BYOK · 自动推荐 SKU + 首月总成本 + 稳态月成本.
+  </p>
+
+  <div
+    class="grid gap-6 lg:grid-cols-[1fr_1.2fr]"
+  >
+    <!-- 左: 输入 -->
+    <div
+      class="rounded-[var(--radius-lg)] border p-6"
+      style="background:var(--bg-card);border-color:var(--border-default)"
+    >
+      <!-- 月 GMV 滑块 -->
+      <div class="mb-6">
+        <div class="mb-2 flex items-center justify-between">
+          <label
+            for="calc-gmv"
+            class="font-mono text-xs uppercase tracking-[0.08em]"
+            style="color:var(--fg-muted)"
+          >
+            月 GMV (人民币)
+          </label>
+          <span
+            class="tabular-nums font-bold"
+            style="font-size:1.25rem;color:var(--color-signal-600)"
+            data-calc-gmv-display
+          >
+            ¥ 500,000
+          </span>
+        </div>
+        <input
+          id="calc-gmv"
+          type="range"
+          min="50000"
+          max="100000000"
+          step="10000"
+          value="500000"
+          data-calc-gmv
+          class="w-full"
+          style="accent-color:var(--color-signal-500)"
+        />
+        <div class="mt-2 flex justify-between font-mono text-[10px]" style="color:var(--fg-muted)">
+          <span>¥ 5万</span>
+          <span>¥ 500万</span>
+          <span>¥ 5000万</span>
+          <span>¥ 1亿</span>
+        </div>
+      </div>
+
+      <!-- 场景选择 -->
+      <div class="mb-6">
+        <label
+          class="mb-3 block font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:var(--fg-muted)"
+        >
+          主要场景 (选一个)
+        </label>
+        <div class="grid grid-cols-2 gap-2">
+          {[
+            { code: "v-cs", label: "客服", freq: "2000 条/月" },
+            { code: "v-seo", label: "Listing", freq: "80 条/月" },
+            { code: "v-ad", label: "广告素材", freq: "25 条/天" },
+            { code: "v-content", label: "内容", freq: "50 条/周" },
+            { code: "v-ops", label: "运营分诊", freq: "500 异常/月" },
+            { code: "multi", label: "多场景/跨系统", freq: "Fleet" },
+          ].map((s, i) => (
+            <label class="cursor-pointer">
+              <input
+                type="radio"
+                name="calc-scene"
+                value={s.code}
+                checked={i === 0}
+                data-calc-scene
+                class="peer sr-only"
+              />
+              <div
+                class="rounded-[var(--radius-md)] border p-3 text-center transition peer-checked:border-[var(--color-signal-500)] peer-checked:bg-[var(--color-signal-50)]"
+                style="border-color:var(--border-default);background:var(--bg-page)"
+              >
+                <div
+                  class="mb-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+                  style="color:var(--color-primary-600)"
+                >
+                  {s.code.toUpperCase()}
+                </div>
+                <div class="text-sm font-semibold" style="color:var(--fg-display)">
+                  {s.label}
+                </div>
+                <div class="mt-0.5 text-xs" style="color:var(--fg-muted)">
+                  {s.freq}
+                </div>
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <!-- BYOK toggle -->
+      <div class="mb-2">
+        <label
+          class="flex cursor-pointer items-start gap-3 rounded-[var(--radius-md)] border p-3 transition"
+          style="background:var(--bg-page);border-color:var(--border-default)"
+          data-calc-byok-wrap
+        >
+          <input
+            type="checkbox"
+            data-calc-byok
+            class="mt-1 h-4 w-4"
+            style="accent-color:var(--color-signal-500)"
+          />
+          <div>
+            <div class="font-semibold text-sm" style="color:var(--fg-display)">
+              BYOK · 我自己带 API Key
+            </div>
+            <div class="mt-1 text-xs" style="color:var(--fg-muted)">
+              Platform Fee 立减 20-25% · AI cost 直付 Anthropic / OpenAI · 我们 0 markup
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- 右: 推荐 + 计算 -->
+    <div
+      class="flex flex-col rounded-[var(--radius-lg)] border p-6"
+      style="background:var(--bg-card);border-color:var(--color-signal-500);border-width:2px;box-shadow:var(--shadow-lg)"
+    >
+      <div class="mb-4 flex items-center justify-between gap-3">
+        <span
+          class="font-mono text-xs uppercase tracking-[0.08em]"
+          style="color:var(--fg-muted)"
+        >
+          Recommended SKU
+        </span>
+        <span
+          class="rounded-full px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.08em]"
+          style="background:var(--color-signal-500);color:var(--color-canvas-50)"
+          data-calc-byok-badge
+        >
+          托管模式
+        </span>
+      </div>
+
+      <h3
+        class="mb-2 font-semibold"
+        style="font-size:1.75rem;line-height:1.15;color:var(--fg-display)"
+        data-calc-sku-name
+      >
+        Vibecoding Pod · 匠造舱
+      </h3>
+
+      <p
+        class="mb-5 text-sm"
+        style="color:var(--fg-default)"
+        data-calc-reason
+      >
+        月 GMV 在这个区间 · 单场景明确痛点 → 14 天 Vibecoding Pod 最合适.
+      </p>
+
+      <!-- 成本表 -->
+      <div
+        class="mb-5 rounded-[var(--radius-md)] border p-4 font-mono text-sm"
+        style="background:var(--bg-page);border-color:var(--border-default);color:var(--fg-default)"
+      >
+        <div class="mb-3 text-xs uppercase tracking-[0.08em]" style="color:var(--fg-muted)">
+          # 首月成本 (含 setup)
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between">
+            <span style="color:var(--fg-muted)">Setup Fee</span>
+            <span class="tabular-nums" data-calc-setup>¥ 58,000</span>
+          </div>
+          <div class="flex justify-between">
+            <span style="color:var(--fg-muted)">Platform Fee (首 3 月免)</span>
+            <span class="tabular-nums" style="color:var(--color-success-700)" data-calc-platform-first>¥ 0</span>
+          </div>
+          <div class="flex justify-between">
+            <span style="color:var(--fg-muted)">AI Cost 估 (pass-through)</span>
+            <span class="tabular-nums" data-calc-ai>¥ 1,500</span>
+          </div>
+          <div class="mt-2 flex justify-between border-t pt-2" style="border-color:var(--border-default);color:var(--fg-display);font-weight:700">
+            <span>首月合计</span>
+            <span class="tabular-nums" style="color:var(--color-signal-600)" data-calc-first-month>¥ 59,500</span>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-4 text-xs uppercase tracking-[0.08em]" style="border-top:1px solid var(--border-default);color:var(--fg-muted)">
+          # 第 4 月起稳态 / 月
+        </div>
+        <div class="mt-2 space-y-1">
+          <div class="flex justify-between">
+            <span style="color:var(--fg-muted)">Platform Fee</span>
+            <span class="tabular-nums" data-calc-platform-steady>¥ 2,400</span>
+          </div>
+          <div class="flex justify-between">
+            <span style="color:var(--fg-muted)">AI Cost</span>
+            <span class="tabular-nums" data-calc-ai-steady>¥ 1,500</span>
+          </div>
+          <div class="mt-2 flex justify-between border-t pt-2" style="border-color:var(--border-default);color:var(--fg-display);font-weight:700">
+            <span>月合计</span>
+            <span class="tabular-nums" style="color:var(--color-signal-600)" data-calc-steady>¥ 3,900 / 月</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 对标 -->
+      <p class="mb-4 rounded-[var(--radius-sm)] p-3 text-xs" style="background:var(--bg-muted);color:var(--fg-default);line-height:1.6" data-calc-comparison>
+        对标自招 1 客服 (¥6K/月 · 8h · 1 语种) · AI 成本约 65% · 24h × 5 语种 × 4 渠道
+      </p>
+
+      <a
+        href="/contact?sku=vibecoding-pod"
+        class="mt-auto inline-flex h-11 items-center justify-center rounded-[var(--radius-md)] px-5 text-sm font-semibold transition hover:brightness-110"
+        style="background:var(--color-signal-500);color:var(--color-canvas-50);box-shadow:var(--shadow-sm)"
+        data-calc-cta
+      >
+        开始 Vibecoding Pod · 14 天 →
+      </a>
+    </div>
+  </div>
+
+  <p class="mt-6 rounded-[var(--radius-md)] p-4 text-sm" style="background:var(--bg-muted);color:var(--fg-muted);line-height:1.6">
+    <strong style="color:var(--fg-display)">估算说明:</strong>
+    AI cost 基于典型用例 (Claude Sonnet 4.6 平均 2K tokens/次) · 实际按真实调用量浮动 ±30%.
+    月度账单精确到每条 API 调用 · 反 credit 黑盒.
+    <strong style="color:var(--fg-display)">最终定价以合同为准</strong> · <a href="/contact" style="color:var(--color-signal-600);font-weight:600">预约诊断</a> 拿确认报价.
+  </p>
+</section>
+
+<script is:inline>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const gmvSlider = $('[data-calc-gmv]');
+  const gmvDisplay = $('[data-calc-gmv-display]');
+  const byokCheckbox = $('[data-calc-byok]');
+  const byokBadge = $('[data-calc-byok-badge]');
+  const skuName = $('[data-calc-sku-name]');
+  const reason = $('[data-calc-reason]');
+  const setupEl = $('[data-calc-setup]');
+  const platformFirstEl = $('[data-calc-platform-first]');
+  const aiEl = $('[data-calc-ai]');
+  const firstMonthEl = $('[data-calc-first-month]');
+  const platformSteadyEl = $('[data-calc-platform-steady]');
+  const aiSteadyEl = $('[data-calc-ai-steady]');
+  const steadyEl = $('[data-calc-steady]');
+  const comparisonEl = $('[data-calc-comparison]');
+  const ctaEl = $('[data-calc-cta]');
+
+  if (!gmvSlider) return;
+
+  const fmt = (n) => '¥ ' + Math.round(n).toLocaleString();
+  const fmtGMV = (n) => {
+    if (n >= 100000000) return '¥ ' + (n / 100000000).toFixed(1) + ' 亿';
+    if (n >= 10000) return '¥ ' + Math.round(n / 10000) + ' 万';
+    return '¥ ' + n.toLocaleString();
+  };
+
+  // AI cost 按场景估算 (月 tokens × 模型价格)
+  const sceneAI = {
+    'v-cs': { freq: 2000, tokIn: 1500, tokOut: 400, label: "客服 2000 条/月" },
+    'v-seo': { freq: 80, tokIn: 3000, tokOut: 3500, label: "Listing 80 条/月" },
+    'v-ad': { freq: 750, tokIn: 1800, tokOut: 1200, label: "广告素材 25 条/天" },
+    'v-content': { freq: 200, tokIn: 2000, tokOut: 1500, label: "内容 50 条/周" },
+    'v-ops': { freq: 500, tokIn: 2500, tokOut: 800, label: "运营异常 500/月" },
+    'multi': { freq: 3000, tokIn: 2500, tokOut: 1500, label: "多场景混合" },
+  };
+
+  // Claude Sonnet 4.6: $3/MTok 输入, $15/MTok 输出 · 1 USD ≈ 7.0 CNY
+  function calcAICost(sceneCode) {
+    const s = sceneAI[sceneCode] || sceneAI['v-cs'];
+    const inputTok = s.freq * s.tokIn;
+    const outputTok = s.freq * s.tokOut;
+    const usd = (inputTok / 1e6 * 3) + (outputTok / 1e6 * 15);
+    return Math.round(usd * 7 * 1.1); // 10% markup 托管模式
+  }
+
+  function calc() {
+    const gmv = parseInt(gmvSlider.value, 10);
+    const scene = document.querySelector('[data-calc-scene]:checked')?.value || 'v-cs';
+    const byok = byokCheckbox.checked;
+
+    gmvDisplay.textContent = fmtGMV(gmv);
+    byokBadge.textContent = byok ? 'BYOK 模式' : '托管模式';
+    byokBadge.style.background = byok ? 'var(--color-success-500)' : 'var(--color-signal-500)';
+
+    // SKU 推荐逻辑
+    let sku = 'vibecoding-pod';
+    let setup = 58000;
+    let platformSteady = 2400;
+    let reasonText = '';
+    let ctaText = '开始 Vibecoding Pod · 14 天 →';
+    let ctaHref = '/contact?sku=vibecoding-pod';
+    let skuDisplay = 'Vibecoding Pod · 匠造舱';
+
+    if (gmv < 500000 || scene === 'multi' && gmv < 1500000) {
+      // 小 GMV · 走 Pilot 试一下
+      if (gmv < 500000) {
+        sku = 'pilot-pod';
+        setup = 12800;
+        platformSteady = 0;
+        skuDisplay = 'Pilot Pod · 试航舱';
+        reasonText = `月 GMV ${fmtGMV(gmv)} 属小体量 · 建议先 Pilot Pod 5 天 ¥12,800 跑通一个窄场景, 30 天内 60% 折抵升级 Vibecoding Pod.`;
+        ctaText = '开始 Pilot Pod · 5 天 →';
+        ctaHref = '/contact?sku=pilot-pod';
+      }
+    } else if (scene === 'multi' && gmv >= 1500000) {
+      // 多场景大 GMV · Fleet Integration
+      sku = 'fleet-integration';
+      setup = 238000;
+      platformSteady = 5800;
+      skuDisplay = 'Fleet Integration · 舰队集成';
+      reasonText = `月 GMV ${fmtGMV(gmv)} + 多场景/跨系统 · 8+ SaaS 编排 · 21-28 天交付. 主控 Agent + 工具 Agent 架构.`;
+      ctaText = '了解 Fleet Integration →';
+      ctaHref = '/contact?sku=fleet-integration';
+    } else {
+      // 单场景 · Vibecoding Pod 主推
+      reasonText = `月 GMV ${fmtGMV(gmv)} · 单场景明确痛点 → Vibecoding Pod 14 天最合适 · 80% 订单打这里.`;
+    }
+
+    // BYOK 折扣
+    const byokDiscount = byok ? (sku === 'fleet-integration' ? 0.75 : 0.80) : 1;
+    const platformWithByok = Math.round(platformSteady * byokDiscount);
+    const aiMarkup = byok ? 1.0 : 1.1; // BYOK 0 markup, 托管 10% markup
+    const aiCostBase = calcAICost(scene);
+    const aiCost = Math.round(aiCostBase / 1.1 * aiMarkup); // 重新按 markup 算
+    const platformFirstMonth = (sku === 'vibecoding-pod' || sku === 'fleet-integration') ? 0 : platformWithByok;
+
+    skuName.textContent = skuDisplay;
+    reason.textContent = reasonText;
+    setupEl.textContent = fmt(setup);
+    platformFirstEl.textContent = platformFirstMonth === 0 ? '¥ 0' : fmt(platformFirstMonth);
+    if (platformFirstMonth === 0 && platformWithByok > 0) {
+      platformFirstEl.nextSibling; // skip
+    }
+    aiEl.textContent = fmt(aiCost);
+    firstMonthEl.textContent = fmt(setup + platformFirstMonth + aiCost);
+    platformSteadyEl.textContent = platformWithByok === 0 ? '—' : fmt(platformWithByok);
+    aiSteadyEl.textContent = fmt(aiCost);
+    steadyEl.textContent = fmt(platformWithByok + aiCost) + ' / 月';
+
+    // 对标文案
+    const sceneInfo = sceneAI[scene];
+    const compareCost = {
+      'v-cs': '自招 1 客服 ¥6K/月 · 1 语种 · 8h',
+      'v-seo': '3 兼职写手 ¥12K/月 · 产能 80 条/月',
+      'v-ad': '1 投手 ¥15K/月 + 剪辑外包 ¥5K/月',
+      'v-content': '2 运营 ¥20K/月 · 周更 10 条',
+      'v-ops': '1 运营总监 4h/天手动查系统',
+      'multi': '全职数据分析师 + 8+ SaaS 月费合计 ¥30K+',
+    }[scene] || '';
+    comparisonEl.innerHTML = `<strong style="color:var(--fg-display)">对标:</strong> ${compareCost} · AI 成本约 ${Math.round((platformWithByok + aiCost) / 10000 * 10)}K/月${byok ? ' (BYOK · 0 markup)' : ''}`;
+
+    ctaEl.textContent = ctaText;
+    ctaEl.href = ctaHref;
+  }
+
+  gmvSlider.addEventListener('input', calc);
+  byokCheckbox.addEventListener('change', calc);
+  document.querySelectorAll('[data-calc-scene]').forEach((el) => el.addEventListener('change', calc));
+  calc();
+})();
+</script>
