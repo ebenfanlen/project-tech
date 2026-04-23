@@ -20,101 +20,52 @@ import SiteFooter from "../components/SiteFooter.astro";
 >
   <NavBar />
 
-  <!-- Section 2: Hero (cascade stagger · Motion One spring) -->
-  <section class="mx-auto max-w-[1200px] px-6 pb-16 pt-16 sm:pt-24" data-hero-stagger>
+  <!-- Section 2: Hero (cascade stagger · Motion One spring · CineStream 居中风格) -->
+  <section class="mx-auto max-w-[1400px] px-6 pb-20 pt-12 sm:pt-16" data-hero-stagger>
     <p
-      class="mb-8 inline-flex items-center gap-2 font-mono uppercase hero-item"
-      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--color-signal-600);opacity:0"
+      class="mb-6 text-center font-mono uppercase hero-item"
+      style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--accent);opacity:0"
     >
-      <span
-        class="inline-block h-1.5 w-1.5 rounded-full"
-        style="background:var(--color-signal-500)"
-      ></span>
       For DTC Operators
     </p>
 
-    <div class="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-start">
-      <div>
-        <h1
-          class="mb-6 font-semibold hero-item"
-          style="font-size:clamp(2.75rem,7vw,4.5rem);line-height:var(--text-display-xl--line-height);letter-spacing:0.04em;color:var(--fg-display);opacity:0"
-        >
-          别堆人<span style="font-weight:400">，</span>造船<span style="font-weight:400">。</span>
-        </h1>
+    <!-- 居中大号 headline · CineStream 风格 -->
+    <h1
+      class="mx-auto mb-6 max-w-5xl text-center font-bold tracking-tight hero-item"
+      style="font-size:clamp(2.75rem,7vw,5rem);line-height:1.08;letter-spacing:-0.02em;color:var(--fg-display);opacity:0"
+    >
+      别堆人，造船。让跨境电商在 14 天内拥有
+      <span style="color:var(--accent);font-weight:800">Vibecoding Pod</span>
+    </h1>
 
-        <p
-          class="mb-8 font-mono tracking-tight hero-item"
-          style="font-size:clamp(1.75rem,4.5vw,3.5rem);line-height:var(--text-display-lg--line-height);color:var(--fg-muted);opacity:0"
-        >
-          Don't hire. Ship.
-        </p>
+    <p
+      class="mx-auto mb-10 max-w-2xl text-center font-mono hero-item"
+      style="font-size:clamp(1.125rem,2vw,1.375rem);line-height:1.6;color:var(--fg-muted);opacity:0"
+    >
+      Don't hire. Ship. · 14 天交付一个可量产的 AI 工作流 · 代码 100% 归你 · 支持 BYOK
+    </p>
 
-        <p
-          class="mb-10 max-w-xl hero-item"
-          style="font-size:var(--text-body-lg);line-height:var(--text-body-lg--line-height);color:var(--fg-default);opacity:0"
-        >
-          14 天交付一个可量产的 AI 工作流 · 代码 100% 归你 · 透明定价 · 支持 BYOK。
-          我们是 vibecoding pod，不是外包。
-        </p>
+    <!-- 双 CTA · 居中 pill 按钮 (参考 CineStream) -->
+    <div class="mb-16 flex flex-wrap items-center justify-center gap-3 hero-item" style="opacity:0">
+      <a
+        href="/pilot-pod"
+        class="inline-flex h-12 items-center rounded-[var(--radius-pill)] px-7 text-sm font-semibold transition hover:brightness-95"
+        style="background:var(--accent);color:var(--accent-fg);box-shadow:0 10px 30px rgba(254,242,151,0.2)"
+      >
+        Get started · Pilot Pod
+      </a>
+      <a
+        href="/how"
+        class="inline-flex h-12 items-center rounded-[var(--radius-pill)] border px-7 text-sm font-medium transition hover:bg-[var(--bg-muted)]"
+        style="border-color:var(--border-strong);color:var(--fg-display)"
+      >
+        Live Timer · 14 天
+      </a>
+    </div>
 
-        <!-- 双画像 CTA -->
-        <div class="grid max-w-xl gap-4 sm:grid-cols-2 hero-item" role="group" aria-label="主要行动入口" style="opacity:0">
-          <a
-            href="/pilot-pod"
-            class="group flex flex-col rounded-[var(--radius-xl)] border p-6 transition hover:-translate-y-0.5"
-            style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-signal-500);box-shadow:var(--shadow-sm)"
-          >
-            <span
-              class="mb-2 font-mono uppercase"
-              style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
-            >
-              电商老板 · 5 天试航
-            </span>
-            <span class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
-              Pilot Pod ¥12,800
-            </span>
-            <span class="text-sm" style="color:var(--fg-default)">
-              一个窄场景跑通 · 5 天出 ROI · 60% 抵扣升级
-            </span>
-            <span
-              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
-              style="color:var(--color-signal-600)"
-            >
-              Pilot Pod 14 天 →
-            </span>
-          </a>
-
-          <a
-            href="/how"
-            class="group flex flex-col rounded-[var(--radius-xl)] border p-6 transition hover:-translate-y-0.5"
-            style="background:var(--bg-card);border-color:var(--border-default);border-top:3px solid var(--color-primary-500);box-shadow:var(--shadow-sm)"
-          >
-            <span
-              class="mb-2 font-mono uppercase"
-              style="font-size:var(--text-overline);letter-spacing:var(--text-overline--letter-spacing);color:var(--fg-muted)"
-            >
-              技术 Lead · 先看方法
-            </span>
-            <span class="mb-1 text-xl font-semibold" style="color:var(--fg-display)">
-              Vibecoding + BYOK
-            </span>
-            <span class="text-sm" style="color:var(--fg-default)">
-              14 天 Day-by-Day · 代码 100% 交付 · 反 vendor lock
-            </span>
-            <span
-              class="mt-4 inline-flex items-center gap-1 text-sm font-semibold"
-              style="color:var(--link)"
-            >
-              14 天方法论 →
-            </span>
-          </a>
-        </div>
-      </div>
-
-      <!-- 14 天 Live Timer (右侧，desktop) · stagger 最后出现 -->
-      <div class="lg:sticky lg:top-24 hero-item" style="opacity:0">
-        <LiveTimer />
-      </div>
+    <!-- 14 天 Live Timer · 居中大卡片 · 替代右侧 sticky (对齐 CineStream 大号 hero card) -->
+    <div class="mx-auto max-w-4xl hero-item" style="opacity:0">
+      <LiveTimer />
     </div>
   </section>
 

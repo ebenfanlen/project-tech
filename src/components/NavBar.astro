@@ -1,4 +1,6 @@
 ---
+// NavBar · CineStream 风格 pill 胶囊导航
+// 中间 pill 包住菜单项 · 右侧 yellow CTA 胶囊按钮 · 左侧 Logo 保留
 import Logo from "./Logo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
@@ -10,37 +12,55 @@ const navItems = [
   { href: "/pricing", label: "定价" },
   { href: "/about", label: "关于" },
 ];
+
+const current = Astro.url.pathname;
 ---
 
-<header
-  class="sticky top-0 z-50 border-b backdrop-blur-md"
-  style="background:var(--nav-bg);border-color:var(--border-default)"
->
-  <nav class="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-6 px-6">
-    <a href="/" class="shrink-0" aria-label="回到首页">
+<header class="sticky top-0 z-50">
+  <nav class="mx-auto flex h-20 max-w-[1400px] items-center justify-between gap-6 px-6">
+    <!-- Logo · 保留 The Keel · 色用 accent yellow -->
+    <a href="/" class="shrink-0" aria-label="回到首页" style="color:var(--accent)">
       <Logo size={32} />
     </a>
 
-    <ul class="hidden items-center gap-7 text-sm font-medium md:flex" style="color:var(--fg-default)">
-      {navItems.map((item) => (
-        <li>
-          <a href={item.href} class="transition hover:opacity-70">
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
+    <!-- 中间 pill 胶囊 nav · CineStream 风格 -->
+    <div
+      class="hidden items-center rounded-[var(--radius-pill)] px-2 py-1.5 backdrop-blur-md md:flex"
+      style="background:var(--nav-bg);border:1px solid var(--border-default);box-shadow:0 4px 16px rgba(0,0,0,0.24)"
+    >
+      <ul class="flex items-center gap-1 text-sm font-medium">
+        {navItems.map((item) => {
+          const isActive = current === item.href || (item.href !== "/" && current.startsWith(item.href));
+          return (
+            <li>
+              <a
+                href={item.href}
+                class="inline-flex h-9 items-center rounded-[var(--radius-pill)] px-4 transition hover:opacity-80"
+                style={
+                  isActive
+                    ? `background:var(--bg-muted);color:var(--fg-display);font-weight:600`
+                    : `color:var(--fg-default)`
+                }
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
 
+    <!-- 右侧: Theme + Yellow CTA pill -->
     <div class="flex items-center gap-3">
       <div class="hidden md:block">
         <ThemeToggle />
       </div>
       <a
         href="/contact"
-        class="inline-flex h-9 items-center rounded-[var(--radius-md)] px-4 text-sm font-semibold text-[var(--color-canvas-50)] transition hover:brightness-110"
-        style="background:var(--color-signal-500);box-shadow:var(--shadow-sm)"
+        class="inline-flex h-11 items-center rounded-[var(--radius-pill)] px-5 text-sm font-semibold transition hover:brightness-95"
+        style="background:var(--accent);color:var(--accent-fg);box-shadow:0 6px 20px rgba(254,242,151,0.18)"
       >
-        开始 14 天 →
+        开始 14 天
       </a>
     </div>
   </nav>

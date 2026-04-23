@@ -77,16 +77,15 @@ const canonical = `${siteUrl}${path}`;
     <!-- Analytics (PUBLIC_BAIDU_TONGJI_ID / PUBLIC_PLAUSIBLE_DOMAIN / PUBLIC_SENTRY_DSN) -->
     <Analytics />
 
-    <!-- 初始化 theme（防 FOUC，inline + 三态） -->
+    <!-- 初始化 theme · CineStream 视觉默认 dark · light/system 可选 -->
     <script is:inline>
       (() => {
-        const saved = localStorage.getItem("theme-mode") || "system";
+        const saved = localStorage.getItem("theme-mode") || "dark";
         const system = window.matchMedia("(prefers-color-scheme: dark)").matches;
         const effective = saved === "system" ? (system ? "dark" : "light") : saved;
         document.documentElement.dataset.theme = effective;
         document.documentElement.dataset.themeMode = saved;
 
-        // 监听系统切换（仅 mode=system 时响应）
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
           if (document.documentElement.dataset.themeMode === "system") {
             document.documentElement.dataset.theme = e.matches ? "dark" : "light";
